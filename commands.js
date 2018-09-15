@@ -29,6 +29,7 @@ db.system.js.save(
     _id: "getMovieStats",
     value: function(x) {
       count = db.runCommand({ count: "movies" });
+      count = count.n
       total_runtime = db.movies.aggregate([
         {
           $group: {_id: null, total: {$sum: "$runtime"}}
@@ -37,7 +38,7 @@ db.system.js.save(
       total_runtime = total_runtime.toArray()[0].total;
       hours = total_runtime/60;
       minutes = total_runtime%60;
-      return `Movies: ${nummovies}\nTotal Running Time: ${floor(hours)}:${minutes}\n Unique Genres: not yet implemented`;
+      return `Movies: ${count}\nTotal Running Time: ${Math.floor(hours)}:${minutes}\n Unique Genres: not yet implemented`;
     }
   }
 )
