@@ -29,15 +29,11 @@ db.system.js.save(
     _id: "getMovieStats",
     value: function(x) {
       count = db.runCommand({ count: "movies" });
-      total_runtime = db.movies.group(
+      total_runtime = db.movies.aggregate([
         {
-          key: {runtime: 1},
-          initial: {total: 0},
-          $reduce: function(curr,result){
-            result.total += curr.runtime;
-          }
+          $group: {_id: null, total: {$sum: "$runtime"}
         }
-      );
+      ]);
       return total_runtime;
     }
   }
