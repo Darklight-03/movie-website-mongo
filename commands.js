@@ -38,7 +38,9 @@ db.system.js.save(
       total_runtime = total_runtime.toArray()[0].total;
       hours = total_runtime/60;
       minutes = total_runtime%60;
-      return `Movies: ${count}\nTotal Running Time: ${Math.floor(hours)}:${minutes}\n Unique Genres: not yet implemented`;
+      ugenres = db.movies.distinct( "genres" ).filter(genre=>genre.id!=null).length;
+      
+      return `Movies: ${count}\nTotal Running Time: ${Math.floor(hours)}:${minutes}\n Unique Genres: ${ugenres}`;
     }
   }
 )
