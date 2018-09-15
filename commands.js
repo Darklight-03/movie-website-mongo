@@ -37,7 +37,7 @@ db.system.js.save(
             result.total += curr.runtime;
           }
         }
-      )
+      );
       return total_runtime;
     }
   }
