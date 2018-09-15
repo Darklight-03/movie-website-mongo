@@ -7,7 +7,7 @@ db.system.js.save(
     _id: "getRecordByMovieId",
     value: function(x) {
       return db.movies.find({
-        id: {$eq: input}
+        id: {$eq: x}
       });
     }
   }
