@@ -37,7 +37,7 @@ db.system.js.save(
       total_runtime = total_runtime.toArray()[0].total;
       hours = total_runtime/60;
       minutes = total_runtime%60;
-      return {hours: hours, minutes: minutes};
+      return `Movies: ${nummovies}\nTotal Running Time: ${floor(hours)}:${minutes}\n Unique Genres: not yet implemented`;
     }
   }
 )
