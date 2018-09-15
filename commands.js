@@ -31,10 +31,13 @@ db.system.js.save(
       count = db.runCommand({ count: "movies" });
       total_runtime = db.movies.aggregate([
         {
-          $group: {_id: null, total: {$sum: "$runtime"}
+          $group: {_id: null, total: {$sum: "$runtime"}}
         }
       ]);
-      return total_runtime;
+      total_runtime = total_runtime.toArray()[0].total;
+      hours = total_runtime/60;
+      minutes = total_runtime%60;
+      return {hours: hours, minutes: minutes};
     }
   }
 )
