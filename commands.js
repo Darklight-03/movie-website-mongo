@@ -36,7 +36,7 @@ db.system.js.save({
         x = db.movies.find({
         imdb_id: {$eq: x}
         })
-    printjson(x.explain("executionStats")
+    printjson(x.explain("executionStats"));
     return x;
   }
 })
