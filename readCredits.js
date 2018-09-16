@@ -1,20 +1,38 @@
+// inserts credits objects into the matching movie document
 
-//db.movies.updateMany( { "hasCredits" : 1 }, { $set { "credits": db.credits.findOne( { "id" : ??? } ) } } );
 
-var moviesCursor = db.movies.find( { "hasCredits" : 1 } );
 
-moviesCursor.forEach( function (currentMovie) {
-	print(currentMovie.hasCredits);
-	if (db.credits.findOne( { "id" : currentMovie.id } ) != null) {
-		db.movies.updateOne( { "_id" : currentMovie._id }, { $set: { "credits" : db.credits.findOne( { "id" : currentMovie.id } ) } } );
-		print("Credits updated " + currentMovie.id);
-	}
-	else {
-		print("No credits " + currentMovie.id);
-	}
+print("Inserting credits into movie documents...");
+
+db.movies.aggregate(
+    [
+		//{ "$match": { "hasCredits": 1 } }	
+        { "$addFields": { "credits": db.credits.findOne( { "id" : "$id" } ) } },
+		{ "$addFields": { "creditslookup": { $concat: [ "$id", "" ] } } },
+        { "$out": "movies" }
+    ]
+);
+
+// var moviesCursor = db.movies.find( { "hasCredits" : 1 } );
+// var num_id;
+
+// credit_ids.insertMany(db.credits.distinct( "_id" ));
+
+// moviesCursor.forEach( function (currentMovie) {
+	// num_id = currentMovie.id
+	// db.movies.updateOne(
+		// { "id" : num_id },
+		// { $set:
+			// { "credits" :
+				// db.credits.findOne( { "id" : num_id.toString() } )
+			// }
+		// }
+	// );
 	
-	// doesn't actually update anything
-	//currentMovie.credits = ...;
-})
+	// db.credits.remove({});
+// })
 
-moviesCursor.close();
+print("Done.");
+
+// moviesCursor.close();
+
