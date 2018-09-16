@@ -43,5 +43,8 @@ moviesCursor.forEach( function (currentMovie) {
 moviesCursor.close();
 db.credits.drop();
 
+db.movies.reIndex();
+db.credits_ids.createIndex( { "_id": 1 } );
+
 print("Done inserting credits into movies.");
 
