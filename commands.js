@@ -70,3 +70,16 @@ db.system.js.save(
     }
   }
 )
+
+//getCreditsStats
+db.system.js.save(
+  {
+    _id: "getCreditsStats",
+    value: function(x) {
+      count = db.runCommand({ count: "credits" });
+      count = count.n
+
+      return `- Credits Entries: ${count}\n- Cast Members: ${numcast}\n- Crew Members: ${numcrew}`;
+    }
+  }
+)
