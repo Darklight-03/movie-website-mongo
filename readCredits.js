@@ -16,6 +16,9 @@ print("Inserting credits into movie documents...");
 // create credits id's collection
 db.credits_ids.insertMany(db.credits.distinct( "_id" ));
 
+db.credits.createIndex( { "id": 1 } );
+db.movies.createIndex( { "id": 1 } );
+
 // much slower method that works
 var moviesCursor = db.movies.find( { "hasCredits" : 1 } );
 var numMovies = db.movies.count();
