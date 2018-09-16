@@ -3,15 +3,13 @@
 print("Inserting credits into movie documents...");
 
 // a MUCH faster method that ALMOST works
-// db.movies.aggregate(
-    // [
-		//{ "$match": { "hasCredits": 1 } }	
-		// { "$addFields": { "creditslookup": { $toString:"$id" } } },
-		// { "$addFields": { "credits": db.credits.findOne( { "id": {$toString:"$id"} } ) } },
-		// { "$addFields": { "credits": db.credits.update({}, { $set: { "set": {$toString:"$id"} } } ) } },
-        // { "$out": "movies" }
-    // ]
-// );
+// db.movies.aggregate([
+	//{ "$match": { "hasCredits": 1 } }	
+	// { "$addFields": { "creditslookup": { $toString:"$id" } } },
+	// { "$addFields": { "credits": db.credits.findOne( { "id": {$toString:"$id"} } ) } },
+	// { "$addFields": { "credits": db.credits.update({}, { $set: { "set": {$toString:"$id"} } } ) } },
+	// { "$out": "movies" }
+// ]);
 
 
 
@@ -31,8 +29,9 @@ moviesCursor.forEach( function (currentMovie) {
 	);
 	
 	db.credits.remove( { "id" : currentMovie.id.toString() }, 1);
-})
+});
 moviesCursor.close();
 db.credits.drop();
 
 print("Done inserting credits into movies.");
+

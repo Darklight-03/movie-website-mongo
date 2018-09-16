@@ -55,3 +55,16 @@ db.system.js.save(
     }
   }
 )
+
+
+// getPersonById
+db.system.js.save(
+  {
+    _id: "getPersonById",
+    value: function(x) {
+      return db.persons.find({
+        id: {$eq: x}
+      });
+    }
+  }
+)
