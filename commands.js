@@ -44,3 +44,14 @@ db.system.js.save(
     }
   }
 )
+
+// getAggregateRecordByMovieId
+// since we merged credits into movies, just needs to call getRecordByMovieId
+db.system.js.save(
+  {
+    _id: "getAggregateRecordByMovieId",
+    value: function(x) {
+      return getRecordByMovieId(x);
+    }
+  }
+)
