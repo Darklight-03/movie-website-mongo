@@ -25,7 +25,7 @@ db.system.js.save(
         });
         return x.cursor.firstBatch[0].credits.cast;
         
-      });
+      };
     }
   }
 )
