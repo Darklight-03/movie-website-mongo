@@ -9,34 +9,38 @@ var moviesIterated = 0;
 
 moviesCursor.forEach( function (currentMovie) {
 	var i;
+	var castItem;
+	var crewItem;
 	//print("sz=" + currentMovie.credits.cast.length);
 	for (i = 0; i < currentMovie.credits.cast.length; i++) {
 		//print(currentMovie.credits.cast[i].name);
+		castItem = currentMovie.credits.cast[i];
 		db.persons.updateOne(
-			{ "id": {$eq: currentMovie.credits.cast[i].id } },
-			{ $set: { "name": currentMovie.credits.cast[i].name,
-			         "gender": currentMovie.credits.cast[i].gender,
-					 "profile_path": currentMovie.credits.cast[i].profile_path },
-			  $addToSet: { "castMovies": currentMovie._id }
+			{ "id": {$eq: castItem.id } },
+			{ $set: { "name": castItem.name,
+			         "gender": castItem.gender,
+					 "profile_path": castItem.profile_path },
+			  $addToSet: { "movies": currentMovie._id }
 			},
 			{ upsert: 1 }
 		);
 	}
 	for (i = 0; i < currentMovie.credits.crew.length; i++) {
 		//print(currentMovie.credits.cast[i].name);
+		crewItem = currentMovie.credits.crew[i];
 		db.persons.updateOne(
-			{ "id": {$eq: currentMovie.credits.crew[i].id } },
-			{ $set: { "name": currentMovie.credits.crew[i].name,
-			         "gender": currentMovie.credits.crew[i].gender,
-					 "profile_path": currentMovie.credits.crew[i].profile_path },
-			  $addToSet: { "crewMovies": currentMovie._id }
+			{ "id": {$eq: crewItem.id } },
+			{ $set: { "name": crewItem.name,
+			         "gender": crewItem.gender,
+					 "profile_path": crewItem.profile_path },
+			  $addToSet: { "movies": currentMovie._id }
 			},
 			{ upsert: 1 }
 		);
 	}
 	moviesIterated += 1;
 	if ((moviesIterated % 1000) == 0) {
-		print("Progress: " + (100 * (moviesIterated/numMovies)).toString().match(/^-?\d+(?:\.\d{0,2})?/)[0] + "%");
+		print("Progress: ~" + (100 * (moviesIterated/numMovies)).toString().match(/^-?\d+(?:\.\d{0,2})?/)[0] + "%.  " + moviesIterated + "/" + numMovies + " movies");
 	}
 });
 moviesCursor.close();

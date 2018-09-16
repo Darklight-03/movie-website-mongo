@@ -18,6 +18,8 @@ db.credits_ids.insertMany(db.credits.distinct( "_id" ));
 
 // much slower method that works
 var moviesCursor = db.movies.find( { "hasCredits" : 1 } );
+var numMovies = db.movies.count();
+var moviesIterated = 0;
 moviesCursor.forEach( function (currentMovie) {
 	db.movies.updateOne(
 		{ "id" : currentMovie.id },
@@ -29,6 +31,11 @@ moviesCursor.forEach( function (currentMovie) {
 	);
 	
 	db.credits.remove( { "id" : currentMovie.id.toString() }, 1);
+	
+	moviesIterated += 1;
+	if ((moviesIterated % 10000) == 0) {
+		print("Progress: ~" + (100 * (moviesIterated/numMovies)).toString().match(/^-?\d+(?:\.\d{0,2})?/)[0] + "%");
+	}
 });
 moviesCursor.close();
 db.credits.drop();
