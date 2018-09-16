@@ -18,14 +18,14 @@ db.system.js.save(
   {
     _id: "getCastByMovieID",
     value: function(x) {
-        x = db.runCommand({
+      x = db.runCommand({
         find: "movies",
         filter: { id: {$eq: x}},
         projection: {credits: 1}
-        })
-        return x.cursor.firstBatch[0].credits.cast;
-      }
+      })
+      return x.cursor.firstBatch[0].credits.cast;
     }
+  }
 )
 
 // getRecordByIMDBId
