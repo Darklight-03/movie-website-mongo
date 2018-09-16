@@ -35,8 +35,8 @@ moviesCursor.forEach( function (currentMovie) {
 		);
 	}
 	moviesIterated += 1;
-	if (moviesIterated % 1000) {
-		print("Progress: " + (100 * (moviesIterated/numMovies)) + "%");
+	if ((moviesIterated % 1000) == 0) {
+		print("Progress: " + (100 * (moviesIterated/numMovies)).toString().match(/^-?\d+(?:\.\d{0,2})?/)[0] + "%");
 	}
 });
 moviesCursor.close();
