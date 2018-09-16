@@ -7,6 +7,8 @@ var moviesCursor = db.movies.find( { "credits": { $ne: null } } ).noCursorTimeou
 var numMovies = db.movies.count();
 var moviesIterated = 0;
 
+db.persons.createIndex( { "id": 1 } );
+
 moviesCursor.forEach( function (currentMovie) {
 	var i;
 	var castItem;
@@ -38,10 +40,11 @@ moviesCursor.forEach( function (currentMovie) {
 			{ upsert: 1 }
 		);
 	}
-	moviesIterated += 1;
 	if ((moviesIterated % 1000) == 0) {
 		print("Progress: ~" + (100 * (moviesIterated/numMovies)).toString().match(/^-?\d+(?:\.\d{0,2})?/)[0] + "%.  " + moviesIterated + "/" + numMovies + " movies");
+		db.persons.reIndex();
 	}
+	moviesIterated += 1;
 });
 moviesCursor.close();
 

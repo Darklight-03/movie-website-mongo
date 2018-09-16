@@ -32,10 +32,10 @@ moviesCursor.forEach( function (currentMovie) {
 	
 	db.credits.remove( { "id" : currentMovie.id.toString() }, 1);
 	
-	moviesIterated += 1;
 	if ((moviesIterated % 10000) == 0) {
 		print("Progress: ~" + (100 * (moviesIterated/numMovies)).toString().match(/^-?\d+(?:\.\d{0,2})?/)[0] + "%");
 	}
+	moviesIterated += 1;
 });
 moviesCursor.close();
 db.credits.drop();
