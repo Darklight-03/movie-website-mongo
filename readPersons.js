@@ -6,6 +6,7 @@ print("Creating persons collection...");
 var creditsCursor = db.credits.find( { "id":"862" } );
 creditsCursor.forEach( function (currentCredit) {
 	var i;
+	print(currentCredit.cast.length);
 	for (i = 0; i < currentCredit.cast.length; i++) {
 		print(currentCredit.cast[i].name);
 	}
