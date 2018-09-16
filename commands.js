@@ -22,12 +22,10 @@ db.system.js.save(
         find: "movies",
         filter: { id: {$eq: x}},
         projection: {credits: 1}
-        });
+        })
         return x.cursor.firstBatch[0].credits.cast;
-        
-      };
+      }
     }
-  }
 )
 
 // getRecordByIMDBId
