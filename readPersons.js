@@ -25,10 +25,10 @@ moviesCursor.forEach( function (currentMovie) {
 	for (i = 0; i < currentMovie.credits.crew.length; i++) {
 		//print(currentMovie.credits.cast[i].name);
 		db.persons.updateOne(
-			{ "id": {$eq: currentMovie.credits.cast[i].id } },
-			{ $set: { "name": currentMovie.credits.cast[i].name,
-			         "gender": currentMovie.credits.cast[i].gender,
-					 "profile_path": currentMovie.credits.cast[i].profile_path },
+			{ "id": {$eq: currentMovie.credits.crew[i].id } },
+			{ $set: { "name": currentMovie.credits.crew[i].name,
+			         "gender": currentMovie.credits.crew[i].gender,
+					 "profile_path": currentMovie.credits.crew[i].profile_path },
 			  $addToSet: { "crewMovies": currentMovie._id }
 			},
 			{ upsert: 1 }
