@@ -6,9 +6,11 @@ db.system.js.save(
   {
     _id: "getRecordByMovieId",
     value: function(x) {
-      return db.movies.find({
+      y = db.movies.find({
         id: {$eq: x}
       });
+      printjson(y.explain("executionStats"));
+      return y;
     }
   }
 )
@@ -18,13 +20,13 @@ db.system.js.save(
   {
     _id: "getCastByMovieID",
     value: function(x) {
-      x = db.runCommand({
+      y = db.runCommand({
         find: "movies",
-        filter: { id: {$eq: x}},
+        filter: { id: {$eq: y}},
         projection: {credits: 1}
       })
-     
-      return x.cursor.firstBatch[0].credits.cast;
+      printjson(y.explain("executionStats"));
+      return y.cursor.firstBatch[0].credits.cast;
     }
   }
 )
@@ -33,11 +35,11 @@ db.system.js.save(
 db.system.js.save({
   _id: "getRecordByIMDBId",
   value: function(x) {
-        x = db.movies.find({
+        y = db.movies.find({
         imdb_id: {$eq: x}
         })
-    printjson(x.explain("executionStats"));
-    return x;
+    printjson(y.explain("executionStats"));
+    return y;
   }
 })
 
@@ -47,16 +49,20 @@ db.system.js.save(
     _id: "getMovieStats",
     value: function(x) {
       count = db.runCommand({ count: "movies" });
+      printjson(count.explain("executionStats"));
       count = count.n
       total_runtime = db.movies.aggregate([
         {
           $group: {_id: null, total: {$sum: "$runtime"}}
         }
       ]);
+      printjson(total_runtime.explain("executionStats"));
       total_runtime = total_runtime.toArray()[0].total;
       hours = total_runtime/60;
       minutes = total_runtime%60;
-      ugenres = db.movies.distinct( "genres" ).filter(genre=>genre.id!=null).length;
+      ugenres = db.movies.distinct( "genres" )
+      printjson(ugenres.explain("executionStats")
+      ugenres.filter(genre=>genre.id!=null).length;
       
       return `Movies: ${count}\nTotal Running Time: ${Math.floor(hours)}:${minutes}\nUnique Genres: ${ugenres}`;
     }
@@ -69,7 +75,9 @@ db.system.js.save(
   {
     _id: "getAggregateRecordByMovieId",
     value: function(x) {
-      return getRecordByMovieId(x);
+      y = getRecordByMovieId(x);
+      printjson(y.explain("executionStats")
+      return y;
     }
   }
 )
