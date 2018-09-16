@@ -22,7 +22,7 @@ db.system.js.save(
         find: "movies",
         filter: { id: {$eq: x}},
         projection: {credits: 1}
-      }).explain("executionStats")
+      })
      
       return x.cursor.firstBatch[0].credits.cast;
     }
@@ -35,7 +35,7 @@ db.system.js.save({
   value: function(x) {
     return db.movies.find({
       imdb_id: {$eq: x}
-    });
+    }).explain("executionStats");
   }
 })
 
