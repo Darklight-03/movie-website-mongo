@@ -33,10 +33,10 @@ db.system.js.save(
 db.system.js.save({
   _id: "getRecordByIMDBId",
   value: function(x) {
-    x =  db.movies.find({
-      imdb_id: {$eq: x}
-    })
-    print(x.explain("executionStats"));
+        x = db.movies.find({
+        imdb_id: {$eq: x}
+        }).explain("executionStats")
+    
     return x;
   }
 })
