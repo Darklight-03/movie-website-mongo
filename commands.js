@@ -22,7 +22,8 @@ db.system.js.save(
         find: "movies",
         filter: { id: {$eq: x}},
         projection: {credits: 1}
-      })
+      }).explain("executionStats")
+     
       return x.cursor.firstBatch[0].credits.cast;
     }
   }
