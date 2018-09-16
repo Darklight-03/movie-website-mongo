@@ -1,38 +1,38 @@
 // inserts credits objects into the matching movie document
 
-
-
 print("Inserting credits into movie documents...");
 
-db.movies.aggregate(
-    [
+// a MUCH faster method that ALMOST works
+// db.movies.aggregate(
+    // [
 		//{ "$match": { "hasCredits": 1 } }	
-        { "$addFields": { "credits": db.credits.findOne( { "id" : "$id" } ) } },
-		{ "$addFields": { "creditslookup": { $concat: [ "$id", "" ] } } },
-        { "$out": "movies" }
-    ]
-);
+		// { "$addFields": { "creditslookup": { $toString:"$id" } } },
+		// { "$addFields": { "credits": db.credits.findOne( { "id": {$toString:"$id"} } ) } },
+		// { "$addFields": { "credits": db.credits.update({}, { $set: { "set": {$toString:"$id"} } } ) } },
+        // { "$out": "movies" }
+    // ]
+// );
 
-// var moviesCursor = db.movies.find( { "hasCredits" : 1 } );
-// var num_id;
 
-// credit_ids.insertMany(db.credits.distinct( "_id" ));
 
-// moviesCursor.forEach( function (currentMovie) {
-	// num_id = currentMovie.id
-	// db.movies.updateOne(
-		// { "id" : num_id },
-		// { $set:
-			// { "credits" :
-				// db.credits.findOne( { "id" : num_id.toString() } )
-			// }
-		// }
-	// );
+// create credits id's collection
+db.credits_ids.insertMany(db.credits.distinct( "_id" ));
+
+// much slower method that works
+var moviesCursor = db.movies.find( { "hasCredits" : 1 } );
+moviesCursor.forEach( function (currentMovie) {
+	db.movies.updateOne(
+		{ "id" : currentMovie.id },
+		{ $set:
+			{ "credits" :
+				db.credits.findOne( { "id" : currentMovie.id.toString() } )
+			}
+		}
+	);
 	
-	// db.credits.remove({});
-// })
+	db.credits.remove( { "id" : currentMovie.id.toString() }, 1);
+})
+moviesCursor.close();
+db.credits.drop();
 
-print("Done.");
-
-// moviesCursor.close();
-
+print("Done inserting credits into movies.");
