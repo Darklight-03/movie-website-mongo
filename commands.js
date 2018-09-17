@@ -25,7 +25,7 @@ db.system.js.save(
     value: function(x) {
       y = db.movies.find({id: x},{credits:1})
       
-      printjson(sy.explain('executionStats'));
+      printjson(y.explain('executionStats'));
 
       return y.toArray()[0].credits.cast;
     }
