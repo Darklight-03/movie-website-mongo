@@ -75,7 +75,7 @@ db.system.js.save(
       sugenres = db.movies.explain("executionStats").distinct("genres")
       printjson(sugenres);
 
-      ugenres.filter(genre=>genre.id!=null).length;
+      ugenres = ugenres.filter(genre=>genre.id!=null).length;
       
       return `Movies: ${count}\nTotal Running Time: ${Math.floor(hours)}:${minutes}\nUnique Genres: ${ugenres}`;
     }
