@@ -62,11 +62,19 @@ db.system.js.save(
           $group: {_id: null, total: {$sum: "$runtime"}}
         }
       ]);
+      sruntime = db.movies.explain("executionStats").aggregate([
+        {
+          $group: {_id: null, total: {$sum: "$runtime"}}
+        }
+      ]);
+      printjson(sruntime);
 
       total_runtime = total_runtime.toArray()[0].total;
       hours = total_runtime/60;
       minutes = total_runtime%60;
       ugenres = db.movies.distinct( "genres" )
+      sugenres = db.movies.explain("executionStats").distinct("genres")
+      printjson(sugenres);
 
       ugenres.filter(genre=>genre.id!=null).length;
       
