@@ -1,7 +1,9 @@
 # teamProject1
 
 to connect to the database:
-```mongo --username user --password fghg teamproject1.ddns.net/movies_mongo```
+`mongo --username user --password fghg teamproject1.ddns.net/movies_mongo`
+
+and run `db.loadServerScripts()` before calling any functions.
 
 ### group logs
 
