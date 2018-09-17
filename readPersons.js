@@ -8,6 +8,8 @@ var numMovies = db.movies.count();
 var moviesIterated = 0;
 
 db.persons.createIndex( { "id": 1 } );
+db.createCollection( "persons", { {"fieldValueDefaults": { "is_cast": 0, "is_crew": 0 } } });
+
 
 moviesCursor.forEach( function (currentMovie) {
 	var i;
@@ -21,7 +23,8 @@ moviesCursor.forEach( function (currentMovie) {
 			{ "id": {$eq: castItem.id } },
 			{ $set: { "name": castItem.name,
 			         "gender": castItem.gender,
-					 "profile_path": castItem.profile_path },
+					 "profile_path": castItem.profile_path,
+					 "is_cast": 1 },
 			  $addToSet: { "movies": currentMovie._id }
 			},
 			{ upsert: 1 }
@@ -34,7 +37,8 @@ moviesCursor.forEach( function (currentMovie) {
 			{ "id": {$eq: crewItem.id } },
 			{ $set: { "name": crewItem.name,
 			         "gender": crewItem.gender,
-					 "profile_path": crewItem.profile_path },
+					 "profile_path": crewItem.profile_path
+					 "is_crew": 1 },
 			  $addToSet: { "movies": currentMovie._id }
 			},
 			{ upsert: 1 }

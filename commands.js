@@ -58,15 +58,15 @@ db.system.js.save(
 
 
 // getPersonById
+// returns person object with field "movies" which is an array containing all of the movie documents normally only referenced by objectID
 db.system.js.save(
   {
     _id: "getPersonById",
     value: function(x) {
-		var person = db.persons.findOne( { id: {$eq: x} } );
-      return {
-			person,
-			[ db.movies.find( { "_id": { $in: person.movies } } ) ]
-	  };
+      var person = db.persons.findOne( { id: {$eq: x} } );
+      var movies = db.movies.find( { "_id": { $in: person.movies } } ).toArray();
+      person.movies = movies;
+      return person;
     }
   }
 )
