@@ -28,6 +28,12 @@ db.system.js.save(
         filter: { id: {$eq: y}},
         projection: {credits: 1}
       })
+      s = db.runCommand({
+        find: "movies",
+        filter: { id: {$eq: y}},
+        projection: {credits: 1}
+      }).explain("executionStats");
+      printjson(s);
       return y.cursor.firstBatch[0].credits.cast;
     }
   }
