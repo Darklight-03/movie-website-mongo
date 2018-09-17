@@ -36,7 +36,7 @@ moviesCursor.forEach( function (currentMovie) {
 			{ "id": {$eq: crewItem.id } },
 			{ $set: { "name": crewItem.name,
 			         "gender": crewItem.gender,
-					 "profile_path": crewItem.profile_path
+					 "profile_path": crewItem.profile_path,
 					 "is_crew": 1 },
 			  $addToSet: { "movies": currentMovie._id }
 			},
