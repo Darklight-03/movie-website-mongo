@@ -53,4 +53,13 @@ moviesCursor.forEach( function (currentMovie) {
 });
 moviesCursor.close();
 
+db.persons.update(
+	{ "is_cast": { $exists: 0 } },
+	{ $set: { "is_cast": 0 } }
+);
+db.persons.update(
+	{ "is_crew": { $exists: 0 } },
+	{ $set: { "is_crew": 0 } }
+);
+
 print("Done creating persons collection.");
