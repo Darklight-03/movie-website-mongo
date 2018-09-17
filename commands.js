@@ -25,11 +25,11 @@ db.system.js.save(
     value: function(x) {
       y = db.movies.find({
         filter: {id: {$eq: x}},
-        projection: {credits:1}
+        projection: {cast:1}
       })
       sy = db.movies.find({
         filter: {id: {$eq: x}},
-        projection: {credits:1}
+        projection: {cast:1}
       }).explain("executionStats")
       
       printjson(sy);
