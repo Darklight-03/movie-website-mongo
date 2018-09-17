@@ -23,11 +23,10 @@ db.system.js.save(
   {
     _id: "getCastByMovieID",
     value: function(x) {
-      y = db.runCommand({
-        find: "movies",
-        filter: { id: {$eq: y}},
-        projection: {credits: 1}
-      })
+      y = db.movies.find(
+        {id: {$eq: x}},
+        {credits:1}
+      );
 
       return y.cursor.firstBatch[0].credits.cast;
     }
@@ -38,12 +37,12 @@ db.system.js.save(
 db.system.js.save({
   _id: "getRecordByIMDBId",
   value: function(x) {
-        y = db.movies.find({
-        imdb_id: {$eq: x}
-        })  
-        s = db.movies.find({
-        imdb_id: {$eq: x}
-        }).explain("executionStats");
+    y = db.movies.find({
+      imdb_id: {$eq: x}
+    })  
+    s = db.movies.find({
+      imdb_id: {$eq: x}
+    }).explain("executionStats");
     printjson(s);
     return y;
   }
@@ -54,9 +53,8 @@ db.system.js.save(
   {
     _id: "getMovieStats",
     value: function(x) {
-      count = db.runCommand({ count: "movies" });
+      count = db.movies.count();
 
-      count = count.n
       total_runtime = db.movies.aggregate([
         {
           $group: {_id: null, total: {$sum: "$runtime"}}
