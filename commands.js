@@ -62,9 +62,11 @@ db.system.js.save(
   {
     _id: "getPersonById",
     value: function(x) {
-      return db.persons.find({
-        id: {$eq: x}
-      });
+		var person = db.persons.findOne( { id: {$eq: x} } );
+      return {
+			person,
+			[ db.movies.find( { "_id": { $in: person.movies } } ) ]
+	  };
     }
   }
 )
