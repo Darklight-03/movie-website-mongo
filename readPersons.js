@@ -8,7 +8,6 @@ var numMovies = db.movies.count();
 var moviesIterated = 0;
 
 db.persons.createIndex( { "id": 1 } );
-db.createCollection( "persons", { {"fieldValueDefaults": { "is_cast": 0, "is_crew": 0 } } });
 
 
 moviesCursor.forEach( function (currentMovie) {
