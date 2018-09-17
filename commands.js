@@ -76,9 +76,27 @@ db.system.js.save(
   {
     _id: "getCreditsStats",
     value: function(x) {
-      count = db.runCommand({ count: "credits" });
-      count = count.n
-
+      count = db.credits_ids.count();
+      numcast = db.persons.aggregate([
+        {
+          $match: {
+            isCast: {$eq: true}
+          }
+        },
+        {
+          $count: "number crews"
+        }
+      ]);
+      numcrew = db.persons.aggregate([
+        {
+          $match: {
+            isCrew: {$eq: true}
+          }
+        },
+        {
+          $count: "number cast"
+        }
+      ]);
       return `- Credits Entries: ${count}\n- Cast Members: ${numcast}\n- Crew Members: ${numcrew}`;
     }
   }
