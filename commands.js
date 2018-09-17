@@ -18,10 +18,10 @@ db.system.js.save(
   }
 )
 
-// getCastByMovieID
+// getCastByMovieId
 db.system.js.save(
   {
-    _id: "getCastByMovieID",
+    _id: "getCastByMovieId",
     value: function(x) {
       y = db.movies.find({
         filter: {id: {$eq: x}},
