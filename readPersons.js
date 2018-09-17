@@ -57,11 +57,11 @@ moviesCursor.forEach( function (currentMovie) {
 moviesCursor.close();
 
 // makes sure is_cast and is_crew fields will exist when checked for
-db.persons.update(
+db.persons.updateMany(
 	{ "is_cast": { $exists: 0 } },
 	{ $set: { "is_cast": 0 } }
 );
-db.persons.update(
+db.persons.updateMany(
 	{ "is_crew": { $exists: 0 } },
 	{ $set: { "is_crew": 0 } }
 );
