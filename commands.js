@@ -26,7 +26,7 @@ db.system.js.save(
       y = db.movies.find(
         {id: {$eq: x}},
         {credits:1}
-      );
+      )
       sy = db.movies.explain("executionStats").find(
         {id: {$eq: x}},
         {credits:1}
