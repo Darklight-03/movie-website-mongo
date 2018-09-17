@@ -9,7 +9,7 @@ db.system.js.save(
       y = db.movies.find({
         id: {$eq: x}
       });
-      printjson(y.explain("executionStats"));
+
       return y;
     }//no stats
   }
@@ -25,7 +25,8 @@ db.system.js.save(
         filter: { id: {$eq: y}},
         projection: {credits: 1}
       })
-      printjson(y.explain("executionStats"));
+      printStats(y);
+
       return y.cursor.firstBatch[0].credits.cast;
     }//no stats
   }
@@ -37,9 +38,7 @@ db.system.js.save({
   value: function(x) {
         y = db.movies.find({
         imdb_id: {$eq: x}
-        })
-    printjson(bsoncxx::to_json(y.explain("executionStats"));
-  
+        })  
     return y;
   }//no stats
 })
@@ -50,19 +49,19 @@ db.system.js.save(
     _id: "getMovieStats",
     value: function(x) {
       count = db.runCommand({ count: "movies" });
-      printjson(count.explain("executionStats").view());
+
       count = count.n
       total_runtime = db.movies.aggregate([
         {
           $group: {_id: null, total: {$sum: "$runtime"}}
         }
       ]);
-      printjson(total_runtime.explain("executionStats"));
+
       total_runtime = total_runtime.toArray()[0].total;
       hours = total_runtime/60;
       minutes = total_runtime%60;
       ugenres = db.movies.distinct( "genres" )
-      printjson(ugenres.explain("executionStats")
+
       ugenres.filter(genre=>genre.id!=null).length;
       
       return `Movies: ${count}\nTotal Running Time: ${Math.floor(hours)}:${minutes}\nUnique Genres: ${ugenres}`;
@@ -77,8 +76,19 @@ db.system.js.save(
     _id: "getAggregateRecordByMovieId",
     value: function(x) {
       y = getRecordByMovieId(x);
-      printjson(y.explain("executionStats")
+      
       return y;
     }
   }
 )
+
+// printStats
+db.system.js.save(
+    {
+        _id: "printStats",
+        value: function(x) {
+            return printjson(x);
+        }
+    }
+)
+
