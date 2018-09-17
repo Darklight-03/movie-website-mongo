@@ -23,18 +23,11 @@ db.system.js.save(
   {
     _id: "getCastByMovieId",
     value: function(x) {
-      y = db.movies.find({
-        filter: {id: {$eq: x}},
-        projection: {cast:1}
-      })
-      sy = db.movies.find({
-        filter: {id: {$eq: x}},
-        projection: {cast:1}
-      }).explain("executionStats")
+      y = db.movies.find({id: x},{credits:1})
       
-      printjson(sy);
+      printjson(sy.explain('executionStats'));
 
-      return y;
+      return y.toArray()[0].credits.cast;
     }
   }
 )
