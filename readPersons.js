@@ -1,22 +1,22 @@
+// creates persons collection and fills based on movies (meant to be called AFTER readCredits)
 
 print("Creating persons collection...");
-
 
 // much slower method that works
 var moviesCursor = db.movies.find( { "credits": { $ne: null } } ).noCursorTimeout();
 var numMovies = db.movies.count();
 var moviesIterated = 0;
 
+// im not sure if indexing at this point does anything
 db.persons.createIndex( { "id": 1 } );
-
 
 moviesCursor.forEach( function (currentMovie) {
 	var i;
 	var castItem;
 	var crewItem;
-	//print("sz=" + currentMovie.credits.cast.length);
+	// for each cast member
 	for (i = 0; i < currentMovie.credits.cast.length; i++) {
-		//print(currentMovie.credits.cast[i].name);
+		// upsert to persons
 		castItem = currentMovie.credits.cast[i];
 		db.persons.updateOne(
 			{ "id": {$eq: castItem.id } },
@@ -29,8 +29,9 @@ moviesCursor.forEach( function (currentMovie) {
 			{ upsert: 1 }
 		);
 	}
+	// for each crew member
 	for (i = 0; i < currentMovie.credits.crew.length; i++) {
-		//print(currentMovie.credits.cast[i].name);
+		// upsert to persons
 		crewItem = currentMovie.credits.crew[i];
 		db.persons.updateOne(
 			{ "id": {$eq: crewItem.id } },
@@ -43,9 +44,11 @@ moviesCursor.forEach( function (currentMovie) {
 			{ upsert: 1 }
 		);
 	}
+	// nice progress message with approximate percentage
 	if ((moviesIterated % 10000) == 0) {
 		print("Progress: ~" + (100 * (moviesIterated/numMovies)).toString().match(/^-?\d+(?:\.\d{0,2})?/)[0] + "%.  " + moviesIterated + "/" + numMovies + " movies");
 	}
+	// re-index to increase speed (number might need adjustment but it still runs significantly faster than without)
 	if ((moviesIterated % 1000) == 0) {
 		db.persons.reIndex();
 	}
@@ -53,6 +56,7 @@ moviesCursor.forEach( function (currentMovie) {
 });
 moviesCursor.close();
 
+// makes sure is_cast and is_crew fields will exist when checked for
 db.persons.update(
 	{ "is_cast": { $exists: 0 } },
 	{ $set: { "is_cast": 0 } }

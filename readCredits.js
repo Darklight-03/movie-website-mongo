@@ -11,9 +11,7 @@ print("Inserting credits into movie documents...");
 	// { "$out": "movies" }
 // ]);
 
-
-
-// create credits id's collection
+// create credits_id's collection
 db.credits_ids.insertMany(db.credits.distinct( "_id" ));
 
 db.credits.createIndex( { "id": 1 } );
@@ -24,6 +22,7 @@ var moviesCursor = db.movies.find( { "hasCredits" : 1 } );
 var numMovies = db.movies.count();
 var moviesIterated = 0;
 moviesCursor.forEach( function (currentMovie) {
+	// adds credits into movie document
 	db.movies.updateOne(
 		{ "id" : currentMovie.id },
 		{ $set:
@@ -33,16 +32,20 @@ moviesCursor.forEach( function (currentMovie) {
 		}
 	);
 	
+	// removes credits from collection
 	db.credits.remove( { "id" : currentMovie.id.toString() }, 1);
 	
+	// progress message
 	if ((moviesIterated % 10000) == 0) {
 		print("Progress: ~" + (100 * (moviesIterated/numMovies)).toString().match(/^-?\d+(?:\.\d{0,2})?/)[0] + "%");
 	}
 	moviesIterated += 1;
 });
 moviesCursor.close();
+// drop unnecessary collection
 db.credits.drop();
 
+// not sure yet if these do much
 db.movies.reIndex();
 db.credits_ids.createIndex( { "_id": 1 } );
 
