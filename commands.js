@@ -12,7 +12,7 @@ db.system.js.save(
       s = db.movies.find({
         id: {$eq: x}
       }).explain("executionStats")
-      print(s);
+      printjson(s);
       return y;
     }
   }
