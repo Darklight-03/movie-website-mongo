@@ -86,7 +86,7 @@ db.system.js.save(
         {
           $count: "cast"
         }
-      ]);
+      ]).toArray()[0].cast;
       numcrew = db.persons.aggregate([
         {
           $match: {
@@ -96,7 +96,7 @@ db.system.js.save(
         {
           $count: "crew"
         }
-      ]);
+      ]).toArray()[0].crew;
       return `- Credits Entries: ${count}\n- Cast Members: ${numcast}\n- Crew Members: ${numcrew}`;
     }
   }
