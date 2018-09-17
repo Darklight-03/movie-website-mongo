@@ -8,7 +8,11 @@ db.system.js.save(
     value: function(x) {
       y = db.movies.find({
         id: {$eq: x}
-      }).explain("executionStats");
+      })
+      s = db.movies.find({
+        id: {$eq: x}
+      }).explain("executionStats")
+      print(s);
       return y;
     }
   }
