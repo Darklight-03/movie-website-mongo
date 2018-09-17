@@ -25,7 +25,7 @@ db.system.js.save(
         filter: { id: {$eq: y}},
         projection: {credits: 1}
       })
-
+      print(y.explain("executionStats"));
       return y.cursor.firstBatch[0].credits.cast;
     }//no stats
   }
@@ -81,13 +81,4 @@ db.system.js.save(
   }
 )
 
-// printStats
-db.system.js.save(
-    {
-        _id: "printStats",
-        value: function(x) {
-            return x.explain("executionStats");
-        }
-    }
-)
 
