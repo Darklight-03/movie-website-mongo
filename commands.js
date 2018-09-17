@@ -8,10 +8,9 @@ db.system.js.save(
     value: function(x) {
       y = db.movies.find({
         id: {$eq: x}
-      });
-
+      }).explain("executionStats");
       return y;
-    }//no stats
+    }
   }
 )
 
@@ -25,9 +24,8 @@ db.system.js.save(
         filter: { id: {$eq: y}},
         projection: {credits: 1}
       })
-      
       return y.cursor.firstBatch[0].credits.cast;
-    }//no stats
+    }
   }
 )
 
@@ -39,7 +37,7 @@ db.system.js.save({
         imdb_id: {$eq: x}
         })  
     return y;
-  }//no stats
+  }
 })
 
 // getMovieStats
