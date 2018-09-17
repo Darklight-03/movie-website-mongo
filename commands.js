@@ -28,7 +28,7 @@ db.system.js.save(
         projection: {credits:1}
       })
       sy = db.movies.find({
-        filter {id: {$eq: x}},
+        filter: {id: {$eq: x}},
         projection: {credits:1}
       }).explain("executionStats")
       
