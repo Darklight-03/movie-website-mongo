@@ -11,7 +11,7 @@ db.system.js.save(
       });
       printjson(y.explain("executionStats"));
       return y;
-    }
+    }//no stats
   }
 )
 
@@ -27,7 +27,7 @@ db.system.js.save(
       })
       printjson(y.explain("executionStats"));
       return y.cursor.firstBatch[0].credits.cast;
-    }
+    }//no stats
   }
 )
 
@@ -39,8 +39,9 @@ db.system.js.save({
         imdb_id: {$eq: x}
         })
     printjson(y.explain("executionStats"));
+    std::cout << bsoncxx::to_json(y.explain("executionStats") << std::endl;
     return y;
-  }
+  }//no stats
 })
 
 // getMovieStats
