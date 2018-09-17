@@ -121,6 +121,7 @@ db.system.js.save(
     _id: "getPersonById",
     value: function(x) {
       var person = db.persons.findOne( { id: {$eq: x} } );
+      printjson(db.movies.explain("executionStats").find( { "_id": { $in: person.movies } } ));
       var movies = db.movies.find( { "_id": { $in: person.movies } } ).toArray();
       person.movies = movies;
       return person;
