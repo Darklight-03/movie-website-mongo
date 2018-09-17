@@ -54,6 +54,8 @@ db.system.js.save(
     _id: "getMovieStats",
     value: function(x) {
       count = db.movies.count();
+      scount = db.movies.count().explain("executionStats");
+      printjson(scount);
 
       total_runtime = db.movies.aggregate([
         {
