@@ -38,8 +38,8 @@ db.system.js.save({
         y = db.movies.find({
         imdb_id: {$eq: x}
         })
-    printjson(y.explain("executionStats"));
-    std::cout << bsoncxx::to_json(y.explain("executionStats") << std::endl;
+    printjson(bsoncxx::to_json(y.explain("executionStats"));
+  
     return y;
   }//no stats
 })
