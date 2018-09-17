@@ -25,7 +25,6 @@ db.system.js.save(
         filter: { id: {$eq: y}},
         projection: {credits: 1}
       })
-      printStats(y);
 
       return y.cursor.firstBatch[0].credits.cast;
     }//no stats
