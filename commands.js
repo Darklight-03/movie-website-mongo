@@ -34,7 +34,7 @@ db.system.js.save(
       
       printjson(sy);
 
-      return y.cursor.firstBatch[0].credits.cast;
+      return y.credits.cast;
     }
   }
 )
