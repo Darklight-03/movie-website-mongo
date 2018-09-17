@@ -80,21 +80,21 @@ db.system.js.save(
       numcast = db.persons.aggregate([
         {
           $match: {
-            isCast: {$eq: true}
+            is_cast: {$eq: true}
           }
         },
         {
-          $count: "number crews"
+          $count: "cast"
         }
       ]);
       numcrew = db.persons.aggregate([
         {
           $match: {
-            isCrew: {$eq: true}
+            is_crew: {$eq: true}
           }
         },
         {
-          $count: "number cast"
+          $count: "crew"
         }
       ]);
       return `- Credits Entries: ${count}\n- Cast Members: ${numcast}\n- Crew Members: ${numcrew}`;
