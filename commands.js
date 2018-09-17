@@ -87,7 +87,7 @@ db.system.js.save(
     {
         _id: "printStats",
         value: function(x) {
-            printjson(x);
+            return printjson(x.explain("executionStats");
         }
     }
 )
