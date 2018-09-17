@@ -23,14 +23,15 @@ db.system.js.save(
   {
     _id: "getCastByMovieID",
     value: function(x) {
-      y = db.movies.find(
-        {id: {$eq: x}},
+      y = db.movies.find({
+        id: {$eq: x},
         {credits:1}
-      )
-      sy = db.movies.explain("executionStats").find(
-        {id: {$eq: x}},
+      })
+      sy = db.movies.find({
+        id: {$eq: x},
         {credits:1}
-      )
+      }).explain("executionStats")
+      
       printjson(sy);
 
       return y.cursor.firstBatch[0].credits.cast;
