@@ -27,6 +27,11 @@ db.system.js.save(
         {id: {$eq: x}},
         {credits:1}
       );
+      sy = db.movies.find(
+        {id: {$eq: x}},
+        {credits:1}
+      ).explain("executionStats")
+      printjson(sy);
 
       return y.cursor.firstBatch[0].credits.cast;
     }
