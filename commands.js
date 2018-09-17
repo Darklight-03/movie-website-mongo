@@ -101,24 +101,14 @@ db.system.js.save(
     _id: "getCreditsStats",
     value: function(x) {
       count = db.credits_ids.count();
-      
-      numcast = db.persons.aggregate([ 
-        {
-          $match: {is_cast: {$eq: 1}} 
-        },
-        {
-          $count: "cast"
-        } 
-      ]).toArray()[0].cast;
-      numcrew = db.persons.aggregate([ 
-        {
-          $match: {is_crew: {$eq: 1}} 
-        },
-        {
-          $count: "crew"
-        }
-      ]).toArray()[0].crew;
-
+      scount = db.credits_ids.explain("executionStats").count();
+      snumcast = db.persons.aggregate([ {$match: {is_cast: {$eq: 1}} },{$count: "cast"} ],{explain: true});
+      numcast = db.persons.aggregate([ {$match: {is_cast: {$eq: 1}} },{$count: "cast"} ]).toArray()[0].cast;
+      snumcrew = db.persons.aggregate([ {$match: {is_crew: {$eq: 1}} },{$count: "crew"} ],{explain: true});
+      numcrew = db.persons.aggregate([ {$match: {is_crew: {$eq: 1}} },{$count: "crew"} ]).toArray()[0].crew;
+      printjson(scount);
+      printjson(snumcast);
+      printjson(snumcrew);
       return `- Credits Entries: ${count}\n- Cast Members: ${numcast}\n- Crew Members: ${numcrew}`;
     }
   }
@@ -132,10 +122,6 @@ db.system.js.save(
     value: function(x) {
       var person = db.persons.findOne( { id: {$eq: x} } );
       var movies = db.movies.find( { "_id": { $in: person.movies } } ).toArray();
-
-      printjson(person.explain("executionStats"));
-      printjson(movies.explain("executionStats"));
-
       person.movies = movies;
       return person;
     }
