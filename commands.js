@@ -6,24 +6,28 @@ db.system.js.save(
   {
     _id: "getRecordByMovieId",
     value: function(x) {
-      return db.movies.find({
+      y = db.movies.find({
         id: {$eq: x}
-      });
+      })
+      s = db.movies.find({
+        id: {$eq: x}
+      }).explain("executionStats")
+      printjson(s);
+      return y;
     }
   }
 )
 
-// getCastByMovieID
+// getCastByMovieId
 db.system.js.save(
   {
-    _id: "getCastByMovieID",
+    _id: "getCastByMovieId",
     value: function(x) {
-      x = db.runCommand({
-        find: "movies",
-        filter: { id: {$eq: x}},
-        projection: {credits: 1}
-      })
-      return x.cursor.firstBatch[0].credits.cast;
+      y = db.movies.find({id: x},{credits:1})
+      
+      printjson(y.explain('executionStats'));
+
+      return y.toArray()[0].credits.cast;
     }
   }
 )
@@ -32,9 +36,14 @@ db.system.js.save(
 db.system.js.save({
   _id: "getRecordByIMDBId",
   value: function(x) {
-    return db.movies.find({
+    y = db.movies.find({
       imdb_id: {$eq: x}
-    });
+    })  
+    s = db.movies.find({
+      imdb_id: {$eq: x}
+    }).explain("executionStats");
+    printjson(s);
+    return y;
   }
 })
 
@@ -43,17 +52,30 @@ db.system.js.save(
   {
     _id: "getMovieStats",
     value: function(x) {
-      count = db.runCommand({ count: "movies" });
-      count = count.n
+      count = db.movies.count();
+      scount = db.movies.explain("executionStats").count();
+      printjson(scount);
+
       total_runtime = db.movies.aggregate([
         {
           $group: {_id: null, total: {$sum: "$runtime"}}
         }
       ]);
+      sruntime = db.movies.explain("executionStats").aggregate([
+        {
+          $group: {_id: null, total: {$sum: "$runtime"}}
+        }
+      ]);
+      printjson(sruntime);
+
       total_runtime = total_runtime.toArray()[0].total;
       hours = total_runtime/60;
       minutes = total_runtime%60;
-      ugenres = db.movies.distinct( "genres" ).filter(genre=>genre.id!=null).length;
+      ugenres = db.movies.distinct( "genres" )
+      sugenres = db.movies.explain("executionStats").distinct("genres")
+      printjson(sugenres);
+
+      ugenres = ugenres.filter(genre=>genre.id!=null).length;
       
       return `Movies: ${count}\nTotal Running Time: ${Math.floor(hours)}:${minutes}\nUnique Genres: ${ugenres}`;
     }
@@ -66,7 +88,9 @@ db.system.js.save(
   {
     _id: "getAggregateRecordByMovieId",
     value: function(x) {
-      return getRecordByMovieId(x);
+      y = getRecordByMovieId(x);
+      
+      return y;
     }
   }
 )
@@ -77,24 +101,14 @@ db.system.js.save(
     _id: "getCreditsStats",
     value: function(x) {
       count = db.credits_ids.count();
-      
-      numcast = db.persons.aggregate([ 
-        {
-          $match: {is_cast: {$eq: 1}} 
-        },
-        {
-          $count: "cast"
-        } 
-      ]).toArray()[0].cast;
-      numcrew = db.persons.aggregate([ 
-        {
-          $match: {is_crew: {$eq: 1}} 
-        },
-        {
-          $count: "crew"
-        }
-      ]).toArray()[0].crew;
-
+      scount = db.credits_ids.explain("executionStats").count();
+      snumcast = db.persons.aggregate([ {$match: {is_cast: {$eq: 1}} },{$count: "cast"} ],{explain: true});
+      numcast = db.persons.aggregate([ {$match: {is_cast: {$eq: 1}} },{$count: "cast"} ]).toArray()[0].cast;
+      snumcrew = db.persons.aggregate([ {$match: {is_crew: {$eq: 1}} },{$count: "crew"} ],{explain: true});
+      numcrew = db.persons.aggregate([ {$match: {is_crew: {$eq: 1}} },{$count: "crew"} ]).toArray()[0].crew;
+      printjson(scount);
+      printjson(snumcast);
+      printjson(snumcrew);
       return `- Credits Entries: ${count}\n- Cast Members: ${numcast}\n- Crew Members: ${numcrew}`;
     }
   }
@@ -107,6 +121,7 @@ db.system.js.save(
     _id: "getPersonById",
     value: function(x) {
       var person = db.persons.findOne( { id: {$eq: x} } );
+      printjson(db.movies.explain("executionStats").find( { "_id": { $in: person.movies } } ));
       var movies = db.movies.find( { "_id": { $in: person.movies } } ).toArray();
       person.movies = movies;
       return person;
