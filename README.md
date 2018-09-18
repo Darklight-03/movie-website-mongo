@@ -7,6 +7,15 @@ and run `db.loadServerScripts()` before calling any functions.
 
 web address: `teamproject1.ddns.net:4200`
 
+### build
+
+to build website:
+
+`cd website`  
+`npm install`  
+`npm install -g @angular/cli`  
+`ng serve --open`
+
 ### group logs
 
 https://github.tamu.edu/bdc3142/teamProject1/issues?utf8=%E2%9C%93&q=is%3Aissue
