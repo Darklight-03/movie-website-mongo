@@ -1,6 +1,5 @@
 mongo-scripts/dataJSON/*
 mongo-scripts/rwuser-passwd
-website/bin/www
 
 # Logs
 website/logs
