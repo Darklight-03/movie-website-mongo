@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const movielist = require('../models/list.js');
+const movielist = require('../models/db.js');
 
 //GET HTTP method 
 router.get('/movie_id',(req,res) => {
