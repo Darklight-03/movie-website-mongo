@@ -16,18 +16,18 @@ app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.get('/', (req,res) => {
-    res.send("Invalid page");
+  res.send("Invalid page");
 })
 
 // Connect mongoose to our database
 const config = require('./config/database');
 mongoose.connect(config.database, {useNewUrlParser: true});
 
-app.use('/present', movies);
+app.use('/dbservice', movies);
 
 //Listen to port 3000
 app.listen(port, () => {
-    console.log(`Starting the server at port ${port}`);
+  console.log(`Starting the server at port ${port}`);
 });
 
 
