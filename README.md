@@ -5,7 +5,7 @@ to connect to the database:
 
 and run `db.loadServerScripts()` before calling any functions.
 
-web address: `teamproject1.ddns.net:4200`
+web address: `teamproject1.ddns.net:3000`
 
 ### build
 
