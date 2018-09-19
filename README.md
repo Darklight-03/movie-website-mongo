@@ -15,8 +15,8 @@ to build website:
 `npm install`  
 `npm install -g @angular/cli`  
 `npm install -g nodemon`  
-`nodemon`  
 `cd angular-src`  
+`npm install`  
 `ng build`  
 `cd ..`  
 `nodemon`
