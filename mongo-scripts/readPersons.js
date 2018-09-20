@@ -24,7 +24,7 @@ moviesCursor.forEach( function (currentMovie) {
 			         "gender": castItem.gender,
 					 "profile_path": castItem.profile_path,
 					 "is_cast": 1 },
-			  $addToSet: { "movies": currentMovie._id }
+			  $addToSet: { "cast_movies": { "_id": currentMovie._id, "character": castItem.character } } 
 			},
 			{ upsert: 1 }
 		);
@@ -39,7 +39,7 @@ moviesCursor.forEach( function (currentMovie) {
 			         "gender": crewItem.gender,
 					 "profile_path": crewItem.profile_path,
 					 "is_crew": 1 },
-			  $addToSet: { "movies": currentMovie._id }
+			  $addToSet: { "crew_movies": { "_id": currentMovie._id, "department": crewItem.department } } 
 			},
 			{ upsert: 1 }
 		);

@@ -1,12 +1,15 @@
 const express = require('express');
 const router = express.Router();
-const movielist = require('../models/db.js');
+const db = require('../models/db.js');
 
-//GET HTTP method 
-router.get('/movie_id',(req,res) => {
-  movielist.getMovie(req,(err, lists)=> {
+//GET HTTP methods
+
+// calls getMovie from db.js and returns it
+router.get('/movie',(req,res) => {
+  db.getMovie(req,(err, lists)=> {
+
     if(err) {
-      res.json({success:false, message: `Can\'t load data. Error: ${err}`});
+      res.json({success:false, message: `database error: ${err}`});
     }
     else {
       res.write(JSON.stringify(lists,null,2));
@@ -15,5 +18,30 @@ router.get('/movie_id',(req,res) => {
   });
 });
 
+// calls getPerson from db.js and returns
+router.get('/person',(req,res) => {
+  db.getPerson(req,(err,lists)=> {
+    if(err) {
+      res.json({success:false, message: `database error: ${err}`});
+    }
+    else{
+      res.write(JSON.stringify(lists,null,2));
+      res.end();
+    }
+  });
+});
+
+// calls search from db.json and returns it.
+router.get('/search',(req,res) => {
+  db.search(req,(err,lists)=>{
+    if(err){
+      res.json({success:false, message: `database error: ${err}`});
+    }
+    else{
+      res.write(JSON.stringify(lists,null,2));
+      res.end();
+    }
+  })
+})
 
 module.exports = router;
