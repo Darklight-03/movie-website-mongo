@@ -18,8 +18,6 @@ moviesCursor.forEach( function (currentMovie) {
 	for (i = 0; i < currentMovie.credits.cast.length; i++) {
 		// upsert to persons
 		castItem = currentMovie.credits.cast[i];
-		//movieObj._id = currentMovie._id;
-		//movieObj.character = castItem.character;
 		db.persons.updateOne(
 			{ "id": {$eq: castItem.id } },
 			{ $set: { "name": castItem.name,
@@ -35,9 +33,6 @@ moviesCursor.forEach( function (currentMovie) {
 	for (i = 0; i < currentMovie.credits.crew.length; i++) {
 		// upsert to persons
 		crewItem = currentMovie.credits.crew[i];
-		//movieObj = {};		
-		//movieObj._id = currentMovie._id;
-		//movieObj.character = crewItem.department;
 		db.persons.updateOne(
 			{ "id": {$eq: crewItem.id } },
 			{ $set: { "name": crewItem.name,
