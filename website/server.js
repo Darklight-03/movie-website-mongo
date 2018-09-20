@@ -23,6 +23,8 @@ app.get('/', (req,res) => {
 const config = require('./config/database');
 mongoose.connect(config.database, {useNewUrlParser: true});
 
+// send all requests that start with /dbservice to the movies controller
+// (should probably be renamed to something more fitting like dbservice.
 app.use('/dbservice', movies);
 
 //Listen to port 3000
