@@ -9,11 +9,13 @@ import { MovieComponent } from './movie/movie.component';
 import { MovieListComponent} from './movie/movie-list/movie-list.component';
 import { PeopleListComponent} from './person/people-list/people-list.component';
 import { TopTenMoviesComponent } from './movie/top-ten-movies/top-ten-movies.component';
+import { AboutComponent } from './about/about.component';
 
 const appRoutes: Routes = [
   {path: '', component: TopTenMoviesComponent },
   {path: 'person', component: PeopleListComponent },
   {path: 'movie', component: MovieListComponent },
+  {path: 'about', component: AboutComponent}
 
 ];
 
@@ -25,6 +27,7 @@ const appRoutes: Routes = [
     MovieComponent,
     MovieListComponent,
     TopTenMoviesComponent,
+    AboutComponent,
   ],
   imports: [
     BrowserModule,
