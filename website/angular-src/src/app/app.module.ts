@@ -11,6 +11,8 @@ import { PeopleListComponent} from './person/people-list/people-list.component';
 import { TopTenMoviesComponent } from './movie/top-ten-movies/top-ten-movies.component';
 import { AboutComponent } from './about/about.component';
 
+import { MovieService } from './services/movie.service';
+
 const appRoutes: Routes = [
   {path: '', component: TopTenMoviesComponent },
   {path: 'person', component: PeopleListComponent },
@@ -33,7 +35,7 @@ const appRoutes: Routes = [
     BrowserModule,
     RouterModule.forRoot(appRoutes)
   ],
-  providers: [],
+  providers: [MovieService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
