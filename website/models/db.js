@@ -25,6 +25,11 @@ module.exports.getMovie = (info,callback) => {
   movies.findOne({id: info.query.id}, callback);
 }
 
+// returns the entire person object from database
+module.exports.getPerson = (info,callback) => {
+  persons.findOne({id: info.query.id}, callback);
+}
+
 // returns {movies: arr, people: arr}
 module.exports.search = (info,callback) => {
   // run find operations for titles or names containing the query
@@ -53,4 +58,4 @@ module.exports.search = (info,callback) => {
   }).catch((err)=>{
     callback(err,null);
   });
-  }
+}

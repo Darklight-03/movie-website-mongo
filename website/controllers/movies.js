@@ -17,6 +17,19 @@ router.get('/movie_id',(req,res) => {
   });
 });
 
+// calls getPerson from db.js and returns
+router.get('/person',(req,res) => {
+  db.getMovie(req,(err,lists)=> {
+    if(err) {
+      res.json({success:false, message: `database error: ${err}`});
+    }
+    else{
+      res.write(JSON.stringify(lists,null,2));
+      res.end();
+    }
+  });
+});
+
 // calls search from db.json and returns it.
 router.get('/search',(req,res) => {
   db.search(req,(err,lists)=>{
