@@ -11,7 +11,9 @@ const moviesSchema = new Schema({
 const personsSchema = new Schema({
   name: String,
   id: Number,
-  profile_path: String
+  profile_path: String,
+  cast_movies: Array,
+  crew_movies: Array
 });
 
 const movies = module.exports = mongoose.model('movies', moviesSchema );
@@ -27,7 +29,7 @@ module.exports.getMovie = (info,callback) => {
 module.exports.search = (info,callback) => {
   // run find operations for titles or names containing the query
   movies.find({title: {$regex: `.*${info.query.q}.*`, $options: 'i'}}, 'id title poster_path').then((movievalue)=>{
-    persons.find({name: {$regex: `.*${info.query.q}.*`, $options: 'i'}}, 'id name profile_path',(err, lists) => {
+    persons.find({name: {$regex: `.*${info.query.q}.*`, $options: 'i'}}, 'id name profile_path cast_movies crew_movies',(err, lists) => {
 
       // re-make the movies object to have same fields as person object.
       retmovies = movievalue.map((movie)=>{
@@ -40,7 +42,7 @@ module.exports.search = (info,callback) => {
         
         // same thing for the people object.
         retpeople = lists.map((person)=>{
-          var persn = {id: person.id, name: person.name, image: person.profile_path}
+          var persn = {id: person.id, name: person.name, image: person.profile_path, roles: {characters: person.cast_movies, departments: person.crew_movies}}
           return persn;
         });
 
