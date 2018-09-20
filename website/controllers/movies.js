@@ -19,7 +19,7 @@ router.get('/movie_id',(req,res) => {
 
 // calls getPerson from db.js and returns
 router.get('/person',(req,res) => {
-  db.getMovie(req,(err,lists)=> {
+  db.getPerson(req,(err,lists)=> {
     if(err) {
       res.json({success:false, message: `database error: ${err}`});
     }
