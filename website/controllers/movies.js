@@ -2,7 +2,9 @@ const express = require('express');
 const router = express.Router();
 const db = require('../models/db.js');
 
-//GET HTTP method 
+//GET HTTP methods
+
+// calls getMovie from db.js and returns it
 router.get('/movie_id',(req,res) => {
   db.getMovie(req,(err, lists)=> {
     if(err) {
@@ -15,6 +17,7 @@ router.get('/movie_id',(req,res) => {
   });
 });
 
+// calls search from db.json and returns it.
 router.get('/search',(req,res) => {
   db.search(req,(err,lists)=>{
     if(err){
