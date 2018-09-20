@@ -6,7 +6,7 @@ export class Movie {
   public crewIDList: number[];
 
 
-  constructor(id: number, title: string, gender: number, posterPath: string, castIDList: number[], crewIDList: number[]) {
+  constructor(id: number, title: string, posterPath: string, castIDList: number[], crewIDList: number[]) {
     this.id = id;
     this.title = title;
     this.posterPath = posterPath;
