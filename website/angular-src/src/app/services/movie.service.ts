@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
-import { Http, Headers } from '@angular/http';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MovieService {
 
-  constructor(private http: Http) { }
+  constructor(private http: HttpClient) { }
   
   private apiUrl= 'http://localhost:3000/dbservice';
 
