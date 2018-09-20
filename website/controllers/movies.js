@@ -5,8 +5,9 @@ const db = require('../models/db.js');
 //GET HTTP methods
 
 // calls getMovie from db.js and returns it
-router.get('/movie_id',(req,res) => {
+router.get('/movie',(req,res) => {
   db.getMovie(req,(err, lists)=> {
+
     if(err) {
       res.json({success:false, message: `database error: ${err}`});
     }
