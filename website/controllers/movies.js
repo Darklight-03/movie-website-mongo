@@ -3,7 +3,7 @@ const router = express.Router();
 const movielist = require('../models/db.js');
 
 //GET HTTP method 
-router.get('/movie_id',(req,res) => {
+router.get('/movie',(req,res) => {
   movielist.getMovie(req,(err, lists)=> {
     if(err) {
       res.json({success:false, message: `Can\'t load data. Error: ${err}`});
