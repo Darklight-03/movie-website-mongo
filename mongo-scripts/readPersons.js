@@ -18,13 +18,15 @@ moviesCursor.forEach( function (currentMovie) {
 	for (i = 0; i < currentMovie.credits.cast.length; i++) {
 		// upsert to persons
 		castItem = currentMovie.credits.cast[i];
+		//movieObj._id = currentMovie._id;
+		//movieObj.character = castItem.character;
 		db.persons.updateOne(
 			{ "id": {$eq: castItem.id } },
 			{ $set: { "name": castItem.name,
 			         "gender": castItem.gender,
 					 "profile_path": castItem.profile_path,
 					 "is_cast": 1 },
-			  $addToSet: { "movies": currentMovie._id }
+			  $addToSet: { "cast_movies": { "_id": currentMovie._id, "character": castItem.character } } 
 			},
 			{ upsert: 1 }
 		);
@@ -33,13 +35,16 @@ moviesCursor.forEach( function (currentMovie) {
 	for (i = 0; i < currentMovie.credits.crew.length; i++) {
 		// upsert to persons
 		crewItem = currentMovie.credits.crew[i];
+		//movieObj = {};		
+		//movieObj._id = currentMovie._id;
+		//movieObj.character = crewItem.department;
 		db.persons.updateOne(
 			{ "id": {$eq: crewItem.id } },
 			{ $set: { "name": crewItem.name,
 			         "gender": crewItem.gender,
 					 "profile_path": crewItem.profile_path,
 					 "is_crew": 1 },
-			  $addToSet: { "movies": currentMovie._id }
+			  $addToSet: { "crew_movies": { "_id": currentMovie._id, "department": crewItem.department } } 
 			},
 			{ upsert: 1 }
 		);
