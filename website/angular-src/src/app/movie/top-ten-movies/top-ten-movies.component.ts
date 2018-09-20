@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {MoviePoster} from '../moviePoster.model';
+import {MovieService} from '../../services/movie.service';
+import {log} from 'util';
 
 @Component({
   selector: 'app-top-ten-movies',
@@ -8,25 +10,15 @@ import {MoviePoster} from '../moviePoster.model';
 })
 export class TopTenMoviesComponent implements OnInit {
 
-  topMovies: MoviePoster[] = [
-    new MoviePoster(1, 'SpiderMan', 'this is good movie', 5,
-      'http://cdn.shopify.com/s/files/1/0170/5178/products/Spidey03.2_1024x1024.png?v=1513486916'),
-    new MoviePoster(1, 'SpiderMan', 'this is good movie', 5,
-      'http://cdn.shopify.com/s/files/1/0170/5178/products/Spidey03.2_1024x1024.png?v=1513486916'),
-    new MoviePoster(1, 'SpiderMan', 'this is good movie', 5,
-      'http://cdn.shopify.com/s/files/1/0170/5178/products/Spidey03.2_1024x1024.png?v=1513486916'),
-    new MoviePoster(1, 'SpiderMan', 'this is good movie', 5,
-      'http://cdn.shopify.com/s/files/1/0170/5178/products/Spidey03.2_1024x1024.png?v=1513486916'),
-    new MoviePoster(1, 'SpiderMan', 'this is good movie', 5,
-      'http://cdn.shopify.com/s/files/1/0170/5178/products/Spidey03.2_1024x1024.png?v=1513486916'),
-    new MoviePoster(1, 'SpiderMan', 'this is good movie', 5,
-      'http://cdn.shopify.com/s/files/1/0170/5178/products/Spidey03.2_1024x1024.png?v=1513486916')
+  topMovies: MoviePoster[] = [];
 
-  ];
-
-    constructor() { }
+    constructor(private  listServ: MovieService) {}
 
   ngOnInit() {
+      this.listServ.getMovie(2).subscribe((data: object) => {
+        console.log(data);
+      }) ;
   }
+
 
 }

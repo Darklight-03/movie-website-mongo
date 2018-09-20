@@ -7,21 +7,21 @@ import { HttpClient } from '@angular/common/http';
 export class MovieService {
 
   constructor(private http: HttpClient) { }
-  
-  private apiUrl= 'http://localhost:3000/dbservice';
 
-  public getMovie( id : number ):object {
-    let URL = `${this.apiUrl}/movie?id=${id}`;
+  private apiUrl = 'http://localhost:3000/dbservice';
+
+  public getMovie( id: number ) {
+    const URL = `${this.apiUrl}/movie?id=${id}`;
     return this.http.get(URL);
   }
 
-  public getPerson( id : number ):object {
-    let URL = `${this.apiUrl}/person?id=${id}`;
+  public getPerson( id: number ) {
+    const URL = `${this.apiUrl}/person?id=${id}`;
     return this.http.get(URL);
   }
 
-  public getSearchResults( q : string ):object {
-    let URL = `${this.apiUrl}/search?q=${q}`;
+  public getSearchResults( q: string ) {
+    const URL = `${this.apiUrl}/search?q=${q}`;
     return this.http.get(URL);
   }
 }
