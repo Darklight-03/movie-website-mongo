@@ -1,5 +1,3 @@
-import {Person} from '../person/person.model';
-
 export class Movie {
   public id: number;
   public title: string;

@@ -1,3 +1,19 @@
-<p>
-  people-list works!
-</p>
+<div class="row">
+  <div class="col-xs-12">
+    <a
+      href="#"
+      class="list-group-item clearfix"
+      *ngFor="let person of people">
+      <div class ="pull-left">
+        <h4 class="list-group-item-heading">{{person.name}}</h4>
+        <p class="list-group-item-text">{{person.biograpy}}</p>
+      </div>
+      <span class="pull-right"></span>
+      <img src="{{person.imagePath}}"
+           alt="{{person.name}}"
+           class ="img-responsive"
+           style="max-height: 50px;">
+    </a>
+    <app-person></app-person>
+  </div>
+</div>

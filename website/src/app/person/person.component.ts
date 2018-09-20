@@ -7,7 +7,6 @@ import {Person} from './person.model';
   styleUrls: ['./person.component.css']
 })
 export class PersonComponent implements OnInit {
-  people: Person[] = [];
 
   constructor() { }
 
