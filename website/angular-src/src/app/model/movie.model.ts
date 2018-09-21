@@ -1,4 +1,4 @@
-import {Person} from '../person/person.model';
+import {Person} from './person.model';
 
 export class Movie {
   public id: number;

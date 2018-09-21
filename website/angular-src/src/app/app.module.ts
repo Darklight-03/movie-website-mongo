@@ -4,20 +4,21 @@ import {RouterModule, Routes} from '@angular/router';
 import {HttpClientModule} from '@angular/common/http';
 
 
-import { AppComponent } from './app.component';
-import { PersonComponent } from './person/person.component';
-import { MovieComponent } from './movie/movie.component';
-import { MovieListComponent} from './movie/movie-list/movie-list.component';
-import { PeopleListComponent} from './person/people-list/people-list.component';
-import { TopTenMoviesComponent } from './movie/top-ten-movies/top-ten-movies.component';
-import { AboutComponent } from './about/about.component';
-import { MovieService } from './services/movie.service';
-import { HeaderComponent } from './header/header.component';
+import { AppComponent } from './component/app.component';
+import { PersonComponent } from './component/person/person.component';
+import { MovieComponent } from './component/movie/movie.component';
+import { MovieListComponent} from './component/movie/movie-list/movie-list.component';
+import { PeopleListComponent} from './component/person/people-list/people-list.component';
+import { TopTenMoviesComponent } from './component/movie/top-ten-movies/top-ten-movies.component';
+import { AboutComponent } from './component/about/about.component';
+import { MovieService } from './component/services/movie.service';
+import { HeaderComponent } from './component/header/header.component';
 
 const appRoutes: Routes = [
-  {path: '', component: TopTenMoviesComponent },
-  {path: 'person', component: PeopleListComponent },
-  {path: 'movie', component: MovieListComponent },
+  {path: '', component: TopTenMoviesComponent},
+  {path: 'people', component: PeopleListComponent},
+  {path: 'user/:id', component: PersonComponent},
+  {path: 'movie', component: MovieListComponent},
   {path: 'about', component: AboutComponent}
 
 ];
