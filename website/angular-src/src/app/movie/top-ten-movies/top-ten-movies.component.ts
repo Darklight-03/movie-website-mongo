@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import {MoviePoster} from '../moviePoster.model';
 import {MovieService} from '../../services/movie.service';
-import {log} from 'util';
 
 @Component({
   selector: 'app-top-ten-movies',
   templateUrl: './top-ten-movies.component.html',
-  styleUrls: ['./top-ten-movies.component.css']
+  styleUrls: ['./top-ten-movies.component.css'],
+  providers: [MovieService]
 })
 export class TopTenMoviesComponent implements OnInit {
 
@@ -19,6 +19,4 @@ export class TopTenMoviesComponent implements OnInit {
         console.log(data);
       }) ;
   }
-
-
 }
