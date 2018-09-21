@@ -1,5 +1,6 @@
 import {Cast} from './cast.model';
 import {Crew} from './crew.model';
+import {Movie} from './movie.model';
 
 export class Person {
   public id: number;

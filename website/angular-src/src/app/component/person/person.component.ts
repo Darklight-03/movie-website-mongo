@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {Person} from '../../model/person.model';
 import {MovieService} from '../services/movie.service';
+import {ActivatedRoute} from '@angular/router';
 
 @Component({
   selector: 'app-person',
@@ -9,26 +10,30 @@ import {MovieService} from '../services/movie.service';
 })
 export class PersonComponent implements OnInit {
    person: Person = new Person(0, '', 0, '', null, null, '');
-  constructor(private dbService: MovieService) { }
+  constructor(private dbService: MovieService, private route: ActivatedRoute) {}
 
   ngOnInit() {
-    this.dbService.getPerson(1).subscribe((data: Object) => {
-      console.log(data);
-      console.log(Object.values(data)[3])
+    this.dbService.getPerson(this.route.snapshot['id']).subscribe((data: Object) => {
 
-
-      this.person.id = Object.values(data)[3];
-      this.person.name = Object.values(data)[6];
-      this.person.gender = Object.values(data)[2];
-      this.person.imagePath = Object.values(data)[7];
-      this.person.castList = Object.values(data)[0];
-      this.person.crewList = Object.values(data)[1];
+      this.person.id = data['id'];
+      this.person.name = data['name']
+      this.person.gender = data['gender'];
+      this.person.imagePath = data['profile_path'];
+      this.person.castList = data['cast_movies'];
+      this.person.crewList = data['crew_movies'];
       // need to put biograpy
 
       console.log(this.person);
 
-
     });
+  }
+
+  getGender(gender) {
+    if (gender === 2) {
+      return 'Male';
+    } else {
+      return 'Female';
+    }
   }
 
 }

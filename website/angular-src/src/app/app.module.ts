@@ -17,7 +17,7 @@ import { HeaderComponent } from './component/header/header.component';
 const appRoutes: Routes = [
   {path: '', component: TopTenMoviesComponent},
   {path: 'people', component: PeopleListComponent},
-  {path: 'user/:id', component: PersonComponent},
+  {path: 'person/:id', component: PersonComponent},
   {path: 'movie', component: MovieListComponent},
   {path: 'about', component: AboutComponent}
 

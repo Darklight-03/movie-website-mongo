@@ -6,7 +6,6 @@ import {MovieService} from '../../services/movie.service';
   selector: 'app-top-ten-movies',
   templateUrl: './top-ten-movies.component.html',
   styleUrls: ['./top-ten-movies.component.css'],
-  providers: [MovieService]
 })
 export class TopTenMoviesComponent implements OnInit {
 
@@ -16,7 +15,6 @@ export class TopTenMoviesComponent implements OnInit {
 
   ngOnInit() {
       this.listServ.getMovie(2).subscribe((data: object) => {
-        console.log(data);
       }) ;
   }
 }

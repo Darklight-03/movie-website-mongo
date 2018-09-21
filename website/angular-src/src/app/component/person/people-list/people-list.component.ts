@@ -8,7 +8,7 @@ import {Person} from '../../../model/person.model';
 })
 export class PeopleListComponent implements OnInit {
   people: Person[] = [
-    new Person(1, 'rock', 2,
+    new Person(15, 'rock', 2,
       'https://static.gulfnews.com/polopoly_fs/1.2253644!/image/839283052.' +
       'jpg_gen/derivatives/box_460346/839283052.jpg', null, null, 'dasdads'),
 
