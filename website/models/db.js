@@ -12,8 +12,8 @@ const personsSchema = new Schema({
   name: String,
   id: Number,
   profile_path: String,
-  cast_movies: Array,
-  crew_movies: Array
+  cast_movies: [{_id: {type: Schema.Types.ObjectId, ref: 'movies'}, character: String}],
+  crew_movies: [{_id: {type: Schema.Types.ObjectId, ref: 'movies'}, department: String}]
 });
 
 const movies = module.exports = mongoose.model('movies', moviesSchema );
@@ -27,7 +27,7 @@ module.exports.getMovie = (info,callback) => {
 
 // returns the entire person object from database
 module.exports.getPerson = (info,callback) => {
-  persons.findOne({id: info.query.id}, callback);
+  persons.findOne({id: info.query.id}, callback).populate('cast_movies._id','title poster_path id').populate('crew_movies._id','title poster_path id');
 }
 
 // returns {movies: arr, people: arr}

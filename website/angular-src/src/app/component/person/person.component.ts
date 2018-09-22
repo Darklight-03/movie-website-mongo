@@ -13,7 +13,7 @@ export class PersonComponent implements OnInit {
   constructor(private dbService: MovieService, private route: ActivatedRoute) {}
 
   ngOnInit() {
-    this.dbService.getPerson(this.route.snapshot['id']).subscribe((data: Object) => {
+    this.dbService.getPerson(this.route.snapshot.params['id']).subscribe((data: Object) => {
 
       this.person.id = data['id'];
       this.person.name = data['name']
