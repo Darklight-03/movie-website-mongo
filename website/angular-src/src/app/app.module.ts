@@ -13,14 +13,15 @@ import { TopTenMoviesComponent } from './component/movie/top-ten-movies/top-ten-
 import { AboutComponent } from './component/about/about.component';
 import { MovieService } from './component/services/movie.service';
 import { HeaderComponent } from './component/header/header.component';
+import { SearchComponent } from './component/search/search.component';
 
 const appRoutes: Routes = [
   {path: '', component: TopTenMoviesComponent},
   {path: 'people', component: PeopleListComponent},
   {path: 'person/:id', component: PersonComponent},
   {path: 'movie', component: MovieListComponent},
-  {path: 'about', component: AboutComponent}
-
+  {path: 'about', component: AboutComponent},
+  {path: 'search/:q', component: SearchComponent}
 ];
 
 @NgModule({
@@ -33,6 +34,7 @@ const appRoutes: Routes = [
     TopTenMoviesComponent,
     AboutComponent,
     HeaderComponent,
+    SearchComponent,
   ],
   imports: [
     BrowserModule,
