@@ -6,7 +6,8 @@ var Schema = mongoose.Schema;
 const moviesSchema = new Schema({
   title: String,
   id: Number,
-  poster_path: String
+  poster_path: String,
+  revenue: Number
 });
 const personsSchema = new Schema({
   name: String,
@@ -28,6 +29,10 @@ module.exports.getMovie = (info,callback) => {
 // returns the entire person object from database
 module.exports.getPerson = (info,callback) => {
   persons.findOne({id: info.query.id}, callback);
+}
+
+module.exports.getTopGrossing = (info,callback) => {
+  movies.find({},null,{limit:10,sort:{revenue: -1}},callback);
 }
 
 // returns {movies: arr, people: arr}
