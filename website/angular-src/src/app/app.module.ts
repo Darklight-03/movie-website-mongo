@@ -18,7 +18,7 @@ const appRoutes: Routes = [
   {path: '', component: TopTenMoviesComponent},
   {path: 'people', component: PeopleListComponent},
   {path: 'person/:id', component: PersonComponent},
-  {path: 'movie', component: MovieListComponent},
+  {path: 'movie/:id', component: MovieListComponent},
   {path: 'about', component: AboutComponent}
 
 ];
