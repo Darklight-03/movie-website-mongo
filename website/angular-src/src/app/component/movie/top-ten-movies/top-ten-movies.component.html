@@ -4,7 +4,7 @@
   <div class="col-md-4" *ngFor="let movie of topMovies">
     <div class="thumbnail">
       <a [routerLink]="['/movie', movie.id]">
-        <img src="{{movie.posterPath}}" alt="{{movie.title}}" style="width: 100%">
+        <img src="http://image.tmdb.org/t/p/original{{movie.posterPath}}" alt="{{movie.title}}" style="width: 100%">
         <div class="caption">
         "{{movie.title}}"
         </div>
