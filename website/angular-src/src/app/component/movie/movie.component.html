@@ -1,0 +1,55 @@
+<div class="container-fluid">
+  <div class="row content">
+    <div class="col-sm-3 sidenav hidden-xs">
+      <h3>Title: {{movie.title}}</h3>
+      <ul class="nav nav-pills nav-stacked">
+        <li><a href="https://en.wikipedia.org/wiki/{{movie.title}}">Wikipedia</a></li>
+        <li>Release Date: {{movie.release_date}}</li>
+        <li>Language {{movie.original_language}}
+      </ul><br>
+    </div>
+    <br>
+
+    <div class="col-sm-9">
+      <div class="well">
+        <h4>Poster</h4>
+        <div class="thumbnail">
+          <img src=  "http://image.tmdb.org/t/p/original{{movie.posterPath}}"
+               alt="{{ movie.title }}"
+               class="img-responsive"
+               style="height: 400px; max-width: 400px;">
+        </div>
+        <h5>Overview</h5>
+        <p>{{movie.overview}}</p>
+      </div>
+
+      <div class="row">
+        <h3>Casted</h3>
+        <div class="col-sm-4" *ngFor="let cast of movie.castList" >
+          <div class="thumbnail">
+            <a [routerLink]="['/person', cast.id]">
+              <img src="http://image.tmdb.org/t/p/original{{cast['profile_path']}}" style="width: 100%">
+              <div class="caption">
+                "{{cast.name}}"
+              </div>
+            </a>
+          </div>
+        </div>
+
+        <div class="row">
+          <h2>Crew</h2>
+          <div class="col-sm-4" *ngFor="let crew of movie.crewList" >
+            <div class="thumbnail">
+              <a [routerLink]="['/person', crew.id]">
+                <img src="http://image.tmdb.org/t/p/original{{crew['profile_path']}}" style="width: 100%">
+                <div class="caption">
+                  "{{crew.name}}"
+                </div>
+              </a>
+            </div>
+          </div>
+
+      </div>
+    </div>
+  </div>
+</div>
