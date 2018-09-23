@@ -31,6 +31,18 @@ router.get('/topgrossing',(req,res)=>{
   });
 });
 
+//calls popularpeople from db.js and returns it
+router.get('/popularpeople',(req,res)=>{
+  db.getPopularPeople(req,(err,lists)=>{
+    if(err){
+      res,json({success:false, message: `database error: ${err}`});
+    }
+    else{
+      res.write(JSON.stringify(lists,null,2));
+      res.end();
+    }
+  });
+});
 
 // calls getPerson from db.js and returns
 router.get('/person',(req,res) => {

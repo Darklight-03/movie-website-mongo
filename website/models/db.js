@@ -35,6 +35,10 @@ module.exports.getTopGrossing = (info,callback) => {
   movies.find({},null,{limit:10,sort:{revenue: -1}},callback);
 }
 
+module.exports.getPopularPeople = (info,callback)=>{
+  persons.find({},null,{limit:10,sort:{popularity: -1}},callback);
+}
+
 // returns {movies: arr, people: arr}
 module.exports.search = (info,callback) => {
   // run find operations for titles or names containing the query
