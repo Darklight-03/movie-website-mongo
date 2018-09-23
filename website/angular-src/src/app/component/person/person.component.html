@@ -5,10 +5,10 @@
         <div class="col-md-15">
           <div class="thumbnail">
             <div class="pull-left">
-              <img [src]="person.imagePath"
+              <img src="http://image.tmdb.org/t/p/original{{person.imagePath}}"
                    alt="{{ person.name }}"
                    class="img-responsive"
-                   style="max-height: 150px; max-width: 150px;">
+                   style="height: 100%; width: 100%;">
               <p class="list-group-item-text">{{ person.biograpy }}</p>
             </div>
           </div>
@@ -23,7 +23,7 @@
     <div *ngFor="let cast of person.castList" >
       <div class="thumbnail">
         <a [routerLink]="['/movie', cast['_id'].id]">
-          <img src="{{cast['_id'].posterPath}}" alt="{{cast['_id'].title}}" style="width: 100%">
+          <img src="https://image.tmdb.org/t/p/original{{cast['_id']['poster_path']}}" alt="{{cast['_id'].title}}" style="height: 100%; width: 100%">
           <div class="caption">
             "{{cast.character}}"
           </div>
@@ -37,7 +37,7 @@
     <div *ngFor="let crew of person.crewList">
       <div class="thumbnail">
         <a [routerLink]="['/movie', crew['_id'].id]">
-          <img src="{{crew['_id'].posterPath}}" alt="{{crew['_id'].title}}" style="width: 100%">
+          <img src="http://image.tmdb.org/t/p/original{{crew['_id']['poster_path']}}" alt="{{crew['_id'].title}}" style="height: 100%; width: 100%">
           <div class="caption">
             "{{crew.department}}"
           </div>

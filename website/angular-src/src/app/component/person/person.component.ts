@@ -22,10 +22,6 @@ export class PersonComponent implements OnInit {
       this.person.imagePath = data['profile_path'];
       this.person.castList = data['cast_movies'];
       this.person.crewList = data['crew_movies'];
-      // need to put biograpy
-      console.log(this.person.castList[0]['_id']);
-
-
     });
   }
 

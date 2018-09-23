@@ -3,7 +3,7 @@
 <div class="row">
   <div class="col-md-4" *ngFor="let movie of topMovies">
     <div class="thumbnail">
-      <a href="#">
+      <a [routerLink]="['/movie', movie.id]">
         <img src="{{movie.posterPath}}" alt="{{movie.title}}" style="width: 100%">
         <div class="caption">
         "{{movie.title}}"
