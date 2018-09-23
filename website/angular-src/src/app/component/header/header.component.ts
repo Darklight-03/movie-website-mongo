@@ -10,8 +10,6 @@ export class HeaderComponent implements OnInit {
   constructor(private router:Router) { }
 
   ngOnInit() {
-    console.log("eee");
-    console.log(document.getElementById("name"));
   }
   onKey($event){
     if($event.keyCode==13){

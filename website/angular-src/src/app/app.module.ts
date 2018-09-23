@@ -2,7 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
 import {HttpClientModule} from '@angular/common/http';
-
+import { CommonModule } from '@angular/common';
 
 import { AppComponent } from './component/app.component';
 import { PersonComponent } from './component/person/person.component';
@@ -39,8 +39,8 @@ const appRoutes: Routes = [
   imports: [
     BrowserModule,
     RouterModule.forRoot(appRoutes),
-    HttpClientModule
-
+    HttpClientModule,
+    CommonModule
   ],
   providers: [MovieService],
   bootstrap: [AppComponent]
