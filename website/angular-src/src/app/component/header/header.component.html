@@ -14,5 +14,7 @@
       </ul>
     </div>
   </div>
-  <input class="form-control border-secondary py-2" type="search" placeholder="search for a movie or person...">
+  <input class="form-control border-secondary py-2" id="name" type="search"
+  placeholder="search for a movie or person..." formAction="/search"
+  (keyup)="onKey($event)">
 </nav>

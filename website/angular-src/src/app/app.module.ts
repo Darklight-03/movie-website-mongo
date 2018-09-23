@@ -2,7 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
 import {HttpClientModule} from '@angular/common/http';
-
+import { CommonModule } from '@angular/common';
 
 import { AppComponent } from './component/app.component';
 import { PersonComponent } from './component/person/person.component';
@@ -13,11 +13,13 @@ import { TopTenMoviesComponent } from './component/movie/top-ten-movies/top-ten-
 import { AboutComponent } from './component/about/about.component';
 import { MovieService } from './component/services/movie.service';
 import { HeaderComponent } from './component/header/header.component';
+import { SearchComponent } from './component/search/search.component';
 
 const appRoutes: Routes = [
   {path: '', component: TopTenMoviesComponent},
   {path: 'people', component: PeopleListComponent},
   {path: 'person/:id', component: PersonComponent},
+  {path: 'search/:q', component: SearchComponent},
   {path: 'movies', component: MovieListComponent},
   {path: 'movie/:id', component: MovieComponent},
   {path: 'about', component: AboutComponent},
@@ -35,12 +37,13 @@ const appRoutes: Routes = [
     TopTenMoviesComponent,
     AboutComponent,
     HeaderComponent,
+    SearchComponent,
   ],
   imports: [
     BrowserModule,
     RouterModule.forRoot(appRoutes),
-    HttpClientModule
-
+    HttpClientModule,
+    CommonModule
   ],
   providers: [MovieService],
   bootstrap: [AppComponent]
