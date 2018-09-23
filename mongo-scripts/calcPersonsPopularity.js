@@ -17,5 +17,13 @@ personsCursor.forEach( function (currPerson) {
 	}
 
 	currPerson.popularity = (totalPopularity / numMovies);
+
+	if ((personsIterated % 30000) == 0) {
+		print("Progress: ~" + (100 * (personsIterated/numPersons)).toString().match(/^-?\d+(?:\.\d{0,2})?/)[0] + "%.  " + personsIterated + "/" + numPersons + " movies");
+		print("pop: " + pcurrPerson.popularity);
+		print("also: " + (totalPopularity / numMovies);
+	}
+	
+	moviesIterated += 1;
 });
 
