@@ -16,7 +16,7 @@
   </div>
 <div class="col-md-3" *ngFor="let item of display">
   <div class="thumbnail">
-    <a [routerLink]="['/person', item.id]">
+    <a [routerLink]="['/', oftype, item.id]">
       <img src='http://image.tmdb.org/t/p/original{{item.image}}'
       alt="{{item.name}}" style="width:200px;height:300px;">
       <div class="caption">

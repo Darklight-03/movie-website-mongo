@@ -19,16 +19,19 @@ export class SearchComponent implements OnInit {
   searching:boolean;
   notsearching:boolean;
   people:boolean;
+  oftype:string;
 
   constructor(private route: ActivatedRoute, private dbService: MovieService) {
+    // this runs every time the url parameters change
     route.params.subscribe(val => {  
+      // clear all previous results
       this.searching = true;
       this.notsearching = false;
       this.resultsPeople = [];
       this.resultsMovies = [];
       this.display = [];
       this.q = this.route.snapshot.params['q'];
-
+      // search database for new parameters
       this.dbService.getSearchResults(this.q).subscribe((data: SearchItem) => {
         data.people.forEach((dataelem) => {
           this.resultsPeople.push(dataelem);
@@ -36,26 +39,26 @@ export class SearchComponent implements OnInit {
         data.movies.forEach((dataelem) => {
           this.resultsMovies.push(dataelem);
         });
-        // do something to let them know (SHOW BUTTONS) TODO
         this.searching = false;
         this.notsearching = true;
-      });
+      })
+      this.display = this.resultsMovies;
+      this.people = false;
+      this.oftype = "movie";
     });
   }
 
   onClick($event){
     if($event.target.innerText == "People"){
       // show only people
-      console.log(this.resultsPeople);
-      console.log(this.display);
       this.display = this.resultsPeople;
       this.people = true;
+      this.oftype = "person";
     }else{
       //// show only movies
-      console.log(this.resultsMovies);
-      console.log(this.display);
       this.display = this.resultsMovies;
       this.people = false;
+      this.oftype = "movie";
     }
   }
   ngOnInit() {
