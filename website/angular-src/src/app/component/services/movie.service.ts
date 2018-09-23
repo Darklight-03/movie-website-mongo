@@ -24,4 +24,9 @@ export class MovieService {
     const URL = `${this.apiUrl}/search?q=${q}`;
     return this.http.get(URL);
   }
+
+  public getTopGrossing() {
+    const URL = `${this.apiUrl}/topgrossing`;
+    return this.http.get(URL);
+  }
 }

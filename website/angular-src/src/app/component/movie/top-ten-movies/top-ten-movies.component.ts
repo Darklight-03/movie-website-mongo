@@ -14,7 +14,14 @@ export class TopTenMoviesComponent implements OnInit {
     constructor(private  listServ: MovieService) {}
 
   ngOnInit() {
-      this.listServ.getMovie(2).subscribe((data: object) => {
-      }) ;
+
+    this.listServ.getTopGrossing().subscribe((data: Object) => {
+      console.log(data);
+      for (let i = 0; i < 10; i++) {
+        this.topMovies.push(new MoviePoster(data[i]['id'], data[i]['title'],
+          data[i]['overview'], data[i]['popularity'], data[i]['poster_path']));
+      }
+      console.log(this.topMovies);
+    });
   }
 }

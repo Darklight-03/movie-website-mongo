@@ -19,9 +19,10 @@ const appRoutes: Routes = [
   {path: '', component: TopTenMoviesComponent},
   {path: 'people', component: PeopleListComponent},
   {path: 'person/:id', component: PersonComponent},
-  {path: 'movie', component: MovieListComponent},
-  {path: 'about', component: AboutComponent},
   {path: 'search/:q', component: SearchComponent}
+  {path: 'movies', component: MovieListComponent},
+  {path: 'movie/:id', component: MovieComponent},
+  {path: 'about', component: AboutComponent}
 ];
 
 @NgModule({

@@ -14,17 +14,14 @@ export class PersonComponent implements OnInit {
 
   ngOnInit() {
     this.dbService.getPerson(this.route.snapshot.params['id']).subscribe((data: Object) => {
+      console.log(data);
 
       this.person.id = data['id'];
-      this.person.name = data['name']
+      this.person.name = data['name'];
       this.person.gender = data['gender'];
       this.person.imagePath = data['profile_path'];
       this.person.castList = data['cast_movies'];
       this.person.crewList = data['crew_movies'];
-      // need to put biograpy
-
-      console.log(this.person);
-
     });
   }
 
