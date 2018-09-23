@@ -38,17 +38,14 @@ module.exports.getTopGrossing = (info,callback) => {
 // returns {movies: arr, people: arr}
 module.exports.search = (info,callback) => {
   // run find operations for titles or names containing the query
-  movies.find({title: {$regex: `.*${info.query.q}.*`, $options: 'i'}}, 'id title poster_path').then((movievalue)=>{
-    persons.find({name: {$regex: `.*${info.query.q}.*`, $options: 'i'}}, 'id name profile_path cast_movies crew_movies',(err, lists) => {
+  movies.find({title: {$regex: `.*${info.query.q}.*`, $options: 'i'}}, 'id title poster_path').sort({'popularity': -1}).limit(parseInt(info.query.limit)||100).then((movievalue)=>{
+    persons.find({name: {$regex: `.*${info.query.q}.*`, $options: 'i'}}, 'id name profile_path cast_movies crew_movies').sort({'popularity': -1}).limit(parseInt(info.query.limit)||100).then((lists) => {
 
       // re-make the movies object to have same fields as person object.
       retmovies = movievalue.map((movie)=>{
         var mov = {id: movie.id, name: movie.title, image: movie.poster_path};
         return mov;
       });
-      if(err){
-        callback(err,{movies: retmovies});
-      }else{
         
         // same thing for the people object.
         retpeople = lists.map((person)=>{
@@ -57,9 +54,8 @@ module.exports.search = (info,callback) => {
         });
 
         // return both object arrays in the object returned.
-        callback(err,{movies: retmovies, people: retpeople})
-      }
-    });
+        callback(false,{movies: retmovies, people: retpeople})
+    }).catch((err)=>{callback(err,null);});
   }).catch((err)=>{
     callback(err,null);
   });
