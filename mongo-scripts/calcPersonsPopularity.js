@@ -17,5 +17,5 @@ personsCursor.forEach( function (currPerson) {
 	}
 
 	currPerson.popularity = (totalPopularity / numMovies);
-}
+});
 
