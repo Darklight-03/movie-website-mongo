@@ -82,7 +82,6 @@ module.exports.getPerson = (info,callback) => {
     });
     arr1.forEach((id,i)=>{
       var department = arr2[i];
-      console.log(department);
       p.crew_movies[findAtId(id,p.crew_movies)].department += ", "+department;
     });
     
