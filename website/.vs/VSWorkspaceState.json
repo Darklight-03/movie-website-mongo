@@ -5,8 +5,9 @@
     "\\angular-src\\src",
     "\\angular-src\\src\\app",
     "\\angular-src\\src\\app\\component",
-    "\\angular-src\\src\\app\\component\\movie"
+    "\\angular-src\\src\\app\\component\\about",
+    "\\angular-src\\src\\app\\component\\person"
   ],
-  "SelectedNode": "\\angular-src\\src\\styles.css",
+  "SelectedNode": "\\angular-src\\src\\app\\component\\person\\person.component.css",
   "PreviewInSolutionExplorer": false
 }

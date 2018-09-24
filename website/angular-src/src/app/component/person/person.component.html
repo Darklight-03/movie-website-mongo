@@ -24,7 +24,7 @@
       <div class="thumbnail">
         <a [routerLink]="['/movie', cast['_id'].id]">
           <img src="https://image.tmdb.org/t/p/original{{cast['_id']['poster_path']}}" alt="{{cast['_id'].title}}" style="width: 25%; height: 25%;">
-          <div class="caption"> In "{{cast['_id']}}"</div>
+          <div class="caption">
             As "{{cast.character}}"
           </div>
         </a>
