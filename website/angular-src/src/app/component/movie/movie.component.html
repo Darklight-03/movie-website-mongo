@@ -28,7 +28,7 @@
         <div class="col-sm-4" *ngFor="let cast of movie.castList" >
           <div class="thumbnail">
             <a [routerLink]="['/person', cast.id]">
-              <img src="http://image.tmdb.org/t/p/original{{cast['profile_path']}}" style="width: 100%">
+              <img src="http://image.tmdb.org/t/p/w600_and_h900_bestv2{{cast['profile_path']}}" style="width: 100%">
               <div class="caption">
                 "{{cast.name}}"
               </div>
@@ -41,7 +41,7 @@
           <div class="col-sm-4" *ngFor="let crew of movie.crewList" >
             <div class="thumbnail">
               <a [routerLink]="['/person', crew.id]">
-                <img src="http://image.tmdb.org/t/p/original{{crew['profile_path']}}" style="width: 100%">
+                <img src="http://image.tmdb.org/t/p/w600_and_h900_bestv2{{crew['profile_path']}}" style="width: 100%">
                 <div class="caption">
                   "{{crew.name}}"
                 </div>
