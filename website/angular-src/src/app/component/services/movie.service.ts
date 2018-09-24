@@ -8,7 +8,7 @@ export class MovieService {
 
   constructor(private http: HttpClient) { }
 
-  private apiUrl = 'http://localhost:3000/dbservice';
+  private apiUrl = '/dbservice';
 
   public getMovie( id: number ) {
     const URL = `${this.apiUrl}/movie?id=${id}`;
