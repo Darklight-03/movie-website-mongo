@@ -14,12 +14,13 @@
 <div class="row">
     
   </div>
+
 <div class="col-md-3" *ngFor="let item of display">
   <div class="thumbnail">
     <a [routerLink]="['/', oftype, item.id]">
-      <img src='http://image.tmdb.org/t/p/original{{item.image}}'
+      <img src='http://image.tmdb.org/t/p/w600_and_h900_bestv2{{item.image}}'
       alt="{{item.name}}" style="width:200px;height:300px;">
-      <div class="caption">
+      <div class="caption" style="font-weight: bold; text-align: center">
         "{{item.name}}"
       </div>
     </a>

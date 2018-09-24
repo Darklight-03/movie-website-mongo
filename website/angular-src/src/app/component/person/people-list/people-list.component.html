@@ -1,11 +1,11 @@
-<h3>Popular People </h3>
+<h3 style="font-weight: bold;">Popular People </h3>
 
 <div class="row">
   <div class="col-md-4" *ngFor="let person of people">
     <div class="thumbnail">
       <a [routerLink]="['/person', person.id]">
         <img src="{{person.imagePath}}" alt="{{person.name}}" style="width: 100%">
-        <div class="caption">
+        <div class="caption" style="text-align: center; font-weight: bold;">
           "{{person.name}}"
         </div>
       </a>
