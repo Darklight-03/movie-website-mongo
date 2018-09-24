@@ -1,11 +1,12 @@
 .navbar-default {
-  background-color: #00ffff;
-  border-color: #4cff00;
+  background-color: #669999;
+  border-color: none;
+  color: white;
 }
 
  .navbar-default .navbar-nav > li > a:hover, .navbar-default .navbar-nav > li > a:focus {
-   background-color: limegreen;
-   color: #4cff00;
+   background-color: #476b6b;
+   color: white;
  }
 
 .navbar-default input[type=search] {
@@ -17,16 +18,6 @@
   font-size: 17px;
 }
 
-form button {
-  padding: 6px;
-  margin-top: 8px;
-  margin-right: 16px;
-  background: #ddd;
-  font-size: 17px;
-}
 
-  form button:hover {
-    background: #0b7dda;
-  }
 
 

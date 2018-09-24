@@ -1,6 +1,6 @@
 <div class="container-fluid">
     <div class="col-sm-3 sidenav">
-      <h1>{{person.name}}</h1>
+      <h1 style="font-weight: bold;">{{person.name}}</h1>
       <div class="row">
         <div class="col-md-15">
           <div class="thumbnail">
@@ -8,24 +8,24 @@
               <img src="http://image.tmdb.org/t/p/original{{person.imagePath}}"
                    alt="{{ person.name }}"
                    class="img-responsive"
-                   style="height: 100%; width: 100%;">
+                   style="height: 75%; width: 75%;">
               <p class="list-group-item-text">{{ person.biograpy }}</p>
             </div>
           </div>
         </div>
-        <div> gender :  {{getGender(person.gender)}}</div>
-        <a href="https://en.wikipedia.org/wiki/{{person.name}}">wikipedia</a>
+        <div> Gender :  {{getGender(person.gender)}}</div>
+        <a href="https://en.wikipedia.org/wiki/{{person.name}}">Wikipedia</a>
       </div>
     </div>
 
   <div class="col-sm-4">
-    <h3>Casted</h3>
+    <h3>Actor</h3>
     <div *ngFor="let cast of person.castList" >
       <div class="thumbnail">
         <a [routerLink]="['/movie', cast['_id'].id]">
-          <img src="https://image.tmdb.org/t/p/original{{cast['_id']['poster_path']}}" alt="{{cast['_id'].title}}" style="height: 100%; width: 100%">
-          <div class="caption">
-            "{{cast.character}}"
+          <img src="https://image.tmdb.org/t/p/original{{cast['_id']['poster_path']}}" alt="{{cast['_id'].title}}" style="height: 25%; width: 25%">
+          <div class="caption" style="float: right">
+            As "{{cast.character}}"
           </div>
         </a>
       </div>
@@ -37,7 +37,7 @@
     <div *ngFor="let crew of person.crewList">
       <div class="thumbnail">
         <a [routerLink]="['/movie', crew['_id'].id]">
-          <img src="http://image.tmdb.org/t/p/original{{crew['_id']['poster_path']}}" alt="{{crew['_id'].title}}" style="height: 100%; width: 100%">
+          <img src="http://image.tmdb.org/t/p/original{{crew['_id']['poster_path']}}" alt="{{crew['_id'].title}}" style="height: 25%; width: 25%">
           <div class="caption">
             "{{crew.department}}"
           </div>
