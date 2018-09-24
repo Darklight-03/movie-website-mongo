@@ -8,14 +8,14 @@ import {MovieService} from '../../services/movie.service';
   styleUrls: ['./people-list.component.css']
 })
 export class PeopleListComponent implements OnInit {
-  people: Person[];
+  people: Person[]=[];
 
   constructor(private listServ: MovieService) { }
 
   ngOnInit() {
     this.listServ.getPopularPeople().subscribe((data: Object) => {
       for (let i = 0; i<10; i++) {
-        //this.people.push(new Person(data[i]['id'],data[i]['name'],data[i]['gender'],data[i]['profile_path'],data[i]['cast_movies'],data[i]['crew_movies'],"not found"));
+        this.people.push(new Person(data[i]['id'],data[i]['name'],data[i]['gender'],data[i]['profile_path'],data[i]['cast_movies'],data[i]['crew_movies'],"not found"));
         console.log("??");
       
       }

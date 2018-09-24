@@ -4,7 +4,8 @@
   <div class="col-md-4" *ngFor="let person of people">
     <div class="thumbnail">
       <a [routerLink]="['/person', person.id]">
-        <img src="{{person.imagePath}}" alt="{{person.name}}" style="width: 100%">
+        <img src="http://image.tmdb.org/t/p/original{{person.imagePath}}"
+        alt="{{person.name}}" style="width: 400px;height: 550px">
         <div class="caption">
           "{{person.name}}"
         </div>
