@@ -28,7 +28,31 @@ module.exports.getMovie = (info,callback) => {
 
 // returns the entire person object from database
 module.exports.getPerson = (info,callback) => {
-  persons.findOne({id: info.query.id}, callback).populate('cast_movies._id','title poster_path id').populate('crew_movies._id','title poster_path id');
+  persons.findOne({id: info.query.id}).populate('cast_movies._id','title poster_path id').populate('crew_movies._id','title poster_path id').then((p)=>{
+    arr = [];
+    p.cast_movies.slice(0).forEach((movie,i)=>{
+      if(!arr.includes(movie._id.id)){
+        arr.push(movie._id.id);
+      }else{
+        p.cast_movies.splice(i,1);
+      }
+    });
+    arr = [];
+    p.crew_movies.slice(0).forEach((movie,i)=>{
+      if(!arr.includes(movie._id.id)){
+        arr.push(movie._id.id);
+      }else{
+        p.crew_movies[i]=null;
+      }
+    })
+    p.crew_movies = p.crew_movies.filter((movie)=>{
+      if(movie==null){
+        return false;
+      }
+      else return true;
+    });
+    callback(false,p);
+  });
 }
 
 module.exports.getTopGrossing = (info,callback) => {
