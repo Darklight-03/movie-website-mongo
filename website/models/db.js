@@ -20,6 +20,17 @@ const personsSchema = new Schema({
 const movies = module.exports = mongoose.model('movies', moviesSchema );
 const persons = module.exports = mongoose.model('persons', personsSchema );
 
+findAtId = function(id,arr){
+  console.log("find " + id + "in arr");
+  arr.forEach((ele,i)=>{
+    //console.log(ele);
+    if(ele._id.id == id){
+      return i;
+    }
+  });
+  return -1;
+}
+
 // returns the entire movie object from database
 module.exports.getMovie = (info,callback) => {
   // info.query gets the object containing arguments passed from request.
@@ -30,27 +41,54 @@ module.exports.getMovie = (info,callback) => {
 module.exports.getPerson = (info,callback) => {
   persons.findOne({id: info.query.id}).populate('cast_movies._id','title poster_path id').populate('crew_movies._id','title poster_path id').then((p)=>{
     arr = [];
+    arr1 = [];
+    arr2 = [];
     p.cast_movies.slice(0).forEach((movie,i)=>{
       if(!arr.includes(movie._id.id)){
         arr.push(movie._id.id);
+        arr2.push(movie._id.character);
       }else{
-        p.cast_movies.splice(i,1);
+        arr1.push(movie._id.id);
+        p.cast_movies[i]=null;
       }
     });
+    p.cast_movies = p.cast_movies.filter((movie)=>{
+      if(movie==null){
+        return false;
+      }
+      else return true;
+    });
+    arr1.forEach((id,i)=>{
+      character = arr2[i];
+      p.cast_movies[findAtId(id,p.cast_movies)].character += character;
+    });
+
     arr = [];
+    arr1 = [];
+    arr2 = [];
     p.crew_movies.slice(0).forEach((movie,i)=>{
       if(!arr.includes(movie._id.id)){
         arr.push(movie._id.id);
+        arr2.push(movie._id.department);
       }else{
+        arr1.push(movie._id.id);
         p.crew_movies[i]=null;
       }
-    })
+    });
     p.crew_movies = p.crew_movies.filter((movie)=>{
       if(movie==null){
         return false;
       }
       else return true;
     });
+
+    arr1.forEach((id,i)=>{
+      department = arr2[i];
+      console.log(p.crew_movies[findAtId(id,p.crew_movies)]);
+      p.crew_movies[findAtId(id,p.crew_movies)].department += department;
+    });
+    
+    
     callback(false,p);
   });
 }
