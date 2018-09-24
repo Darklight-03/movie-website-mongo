@@ -4,6 +4,7 @@
       <h3>Title: {{movie.title}}</h3>
       <ul class="nav nav-pills nav-stacked">
         <li><a href="https://en.wikipedia.org/wiki/{{movie.title}}">Wikipedia</a></li>
+	<li><a href="{{movie.imdbLink}}">IMDB</a></li>
         <li>Release Date: {{movie.release_date}}</li>
         <li>Language {{movie.original_language}}
       </ul><br>
@@ -21,7 +22,6 @@
         </div>
         <h5>Overview</h5>
         <p>{{movie.overview}}</p>
-	<li><a href="{{imdbLink}}">IMDB Page</a></li>
       </div>
 
       <div class="row">
