@@ -49,7 +49,7 @@ export class SearchComponent implements OnInit {
   }
 
   onClick($event){
-    if($event.target.innerText == "People"){
+    if($event.target.innerText.includes("People")){
       // show only people
       this.display = this.resultsPeople;
       this.people = true;
