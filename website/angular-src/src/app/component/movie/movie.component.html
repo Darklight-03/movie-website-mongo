@@ -30,7 +30,7 @@
             <a [routerLink]="['/person', cast.id]">
 
               <img
-              src="http://image.tmdb.org/t/p/original{{cast['profile_path']}}" alt="No image available" style="width: 75%;">
+              src="http://image.tmdb.org/t/p/original{{cast['profile_path']}}" alt="No image available" style="width: 180px; height: 270px">
               <div class="caption" style="font-weight: bold; text-align: center;">
                 "{{cast.name}}"
               </div>
@@ -45,7 +45,7 @@
             <div class="thumbnail">
               <a [routerLink]="['/person', crew.id]">
                 <img
-                src="http://image.tmdb.org/t/p/w600_and_h900_bestv2{{crew['profile_path']}}" alt="No image available" style="width: 75%">
+                src="http://image.tmdb.org/t/p/w600_and_h900_bestv2{{crew['profile_path']}}" alt="No image available" style="width: 180px; height: 270px">
                 <div class="caption">
                   "{{crew.name}}"
                 </div>
