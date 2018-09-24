@@ -27,6 +27,11 @@ mongoose.connect(config.database, {useNewUrlParser: true});
 // (should probably be renamed to something more fitting like dbservice.
 app.use('/dbservice', movies);
 
+// this one use statment stolen from https://stackoverflow.com/questions/30546524/making-angular-routes-work-with-express-routes
+app.use("*",function(req,res){
+    res.sendFile(path.join(__dirname,"public/index.html"));
+});
+
 //Listen to port 3000
 app.listen(port, () => {
   console.log(`Starting the server at port ${port}`);
