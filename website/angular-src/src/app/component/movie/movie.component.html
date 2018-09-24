@@ -27,13 +27,9 @@
         <div class="col-sm-4" *ngFor="let cast of movie.castList" >
           <div class="thumbnail">
             <a [routerLink]="['/person', cast.id]">
-<<<<<<< HEAD
+
               <img src="http://image.tmdb.org/t/p/original{{cast['profile_path']}}" style="width: 75%">
               <div class="caption" style="font-weight: bold; text-align: center;">
-=======
-              <img src="http://image.tmdb.org/t/p/w600_and_h900_bestv2{{cast['profile_path']}}" style="width: 100%">
-              <div class="caption">
->>>>>>> e228779b0acecebc666bf785b6b301c3ec68d0a5
                 "{{cast.name}}"
               </div>
             </a>
