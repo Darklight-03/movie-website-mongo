@@ -9,7 +9,7 @@ import {ActivatedRoute} from '@angular/router';
   styleUrls: ['./movie.component.css']
 })
 export class MovieComponent implements OnInit {
-  movie: Movie = new Movie(0, '', '', '', '', 0, '', null, null);
+  movie: Movie = new Movie(0, '', '', '', '', 0, '', null, null, '');
 
   constructor(private  dbService: MovieService, private route: ActivatedRoute) {}
 
@@ -24,6 +24,7 @@ export class MovieComponent implements OnInit {
       this.movie.popularity = data['popularity'];
       this.movie.castList = data['credits']['cast'];
       this.movie.crewList = data['credits']['crew'];
+      this.movie.imdbLink = "https://www.imdb.com/title/" + data['imdb_id'];
 
       console.log(this.movie.castList);
 
