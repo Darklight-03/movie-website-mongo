@@ -1,0 +1,19 @@
+{
+  "name": "movies_mongo_website",
+  "version": "0.0.0",
+  "description": "movie info website backend",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.tamu.edu/bdc3142/teamProject1"
+  },
+  "author": "Team Eleven",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "express": "^4.16.3",
+    "mongoose": "^5.2.15"
+  }
+}
