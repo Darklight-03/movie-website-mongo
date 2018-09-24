@@ -10,10 +10,11 @@ export class Movie {
   public posterPath: string;
   public castList: Person[];
   public crewList: Person[];
+  public imdbLink: string;
 
 
   constructor(id: number, title: string, original_language: string, release_date: string, overview: string,
-              popularity: number, posterPath: string, castList: Person[], crewList: Person[]) {
+              popularity: number, posterPath: string, castList: Person[], crewList: Person[], imdbLink: string) {
     this.id = id;
     this.title = title;
     this.original_language = original_language;
@@ -23,5 +24,6 @@ export class Movie {
     this.posterPath = posterPath;
     this.castList = castList;
     this.crewList = crewList;
+    this.imdbLink = imdbLink;
   }
 }

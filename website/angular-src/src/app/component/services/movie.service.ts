@@ -29,4 +29,9 @@ export class MovieService {
     const URL = `${this.apiUrl}/topgrossing`;
     return this.http.get(URL);
   }
+  
+  public getPopularPeople() {
+    const URL = `#{this.apiUrl}/popularpeople`;
+    return this.http.get(URL);
+  }
 }
