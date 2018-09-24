@@ -31,7 +31,7 @@ export class MovieService {
   }
   
   public getPopularPeople() {
-    const URL = `#{this.apiUrl}/popularpeople`;
+    const URL = `${this.apiUrl}/popularpeople`;
     return this.http.get(URL);
   }
 }

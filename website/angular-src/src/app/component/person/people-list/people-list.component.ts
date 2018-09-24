@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {Person} from '../../../model/person.model';
+import {MovieService} from '../../services/movie.service';
 
 @Component({
   selector: 'app-people-list',
@@ -7,33 +8,18 @@ import {Person} from '../../../model/person.model';
   styleUrls: ['./people-list.component.css']
 })
 export class PeopleListComponent implements OnInit {
-  people: Person[] = [
-    new Person(15, 'rock', 2,
-      'https://static.gulfnews.com/polopoly_fs/1.2253644!/image/839283052.' +
-      'jpg_gen/derivatives/box_460346/839283052.jpg', null, null, 'dasdads'),
+  people: Person[]=[];
 
-    new Person(1, 'rock', 2,
-      'https://static.gulfnews.com/polopoly_fs/1.2253644!/image/839283052.' +
-      'jpg_gen/derivatives/box_460346/839283052.jpg', null, null, 'dasdads'),
-    new Person(1, 'rock', 2,
-      'https://static.gulfnews.com/polopoly_fs/1.2253644!/image/839283052.' +
-      'jpg_gen/derivatives/box_460346/839283052.jpg', null, null, 'dasdads'),
-    new Person(1, 'rock', 2,
-      'https://static.gulfnews.com/polopoly_fs/1.2253644!/image/839283052.' +
-      'jpg_gen/derivatives/box_460346/839283052.jpg', null, null, 'dasdads'),
-    new Person(1, 'rock', 2,
-      'https://static.gulfnews.com/polopoly_fs/1.2253644!/image/839283052.' +
-      'jpg_gen/derivatives/box_460346/839283052.jpg', null, null, 'dasdads'),
-    new Person(1, 'rock', 2,
-      'https://static.gulfnews.com/polopoly_fs/1.2253644!/image/839283052.' +
-      'jpg_gen/derivatives/box_460346/839283052.jpg', null, null, 'dasdads')
-
-
-  ];
-
-  constructor() { }
+  constructor(private listServ: MovieService) { }
 
   ngOnInit() {
+    this.listServ.getPopularPeople().subscribe((data: Object) => {
+      for (let i = 0; i<10; i++) {
+        this.people.push(new Person(data[i]['id'],data[i]['name'],data[i]['gender'],data[i]['profile_path'],data[i]['cast_movies'],data[i]['crew_movies'],"not found"));
+        console.log("??");
+      
+      }
+    });
   }
 
 }
