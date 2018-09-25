@@ -10,22 +10,18 @@ var personsIterated = 0;
 personsCursor.forEach( function (currPerson) {
 	var totalPopularity = 0;
 	var numMovies = 0;
-	var oldPop = currPerson.popularity;
 
 	for (i = 0; i < currPerson.cast_movies.length; i++) {
 		totalPopularity += db.movies.findOne( { "_id": currPerson.cast_movies[i]._id }, { "popularity":1 } ).popularity;
 		numMovies++;
 	}
 	
-	totalPopularity = (0.3 * (totalPopularity / numMovies)) + numMovies;
+	totalPopularity = (0.3 * (totalPopularity / numMovies)) + (0.8 * numMovies);
 	
 	db.persons.updateOne( { "_id": currPerson._id }, { $set: { "popularity": totalPopularity } } );
-	//currPerson.popularity = (totalPopularity / numMovies);
 
 	if ((personsIterated % 30000) == 0) {
 		print("Progress: ~" + (100 * (personsIterated / numPersons)).toString().match(/^-?\d+(?:\.\d{0,2})?/)[0] + "%.  " + personsIterated + "/" + numPersons + " people");
-		print(oldPop);
-		print(totalPopularity);
 	}
 	
 
