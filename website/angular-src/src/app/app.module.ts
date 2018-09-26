@@ -14,6 +14,9 @@ import { AboutComponent } from './component/about/about.component';
 import { MovieService } from './component/services/movie.service';
 import { HeaderComponent } from './component/header/header.component';
 import { SearchComponent } from './component/search/search.component';
+import { SignUpComponent } from './sign-up/sign-up.component';
+import {SocialLoginModule, AuthServiceConfig, GoogleLoginProvider, FacebookLoginProvider} from 'angular-6-social-login';
+
 
 const appRoutes: Routes = [
   {path: '', component: TopTenMoviesComponent},
@@ -23,9 +26,26 @@ const appRoutes: Routes = [
   {path: 'movies', component: MovieListComponent},
   {path: 'movie/:id', component: MovieComponent},
   {path: 'about', component: AboutComponent},
+  {path: 'signup', component: SignUpComponent},
   {path: '**', component: TopTenMoviesComponent}
 
 ];
+
+// Configs
+export function getAuthServiceConfigs() {
+  let config = new AuthServiceConfig(
+    [
+      {
+        id: FacebookLoginProvider.PROVIDER_ID,
+        provider: new FacebookLoginProvider('Your-Facebook-app-id')
+      },
+      {
+        id: GoogleLoginProvider.PROVIDER_ID,
+        provider: new GoogleLoginProvider('Your-Google-Client-Id')
+      }
+    ]);
+  return config;
+}
 
 @NgModule({
   declarations: [
@@ -38,14 +58,24 @@ const appRoutes: Routes = [
     AboutComponent,
     HeaderComponent,
     SearchComponent,
+    SignUpComponent,
   ],
   imports: [
     BrowserModule,
     RouterModule.forRoot(appRoutes),
     HttpClientModule,
-    CommonModule
+    CommonModule,
+    SocialLoginModule
+
   ],
-  providers: [MovieService],
+  providers: [
+    MovieService,
+    {
+      provide: AuthServiceConfig,
+      useFactory: getAuthServiceConfigs
+    }
+  ],
   bootstrap: [AppComponent]
 })
+
 export class AppModule { }
