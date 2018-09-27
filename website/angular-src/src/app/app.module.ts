@@ -3,6 +3,8 @@ import { NgModule } from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
 import {HttpClientModule} from '@angular/common/http';
 import { CommonModule } from '@angular/common';
+import {SocialLoginModule, AuthServiceConfig, GoogleLoginProvider, FacebookLoginProvider, AuthService} from 'angular-6-social-login';
+
 
 import { AppComponent } from './component/app.component';
 import { PersonComponent } from './component/person/person.component';
@@ -11,11 +13,19 @@ import { MovieListComponent} from './component/movie/movie-list/movie-list.compo
 import { PeopleListComponent} from './component/person/people-list/people-list.component';
 import { TopTenMoviesComponent } from './component/movie/top-ten-movies/top-ten-movies.component';
 import { AboutComponent } from './component/about/about.component';
-import { MovieService } from './component/services/movie.service';
 import { HeaderComponent } from './component/header/header.component';
 import { SearchComponent } from './component/search/search.component';
-import { SignUpComponent } from './sign-up/sign-up.component';
-import {SocialLoginModule, AuthServiceConfig, GoogleLoginProvider, FacebookLoginProvider} from 'angular-6-social-login';
+import { SignUpComponent } from './component/sign-up/sign-up.component';
+import {AlertComponent} from './_directives/alert.component';
+
+import {AlertService} from './services/alert.service';
+import {PersonService} from './services/person.service';
+import {MovieService} from './services/movie.service';
+import {SearchService} from './services/search.service';
+import {AuthenticationService} from './services/authentication.service';
+import {UserService} from './services/user.service';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import { LoginComponent } from './component/login/login.component';
 
 
 const appRoutes: Routes = [
@@ -33,7 +43,7 @@ const appRoutes: Routes = [
 
 // Configs
 export function getAuthServiceConfigs() {
-  let config = new AuthServiceConfig(
+  const config = new AuthServiceConfig(
     [
       {
         id: FacebookLoginProvider.PROVIDER_ID,
@@ -59,21 +69,31 @@ export function getAuthServiceConfigs() {
     HeaderComponent,
     SearchComponent,
     SignUpComponent,
+    AlertComponent,
+    LoginComponent,
   ],
   imports: [
     BrowserModule,
     RouterModule.forRoot(appRoutes),
     HttpClientModule,
     CommonModule,
-    SocialLoginModule
+    SocialLoginModule,
+    FormsModule,
+    ReactiveFormsModule
+
 
   ],
   providers: [
+    PersonService,
     MovieService,
+    SearchService,
+    AuthenticationService,
+    UserService,
     {
       provide: AuthServiceConfig,
       useFactory: getAuthServiceConfigs
-    }
+    },
+    AlertService
   ],
   bootstrap: [AppComponent]
 })

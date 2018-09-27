@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {MoviePoster} from '../../../model/moviePoster.model';
-import {MovieService} from '../../services/movie.service';
+import {MovieService} from '../../../services/movie.service';
 
 @Component({
   selector: 'app-top-ten-movies',
@@ -11,11 +11,11 @@ export class TopTenMoviesComponent implements OnInit {
 
   topMovies: MoviePoster[] = [];
 
-    constructor(private  listServ: MovieService) {}
+    constructor(private  service: MovieService) {}
 
   ngOnInit() {
 
-    this.listServ.getTopGrossing().subscribe((data: Object) => {
+    this.service.getTopGrossing().subscribe((data: Object) => {
       console.log(data);
       for (let i = 0; i < 10; i++) {
         this.topMovies.push(new MoviePoster(data[i]['id'], data[i]['title'],

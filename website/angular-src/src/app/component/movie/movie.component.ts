@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {Movie} from '../../model/movie.model';
-import {MovieService} from '../services/movie.service';
 import {ActivatedRoute} from '@angular/router';
+import {MovieService} from '../../services/movie.service';
 
 @Component({
   selector: 'app-movie',
@@ -11,10 +11,10 @@ import {ActivatedRoute} from '@angular/router';
 export class MovieComponent implements OnInit {
   movie: Movie = new Movie(0, '', '', '', '', 0, '', null, null, '');
 
-  constructor(private  dbService: MovieService, private route: ActivatedRoute) {}
+  constructor(private  service: MovieService, private route: ActivatedRoute) {}
 
   ngOnInit() {
-    this.dbService.getMovie(this.route.snapshot.params['id']).subscribe((data: Object) => {
+    this.service.getMovie(this.route.snapshot.params['id']).subscribe((data: Object) => {
       this.movie.id = data['id'];
       this.movie.title = data['title'];
       this.movie.original_language = data['original_language'];
