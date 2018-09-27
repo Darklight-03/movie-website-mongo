@@ -37,6 +37,7 @@ const appRoutes: Routes = [
   {path: 'movie/:id', component: MovieComponent},
   {path: 'about', component: AboutComponent},
   {path: 'signup', component: SignUpComponent},
+  {path: 'login', component: LoginComponent},
   {path: '**', component: TopTenMoviesComponent}
 
 ];
