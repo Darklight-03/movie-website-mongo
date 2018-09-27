@@ -45,6 +45,7 @@ export class SignUpComponent implements OnInit {
 
   public socialSignIn(socialPlatform: string) {
     let socialPlatformProvider;
+    console.log(socialPlatform);
     if (socialPlatform === 'facebook') {
       socialPlatformProvider = FacebookLoginProvider.PROVIDER_ID;
     } else if (socialPlatform === 'google') {
@@ -70,7 +71,7 @@ export class SignUpComponent implements OnInit {
     }
 
     this.loading = true;
-    this.userService.register(this.registerForm.value)
+    this.userService.registerUser(this.registerForm.value)
       .pipe(first())
       .subscribe(
         data => {

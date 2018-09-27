@@ -16,9 +16,15 @@ const personsSchema = new Schema({
   cast_movies: [{_id: {type: Schema.Types.ObjectId, ref: 'movies'}, character: String}],
   crew_movies: [{_id: {type: Schema.Types.ObjectId, ref: 'movies'}, department: String}]
 });
+const usersSchema = new Schema({
+  id: Number,
+  username: String,
+  favorites: [ {_id: {type: Schema.Types.ObjectId, ref: 'movies'}}]
+});
 
 const movies = module.exports = mongoose.model('movies', moviesSchema );
 const persons = module.exports = mongoose.model('persons', personsSchema );
+const users = module.exports = mongoose.model('users', usersSchema );
 
 function findAtId(id,arr){
   var x = -1;
@@ -123,3 +129,27 @@ module.exports.search = (info,callback) => {
     callback(err,null);
   });
 }
+
+
+
+
+// ----------
+// users methods
+
+module.exports.getUserById = (info,callback) => {
+  console.log("getUserById: " + info.query.id);
+  users.findOne({id: info.query.id}, callback);
+}
+
+module.exports.registerUser = (info,callback) => {
+  console.log(info);
+  console.log(info.query);
+  //users.insert(info.query, callback);
+}
+
+module.exports.deleteUser = (info,callback) => {
+  console.log("deleteUser: " + info.query.id);
+  users.remove({id: info.query.id}, callback);
+}
+
+
