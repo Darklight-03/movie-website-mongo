@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {Movie} from '../../model/movie.model';
 import {ActivatedRoute} from '@angular/router';
 import {MovieService} from '../../services/movie.service';
+import {AuthenticationService} from '../../services/authentication.service';
 
 @Component({
   selector: 'app-movie',
