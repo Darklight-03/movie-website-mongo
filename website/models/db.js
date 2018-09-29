@@ -1,5 +1,6 @@
 //Require mongoose package
 const mongoose = require('mongoose');
+mongoose.set('useCreateIndex', true);
 var Schema = mongoose.Schema;
 
 //Define Schemsas
@@ -17,8 +18,13 @@ const personsSchema = new Schema({
   crew_movies: [{_id: {type: Schema.Types.ObjectId, ref: 'movies'}, department: String}]
 });
 const usersSchema = new Schema({
-  id: Number,
-  username: String,
+  id: { type: Number,
+        index: { unique: true }
+      },
+  username: {
+        type: String,
+        index: { unique: true }
+      },
   password: String,
   favorites: [ {_id: {type: Schema.Types.ObjectId, ref: 'movies'}}]
 });
@@ -143,7 +149,7 @@ module.exports.getUserById = (info,callback) => {
 
 module.exports.registerUser = (info,callback) => {
   var newUser = new users({id: Math.floor(Math.random() * 10000), username: info.body.username, password: info.body.password});
-  newUser.save(callback);
+    newUser.save(callback);
 }
 
 module.exports.deleteUser = (info,callback) => {
