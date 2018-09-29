@@ -25,6 +25,7 @@ const searchSchema = new Schema({
 
 const movies = module.exports = mongoose.model('movies', moviesSchema );
 const persons = module.exports = mongoose.model('persons', personsSchema );
+const globalsearch = module.exports = mongoose.model('global_search', searchSchema );
 
 function findAtId(id,arr){
   var x = -1;
@@ -119,7 +120,9 @@ module.exports.search = (info,callback) => {
   var start_from = parseInt(info.query.start) || 0;
   // run find operations for titles or names containing the query
   
-  search.find({name: {$regex: query, $options: 'i'}}).populate('item', 'id title name poster_path profile_path cast_movies crew_movies').sort({sortfield: -1}).limit(limit).skip(start_from).then((results)=>{
+  console.log(`query: ${query}, sortfield: ${sortfield}, limit: ${limit}, start_from ${start_from}`);
+  globalsearch.find({name: {$regex: query, $options: 'i'}}).populate('item', 'id title name poster_path profile_path cast_movies crew_movies').sort({sortfield: -1}).limit(limit).skip(start_from).then((results)=>{
+    console.log(JSON.stringify(results));
     var finalresults = results.map((result) => {
       if(result.type == movie){
         var ret = {id: result.item.id, name: result.item.title, image: result.item.poster_path};
@@ -128,7 +131,7 @@ module.exports.search = (info,callback) => {
         var ret = {id: result.item.id, name: result.item.name, image: result.item.profile_path, roles: {characters: result.item.cast_movies, departments: result.item.crew_movies}};
         return ret;
       }
-      callback(false,finalresults);
     });
+    callback(false,finalresults);
   }).catch((err)=>{callback(err,null);});
 }
