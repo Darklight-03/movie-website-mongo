@@ -58,7 +58,7 @@ function sortfunc(field, order=1){
 
 // returns the entire movie object from database
 module.exports.getMovie = (info,callback) => {
-  var sortfield = info.query.sortfield || "name";
+  var sortfield = info.query.sort || "name";
   // info.query gets the object containing arguments passed from request.
   movies.findOne({id: info.query.id}).then((movie)=>{
     direction = 1;
