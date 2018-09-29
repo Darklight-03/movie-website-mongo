@@ -28,6 +28,7 @@ personsCursor.forEach( function (currPerson) {
   else {
     totalPopularity = (numMovies / 15) * (totalPopularity / numMovies);
   }
+  totalPopularity *= 12;
 	
 	db.persons.updateOne( { "_id": currPerson._id }, { $set: { "popularity": totalPopularity } } );
 
