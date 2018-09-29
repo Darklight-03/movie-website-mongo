@@ -24,7 +24,6 @@ export class SignUpComponent implements OnInit {
   submitted = false;
 
 
-
   constructor(
     private socialAuthService: AuthService,
     private formBuilder: FormBuilder,
@@ -71,14 +70,24 @@ export class SignUpComponent implements OnInit {
     }
 
     this.loading = true;
+
     this.userService.registerUser(this.registerForm.value)
       .pipe(first())
       .subscribe(
         data => {
-          this.alertService.success('Registration successful', true);
-          this.router.navigate(['/login']);
+          if (data.ok == 1) {
+            console.log("registerUser SUCCESS =");
+            this.alertService.success('Registration successful', true);
+            this.router.navigate(['/login']);
+          }
+          else {
+            console.log("registerUser DATABASE_ERROR =");
+          }
+          console.log(data);
         },
         error => {
+          console.log("registerUser ERROR =");
+          console.log(error);
           this.alertService.error(error);
           this.loading = false;
         });

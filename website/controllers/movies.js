@@ -70,4 +70,42 @@ router.get('/search',(req,res) => {
   })
 })
 
+
+router.get('/users',(req,res) => {
+  db.getUserById(req,(err,lists)=>{
+    if(err){
+      res.json({success:false, message: `database error: ${err}`});
+    }
+    else{
+      res.write(JSON.stringify(lists,null,2));
+      res.end();
+    }
+  })
+})
+
+
+
+router.post('/users/register',(req,res) => {
+  db.registerUser(req,(err,lists)=>{
+    if(err){
+      res.json({success:false, message: `database error: ${err}`});
+    }
+    else{
+      res.write(JSON.stringify(lists,null,2));
+      res.end();
+    }
+  })
+})
+
+router.delete('/users',(req,res) => {
+  db.deleteUser(req,(err,lists)=>{
+    if(err){
+      res.json({success:false, message: `database error: ${err}`});
+    }
+    else{
+      res.write(JSON.stringify(lists,null,2));
+      res.end();
+    }
+  })
+})
 module.exports = router;

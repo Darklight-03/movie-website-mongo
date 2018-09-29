@@ -19,6 +19,7 @@ const personsSchema = new Schema({
 const usersSchema = new Schema({
   id: Number,
   username: String,
+  password: String,
   favorites: [ {_id: {type: Schema.Types.ObjectId, ref: 'movies'}}]
 });
 
@@ -137,19 +138,16 @@ module.exports.search = (info,callback) => {
 // users methods
 
 module.exports.getUserById = (info,callback) => {
-  console.log("getUserById: " + info.query.id);
   users.findOne({id: info.query.id}, callback);
 }
 
 module.exports.registerUser = (info,callback) => {
-  console.log(info);
-  console.log(info.query);
-  //users.insert(info.query, callback);
+  var newUser = new users({id: Math.floor(Math.random() * 10000), username: info.body.username, password: info.body.password});
+  newUser.save(callback);
 }
 
 module.exports.deleteUser = (info,callback) => {
-  console.log("deleteUser: " + info.query.id);
-  users.remove({id: info.query.id}, callback);
+  users.deleteOne({id: info.query.id}, callback);
 }
 
 
