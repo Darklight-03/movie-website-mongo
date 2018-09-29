@@ -44,6 +44,19 @@ router.get('/popularpeople',(req,res)=>{
   });
 });
 
+//calls popularmovies from db.js and returns it
+router.get('/popularmovies',(req,res)=>{
+  db.getPopularMovies(req,(err,lists)=>{
+    if(err){
+      res,json({success:false, message: `database error: ${err}`});
+    }
+    else{
+      res.write(JSON.stringify(lists,null,2));
+      res.end();
+    }
+  });
+});
+
 // calls getPerson from db.js and returns
 router.get('/person',(req,res) => {
   db.getPerson(req,(err,lists)=> {
