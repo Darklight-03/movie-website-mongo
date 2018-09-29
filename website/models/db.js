@@ -142,11 +142,21 @@ module.exports.getPopularPeople = (info,callback)=>{
   persons.find({},null,{limit:10,sort:{popularity: -1}},callback);
 }
 
+module.exports.autocomplete = (info,callback)=>{
+  var updatedinfo = info;
+  info.query.limit = 5;
+  info.query.fullq = `(^| )${info.query.q}.*`;
+  return module.exports.search(info,callback);
+}
+
 // returns {movies: arr, people: arr}
 module.exports.search = (info,callback) => {
+  var query = info.query.fullq || `.*${info.query.q}.*`;
+  var sortfield = info.query.sortfield || 'popularity';
+  var limit = parseInt(info.query.limit) || 100;
   // run find operations for titles or names containing the query
-  movies.find({title: {$regex: `.*${info.query.q}.*`, $options: 'i'}}, 'id title poster_path').sort({'popularity': -1}).limit(parseInt(info.query.limit)||100).then((movievalue)=>{
-    persons.find({name: {$regex: `.*${info.query.q}.*`, $options: 'i'}}, 'id name profile_path cast_movies crew_movies').sort({'popularity': -1}).limit(parseInt(info.query.limit)||100).then((lists) => {
+  movies.find({title: {$regex: query, $options: 'i'}}, 'id title poster_path').sort({sortfield: -1}).limit(limit).then((movievalue)=>{
+    persons.find({name: {$regex: query, $options: 'i'}}, 'id name profile_path cast_movies crew_movies').sort({sortfield: -1}).limit(limit).then((lists) => {
 
       // re-make the movies object to have same fields as person object.
       retmovies = movievalue.map((movie)=>{
