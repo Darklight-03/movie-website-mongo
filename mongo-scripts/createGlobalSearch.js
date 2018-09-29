@@ -14,7 +14,7 @@ db.global_search.drop();
 db.createCollection('global_search');
 
 moviesCursor.forEach( function (currentMovie) {
-  db.global_search.insert({ 'name': currentMovie.title, 'popularity': currentMovie.popularity, 'type': 0, 'item': currentMovie._id });
+  db.global_search.insert({ 'name': currentMovie.title, 'popularity': currentMovie.popularity, 'type': 'movies', 'item': currentMovie._id });
   iterated++;
   if ((iterated % 30000) == 0) {
 		print('Progress: ~' + (100 * (iterated/num)).toString().match(/^-?\d+(?:\.\d{0,2})?/)[0] + '%.  ' + iterated + '/' + num + ' items');
@@ -22,7 +22,7 @@ moviesCursor.forEach( function (currentMovie) {
 });
 
 personsCursor.forEach( function (currentPerson) {
-  db.global_search.insert({ 'name': currentPerson.name, 'popularity': currentPerson.popularity, 'type': 1, 'item': currentPerson._id });
+  db.global_search.insert({ 'name': currentPerson.name, 'popularity': currentPerson.popularity, 'type': 'persons', 'item': currentPerson._id });
   iterated++;
   if ((iterated % 30000) == 0) {
 		print('Progress: ~' + (100 * (iterated/num)).toString().match(/^-?\d+(?:\.\d{0,2})?/)[0] + '%.  ' + iterated + '/' + num + ' items');
