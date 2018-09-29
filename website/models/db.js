@@ -16,6 +16,12 @@ const personsSchema = new Schema({
   cast_movies: [{_id: {type: Schema.Types.ObjectId, ref: 'movies'}, character: String}],
   crew_movies: [{_id: {type: Schema.Types.ObjectId, ref: 'movies'}, department: String}]
 });
+const searchSchema = new Schema({
+  name: String,
+  type: String,
+  popularity: Number,
+  item: {type: Schema.Types.ObjectId, refPath: 'type'}
+});
 
 const movies = module.exports = mongoose.model('movies', moviesSchema );
 const persons = module.exports = mongoose.model('persons', personsSchema );
@@ -100,36 +106,29 @@ module.exports.getPopularPeople = (info,callback)=>{
 
 module.exports.autocomplete = (info,callback)=>{
   var updatedinfo = info;
-  info.query.limit = 5;
+  info.query.num = 5;
   info.query.fullq = `(^| )${info.query.q}.*`;
   return module.exports.search(info,callback);
 }
 
 // returns {movies: arr, people: arr}
 module.exports.search = (info,callback) => {
-  var query = info.query.fullq || `.*${info.query.q}.*`;
+  var query = info.query.fullq || `(^| )(${info.query.q}( |$)`;
   var sortfield = info.query.sortfield || 'popularity';
-  var limit = parseInt(info.query.limit) || 100;
+  var limit = parseInt(info.query.num) || 100;
+  var start_from = parseInt(info.query.start) || 0;
   // run find operations for titles or names containing the query
-  movies.find({title: {$regex: query, $options: 'i'}}, 'id title poster_path').sort({sortfield: -1}).limit(limit).then((movievalue)=>{
-    persons.find({name: {$regex: query, $options: 'i'}}, 'id name profile_path cast_movies crew_movies').sort({sortfield: -1}).limit(limit).then((lists) => {
-
-      // re-make the movies object to have same fields as person object.
-      retmovies = movievalue.map((movie)=>{
-        var mov = {id: movie.id, name: movie.title, image: movie.poster_path};
-        return mov;
-      });
-        
-        // same thing for the people object.
-        retpeople = lists.map((person)=>{
-          var persn = {id: person.id, name: person.name, image: person.profile_path, roles: {characters: person.cast_movies, departments: person.crew_movies}}
-          return persn;
-        });
-
-        // return both object arrays in the object returned.
-        callback(false,{movies: retmovies, people: retpeople})
-    }).catch((err)=>{callback(err,null);});
-  }).catch((err)=>{
-    callback(err,null);
-  });
+  
+  search.find({name: {$regex: query, $options: 'i'}}).populate('item', 'id title name poster_path profile_path cast_movies crew_movies').sort({sortfield: -1}).limit(limit).skip(start_from).then((results)=>{
+    var finalresults = results.map((result) => {
+      if(result.type == movie){
+        var ret = {id: result.item.id, name: result.item.title, image: result.item.poster_path};
+        return ret;
+      }else{
+        var ret = {id: result.item.id, name: result.item.name, image: result.item.profile_path, roles: {characters: result.item.cast_movies, departments: result.item.crew_movies}};
+        return ret;
+      }
+      callback(false,finalresults);
+    });
+  }).catch((err)=>{callback(err,null);});
 }
