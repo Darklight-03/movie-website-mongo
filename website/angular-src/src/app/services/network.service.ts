@@ -32,8 +32,8 @@ export class NetworkService {
   }
 
   // movies
-  public getMovie( id: number ) {
-    const URL = `${this.apiUrl}/movie?id=${id}`;
+  public getMovie( id: number , sort: string) {
+    const URL = `${this.apiUrl}/movie?id=${id}&sort=${sort}`;
     return this.http.get(URL);
   }
 
@@ -49,15 +49,15 @@ export class NetworkService {
 
 
   // search
-  public getSearchResults( q: string ) {
-    const URL = `${this.apiUrl}/search?q=${q}`;
+  public getSearchResults( q: string , sort: string, num: number, start: number) {
+    const URL = `${this.apiUrl}/search?q=${q}&sort=${sort}&num=${num}&start=${start}`;
     return this.http.get(URL);
   }
 
 
   // person
-  public getPerson( id: number ) {
-    const URL = `${this.apiUrl}/person?id=${id}`;
+  public getPerson( id: number , sort: string) {
+    const URL = `${this.apiUrl}/person?id=${id}&sort=${sort}`;
     return this.http.get(URL);
   }
 

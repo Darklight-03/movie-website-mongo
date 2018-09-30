@@ -1,23 +1,11 @@
 <h3 *ngIf="searching">Searching...</h3>
-<div *ngIf="notsearching">
-  <button (click)="onClick($event)" [ngClass]="{'fill-data-btn':
-  people == true }">People
-    <div class="mat-button-ripple mat-ripple" matripple=""></div>
-    <div class="mat-button-focus-overlay"></div>
-  </button>
-  <button (click)="onClick($event)" [ngClass]="{'fill-data-btn': people ==
-  false }">Movies
-    <div class="mat-button-ripple mat-ripple" matripple=""></div>
-    <div class="mat-button-focus-overlay"></div>
-  </button>
-</div>
 <div class="row">
     
   </div>
 
 <div class="col-md-3" *ngFor="let item of display">
   <div class="thumbnail">
-    <a [routerLink]="['/', oftype, item.id]">
+    <a [routerLink]="['/', item.type, item.id]">
       <img src='http://image.tmdb.org/t/p/w600_and_h900_bestv2{{item.image}}'
       alt="{{item.name}}" style="width:200px;height:300px;">
       <div class="caption" style="font-weight: bold; text-align: center">
@@ -25,4 +13,15 @@
       </div>
     </a>
   </div>
+</div>
+
+<div class="row">
+</div>
+
+<div *ngIf="notsearching">
+  <button (click)="onClick($event)" [ngClass]="{'fill-data-btn':
+  loadingmore == true }">Load More
+    <div class="mat-button-ripple mat-ripple" matripple=""></div>
+    <div class="mat-button-focus-overlay"></div>
+  </button>
 </div>

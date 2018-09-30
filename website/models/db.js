@@ -310,10 +310,10 @@ module.exports.search = async (info,callback) => {
     // after gettings results normalize movie and people fields.
     var finalresults = results.map((result) => {
       if(result.type == "movies"){
-        var ret = {id: result.item.id, name: result.item.title, image: result.item.poster_path, popularity: result.popularity, originalq: info.query.q, q: q};
+        var ret = {id: result.item.id, name: result.item.title, image: result.item.poster_path, popularity: result.popularity, originalq: info.query.q, q: q, type: removeAt(result.type, result.type.length-1)};
         return ret;
       }else{
-        var ret = {id: result.item.id, name: result.item.name, image: result.item.profile_path, popularity: result.popularity, roles: {characters: result.item.cast_movies, departments: result.item.crew_movies}, originalq: info.query.q, q: q};
+        var ret = {id: result.item.id, name: result.item.name, image: result.item.profile_path, popularity: result.popularity, roles: {characters: result.item.cast_movies, departments: result.item.crew_movies}, originalq: info.query.q, q: q, type: removeAt(result.type, result.type.length-1)};
         return ret;
       }
     });
