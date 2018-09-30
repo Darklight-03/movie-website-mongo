@@ -70,28 +70,15 @@ export class SignUpComponent implements OnInit {
     }
 
     this.loading = true;
-
+    
+    // returns a 401 (Unauthorized) error if the user already exists
     this.userService.registerUser(this.registerForm.value)
       .pipe(first())
       .subscribe(
         data => {
-          if (data['username'] == this.registerForm.value.username) {
-            console.log("registerUser SUCCESS");
-            this.alertService.success('Registration successful', true);
-            this.router.navigate(['/login']);
-            delete data['password'];
-            console.log(data);
-          }
-          else {
-            console.log("registerUser DATABASE_ERROR");
-            if (data['message'].includes("username_1 dup key")) {
-              data['message'] = "Username already exists";
-            }
-            else {
-              // unknown database error
-            }
-            console.log(data);
-          }
+          console.log("registerUser SUCCESS");
+          this.alertService.success('Registration successful', true);
+          this.router.navigate(['/login']);
         },
         error => {
           console.log("registerUser ERROR =");

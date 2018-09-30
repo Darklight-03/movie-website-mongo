@@ -1,8 +1,15 @@
 const express = require('express');
+var jwt = require('express-jwt');
 const router = express.Router();
 const db = require('../models/db.js');
 
+var auth = jwt({
+  secret: process.env.MOVEDB_AUTH_SECRET,
+  userProperty: 'payload'
+});
+
 //GET HTTP methods
+
 
 // calls getMovie from db.js and returns it
 router.get('/movie',(req,res) => {
@@ -86,18 +93,15 @@ router.get('/users',(req,res) => {
 
 
 router.post('/users/register',(req,res) => {
-  db.registerUser(req,(err,lists)=>{
-    if(err){
-      res.json({success:false, message: `database error: ${err}`});
-    }
-    else{
-      res.write(JSON.stringify(lists,null,2));
-      res.end();
-    }
-  })
+  db.registerUser(req, res);
 })
 
-router.delete('/users',(req,res) => {
+router.post('/users/authenticate', (req,res) => {
+  db.authenticateUser(req, res);
+})
+
+
+router.delete('/users', auth, (req,res) => {
   db.deleteUser(req,(err,lists)=>{
     if(err){
       res.json({success:false, message: `database error: ${err}`});
@@ -108,4 +112,8 @@ router.delete('/users',(req,res) => {
     }
   })
 })
+
+
+
+
 module.exports = router;
