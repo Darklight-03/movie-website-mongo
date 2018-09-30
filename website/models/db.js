@@ -181,7 +181,6 @@ async function isResult(str){
         }
       ]
   });
-  console.log(result);
   if(result != undefined){
     return true;
   }
@@ -255,7 +254,8 @@ async function correction(querynr){
 // returns {movies: arr, people: arr}
 module.exports.search = async (info,callback) => {
   // get args
-  var query = info.query.fullq || stdregex(await correction(info.query.q));
+  var q = await correction(info.query.q);
+  var query = info.query.fullq || stdregex(q);
   var sortfield = info.query.sort || 'popularity';
   var limit = parseInt(info.query.num) || 100;
   var start_from = parseInt(info.query.start) || 0;
@@ -267,7 +267,7 @@ module.exports.search = async (info,callback) => {
     dir *= -1;
   }
 
-  global_search.find({name: {$regex: query, $options: 'i'}}).populate('item', 'id title name poster_path profile_path cast_movies crew_movies popularity').sort({[sortfield]: dir}).limit(limit).skip(start_from).then((results)=>{
+  global_search.find({$and: [{$text: {$search: q}}, {name: {$regex: query, $options: 'i'}}]}).populate('item', 'id title name poster_path profile_path cast_movies crew_movies popularity').sort({[sortfield]: dir}).limit(limit).skip(start_from).then((results)=>{
     // after gettings results normalize movie and people fields.
     var finalresults = results.map((result) => {
       if(result.type == "movies"){
