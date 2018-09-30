@@ -5,3 +5,4 @@ mongoimport --db movies_mongo --collection credits --mode upsert --username rwus
 mongo movies_mongo -u rwuser -p $password readCredits.js
 mongo movies_mongo -u rwuser -p $password readPersons.js
 mongo movies_mongo -u rwuser -p $password calcPersonsPopularity.js
+mongo movies_mongo -u rwuser -p $password createGlobalSearch.js

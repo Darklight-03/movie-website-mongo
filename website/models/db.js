@@ -150,6 +150,10 @@ module.exports.getPopularPeople = (info,callback)=>{
   persons.find({},null,{limit:10,sort:{popularity: -1}},callback);
 }
 
+module.exports.getPopularMovies = (info,callback)=>{
+  movies.find({},null,{limit:10,sort:{popularity: -1}},callback);
+}
+
 module.exports.autocomplete = (info,callback)=>{
   var updatedinfo = info;
   info.query.num = 5;
