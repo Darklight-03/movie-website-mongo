@@ -44,6 +44,19 @@ router.get('/popularpeople',(req,res)=>{
   });
 });
 
+//calls popularmovies from db.js and returns it
+router.get('/popularmovies',(req,res)=>{
+  db.getPopularMovies(req,(err,lists)=>{
+    if(err){
+      res,json({success:false, message: `database error: ${err}`});
+    }
+    else{
+      res.write(JSON.stringify(lists,null,2));
+      res.end();
+    }
+  });
+});
+
 // calls getPerson from db.js and returns
 router.get('/person',(req,res) => {
   db.getPerson(req,(err,lists)=> {
@@ -55,6 +68,18 @@ router.get('/person',(req,res) => {
       res.end();
     }
   });
+});
+
+router.get('/autocomplete',(req,res)=>{
+  db.autocomplete(req,(err,lists)=>{
+    if(err){
+      res.json({success:false, message: `database error: ${err}`});
+    }
+    else{
+      res.write(JSON.stringify(lists,null,2));
+      res.end();
+    }
+  })
 });
 
 // calls search from db.json and returns it.

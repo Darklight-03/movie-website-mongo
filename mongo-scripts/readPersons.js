@@ -2,7 +2,7 @@
 
 print("Creating persons collection...");
 
-// much slower method that works
+// very slow method
 var moviesCursor = db.movies.find( { "credits": { $ne: null } } ).noCursorTimeout();
 var numMovies = db.movies.count();
 var moviesIterated = 0;
