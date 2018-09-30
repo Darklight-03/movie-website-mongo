@@ -1,3 +1,10 @@
 /* You can add global styles to this file, and also import other style files */
 @import '~bootstrap/dist/css/bootstrap.min.css';
 
+* {
+  border: none;
+  border-top: none;
+  border-right: none;
+  border-left: none;
+  border-bottom: none;
+}
