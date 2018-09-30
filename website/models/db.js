@@ -264,8 +264,9 @@ async function correction(querynr){
     // add each letter between each 2 letters
     for ( var l = 0; l < 26; l++ ){
       letter = String.fromCharCode(97+l);
-      for (var i = 0; i < querynr.length; i++){
-        console.log(insertAt(querynr,i,letter));
+      for (var i = 0; i < querynr.length+1; i++){
+        newq = insertAt(querynr,i,letter);
+        console.log(newq);
         count++;
         if(await isResult(newq)){
           return newq;
@@ -276,7 +277,8 @@ async function correction(querynr){
     for ( var l = 0; l < 26; l++ ){
       letter = String.fromCharCode(97+l);
       for (var i = 0; i < querynr.length; i++) {
-        console.log(replaceAt(querynr,i,letter));
+        newq = replaceAt(querynr,i,letter);
+        console.log(newq);
         count++;
         if(await isResult(newq)){
           return newq;
