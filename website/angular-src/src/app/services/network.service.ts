@@ -8,6 +8,8 @@ export class AuthenticationService {
   constructor(private http: HttpClient) { }
 
   private apiUrl = '/dbservice';
+
+  // authentication
   login(username: string, password: string) {
     return this.http.post<any>(`${this.apiUrl}/users/authenticate`, { username: username, password: password })
       .pipe(map(user => {

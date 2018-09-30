@@ -8,8 +8,7 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
 import {first} from 'rxjs/operators';
 
-import {UserService} from '../../services/user.service';
-
+import {NetworkService} from '../../services/network.service';
 import {AlertService} from '../../services/alert.service';
 
 
@@ -28,7 +27,7 @@ export class SignUpComponent implements OnInit {
     private socialAuthService: AuthService,
     private formBuilder: FormBuilder,
     private router: Router,
-    private userService: UserService,
+    private service: NetworkService,
     private alertService: AlertService) { }
 
   ngOnInit() {
@@ -70,9 +69,9 @@ export class SignUpComponent implements OnInit {
     }
 
     this.loading = true;
-    
+
     // returns a 401 (Unauthorized) error if the user already exists
-    this.userService.registerUser(this.registerForm.value)
+    this.service.registerUser(this.registerForm.value)
       .pipe(first())
       .subscribe(
         data => {

@@ -4,7 +4,7 @@ import {AuthService, FacebookLoginProvider, GoogleLoginProvider} from 'angular-6
 import {ActivatedRoute, Router} from '@angular/router';
 import {AlertService} from '../../services/alert.service';
 import {first} from 'rxjs/operators';
-import {AuthenticationService} from '../../services/authentication.service';
++import {NetworkService} from '../../services/network.service';
 
 @Component({
   selector: 'app-login',
@@ -25,7 +25,7 @@ export class LoginComponent implements OnInit {
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
-    private authenticationService: AuthenticationService,
+    private networkService: NetworkService,
     private alertService: AlertService) {}
 
   ngOnInit() {
@@ -35,7 +35,7 @@ export class LoginComponent implements OnInit {
     });
 
     // reset login status
-    this.authenticationService.logout();
+    this.networkService.logout();
     this.returnUrl = '/u/' + this.loginForm.controls.username.value;
 
   }
@@ -55,7 +55,7 @@ export class LoginComponent implements OnInit {
 
     this.loading = true;
     console.log("logging in...");
-    this.authenticationService.login(this.f.username.value, this.f.password.value)
+    this.networkService.login(this.f.username.value, this.f.password.value)
       .pipe(first())
       .subscribe(
         data => {

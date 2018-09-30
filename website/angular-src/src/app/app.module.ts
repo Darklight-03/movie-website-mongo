@@ -19,14 +19,9 @@ import { SignUpComponent } from './component/sign-up/sign-up.component';
 import {AlertComponent} from './_directives/alert.component';
 
 import {AlertService} from './services/alert.service';
-import {PersonService} from './services/person.service';
-import {MovieService} from './services/movie.service';
-import {SearchService} from './services/search.service';
-import {AuthenticationService} from './services/authentication.service';
-import {UserService} from './services/user.service';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { LoginComponent } from './component/login/login.component';
-
++import {NetworkService} from './services/network.service';
 
 const appRoutes: Routes = [
   {path: '', component: TopTenMoviesComponent},
@@ -85,11 +80,8 @@ export function getAuthServiceConfigs() {
 
   ],
   providers: [
-    PersonService,
-    MovieService,
-    SearchService,
-    AuthenticationService,
-    UserService,
+    NetworkService,
+    
     {
       provide: AuthServiceConfig,
       useFactory: getAuthServiceConfigs
