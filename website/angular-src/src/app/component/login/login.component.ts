@@ -54,15 +54,21 @@ export class LoginComponent implements OnInit {
     }
 
     this.loading = true;
+
+    console.log("logging in...");
     this.networkService.login(this.f.username.value, this.f.password.value)
       .pipe(first())
       .subscribe(
         data => {
           this.router.navigate([this.returnUrl]);
+          console.log("login success");
+          console.log(JSON.stringify(data));
         },
         error => {
           this.alertService.error(error);
           this.loading = false;
+          console.log("login failure");
+          console.log(error);
         });
   }
 

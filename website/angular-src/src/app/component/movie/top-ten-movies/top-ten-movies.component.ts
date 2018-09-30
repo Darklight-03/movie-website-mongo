@@ -11,7 +11,7 @@ export class TopTenMoviesComponent implements OnInit {
 
   topMovies: MoviePoster[] = [];
 
-    constructor(private  service: NetworkService) {}
+  constructor(private  service: NetworkService) {}
 
   ngOnInit() {
 

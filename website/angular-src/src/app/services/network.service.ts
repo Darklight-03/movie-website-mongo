@@ -18,6 +18,9 @@ export class NetworkService {
           // store user details and jwt token in local storage to keep user logged in between page refreshes
           localStorage.setItem('currentUser', JSON.stringify(user));
         }
+        else {
+          // login not valid
+        }
 
         return user;
       }));
@@ -27,7 +30,6 @@ export class NetworkService {
     // remove user from local storage to log user out
     localStorage.removeItem('currentUser');
   }
-
 
   // movies
   public getMovie( id: number ) {
@@ -65,18 +67,17 @@ export class NetworkService {
     return this.http.get(URL);
   }
 
-
-  // user
-  getById(id: number) {
-    return this.http.get(`${this.apiUrl}/users/` + id);
+   // user
+  public getUserById(id: number) {
+    return this.http.get(`${this.apiUrl}/users?id=${id}`);
   }
 
-  register(user: User) {
+  public registerUser(user: User) {
     return this.http.post(`${this.apiUrl}/users/register`, user);
   }
 
-  delete(id: number) {
-    return this.http.delete(`${this.apiUrl}/users/` + id);
+  public deleteUser(id: number) {
+    return this.http.delete(`${this.apiUrl}/users?id=${id}`);
   }
 
   public autoComplete(q: string) {
