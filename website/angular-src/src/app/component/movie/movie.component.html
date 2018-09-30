@@ -1,60 +1,81 @@
 <div class="container-fluid">
-  <div class="row content">
-    <div class="col-lg-3 sidenav hidden-xs">
-      <h2 style="font-weight: bold;">{{movie.title}}</h2>
-      <br>
-      <ul class="nav nav-pills nav-stacked">
-        <li><a href="https://en.wikipedia.org/wiki/{{movie.title}}">Wikipedia</a></li>
-	<li><a href="{{movie.imdbLink}}">IMDB</a></li>
-        <li>Release Date: {{movie.release_date}}</li>
-        <li>Language {{movie.original_language}}
-      </ul><br>
-    </div>
-    <br>
+  <div class="well">
+    <h2 style="font-weight: bold;">{{movie.title}}</h2>
+    <div class="row">
+      <div class="col-sm-4">
 
-    <div class="col-sm-9">
-      <div class="well">
         <div class="thumbnail" style="background: none;">
-          <img src=  "http://image.tmdb.org/t/p/original{{movie.posterPath}}"
+          <img src="http://image.tmdb.org/t/p/original{{movie.posterPath}}"
                alt="Image Not Available :("
                class="img-responsive"
-               style="height: 400px; max-width: 400px;">
-        </div>
-        <h5>Overview</h5>
-        <p>{{movie.overview}}</p>
-      </div>
-
-      <div class="row">
-        <h3 style="font-weight: bold;">Cast:</h3>
-        <div class="col-sm-4" *ngFor="let cast of movie.castList" >
-          <div class="thumbnail">
-            <a [routerLink]="['/person', cast.id]">
-
-              <img
-              src="http://image.tmdb.org/t/p/original{{cast['profile_path']}}" alt="No image available" style="width: 180px; height: 270px">
-              <div class="caption" style="font-weight: bold; text-align: center;">
-                {{cast.name}}
-              </div>
-            </a>
-          </div>
+               style="height: 75%; width: 75%;">
         </div>
       </div>
+      <div class="col-sm-8">
+        <br />
 
-        <div class="row">
-          <h2 style="font-weight: bold;">Crew</h2>
-          <div class="col-sm-4" *ngFor="let crew of movie.crewList" >
-            <div class="thumbnail">
-              <a [routerLink]="['/person', crew.id]">
-                <img
-                src="http://image.tmdb.org/t/p/w600_and_h900_bestv2{{crew['profile_path']}}" alt="No image available" style="width: 180px; height: 270px">
-                <div class="caption" style="font-weight: bold; text-align: center;">
-                  {{crew.name}}
-                </div>
-              </a>
-          </div>
-        </div>
+        <ul class="nav nav-pills nav-stacked">
+          <li>Release Date: {{movie.release_date}}</li>
+          <li>Language: {{movie.original_language}}</li>
+          <li style="text-decoration: underline; font-weight: bold;">Useful Links:</li>
+          <li><a href="https://en.wikipedia.org/wiki/{{movie.title}}">Wikipedia</a></li>
+          <li><a href="{{movie.imdbLink}}">IMDB</a></li>
+        </ul>
       </div>
-
     </div>
+    <h5 style="text-decoration: underline;">Overview</h5>
+    <p>{{movie.overview}}</p>
   </div>
-</div>
+
+ 
+  <div class="row">
+
+    
+      <div class="col-sm-6">
+        <h3 style="font-weight: bold;">Cast:</h3>
+        <div *ngFor="let cast of movie.castList">
+          <div class="row">
+            <div class="col-sm-4">
+              <div class="thumbnail">
+                <a [routerLink]="['/person', cast.id]">
+                  <img src="http://image.tmdb.org/t/p/original{{cast['profile_path']}}" alt="No image available" style="width: 100%; height: 100%">
+                </a>
+              </div>
+            </div>
+
+            <div class="col-sm-8">
+              <a [routerLink]="['/person', cast.id]">
+                {{cast.name}}
+              </a>
+            </div>
+          </div>
+        </div>
+    </div>
+
+    
+      <div class="col-sm-6">
+        <h2 style="font-weight: bold;">Crew:</h2>
+        <div *ngFor="let crew of movie.crewList">
+          <div class="row">
+            <div class="col-sm-4">
+              <div class="thumbnail">
+                <a [routerLink]="['/person', crew.id]">
+                  <img src="http://image.tmdb.org/t/p/w600_and_h900_bestv2{{crew['profile_path']}}" alt="No image available" style="width: 100%; height: 100%">
+                </a>
+              </div>
+            </div>
+
+            <div class="col-sm-8">
+              <a [routerLink]="['/person', cast.id]">
+                {{crew.name}}
+              </a>
+            </div>
+
+          </div>
+        </div>
+    </div>
+
+
+  </div>
+  </div>
+
