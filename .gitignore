@@ -2,6 +2,8 @@ mongo-scripts/dataJSON/*
 mongo-scripts/rwuser-passwd
 website/public/*
 
+website/AUTH_SECRET
+
 # Logs
 website/logs
 website/*.log

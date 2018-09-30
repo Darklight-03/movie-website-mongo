@@ -9,7 +9,7 @@ import {NetworkService} from '../../services/network.service';
   styleUrls: ['./person.component.css']
 })
 export class PersonComponent implements OnInit {
-   person: Person = new Person(0, '', 0, '', null, null, '');
+  person: Person = new Person(0, '', 0, '', null, null, '');
   constructor(private service: NetworkService, private route: ActivatedRoute) {}
 
   ngOnInit() {

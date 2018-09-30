@@ -1,5 +1,9 @@
 //Require mongoose package
 const mongoose = require('mongoose');
+var crypto = require('crypto');
+var jwt = require('jsonwebtoken');
+var passport = require('passport');
+mongoose.set('useCreateIndex', true);
 var Schema = mongoose.Schema;
 
 //Define Schemsas
@@ -26,9 +30,40 @@ const searchSchema = new Schema({
   popularity: Number,
   item: {type: Schema.Types.ObjectId, refPath: 'type'}
 });
+const usersSchema = new Schema({
+  id: { type: Number,
+        index: { unique: true }
+      },
+  username: {
+        type: String,
+        index: { unique: true }
+      },
+  hash: String,
+  salt: String,
+  favorites: [ {_id: {type: Schema.Types.ObjectId, ref: 'movies'}}]
+});
+usersSchema.methods.setPassword = function(password) {
+  this.salt = crypto.randomBytes(16).toString('hex');
+  this.hash = crypto.pbkdf2Sync(password, this.salt, 1000, 64, 'sha512').toString('hex');
+};
+usersSchema.methods.validPassword = function(password) {
+  var hash = crypto.pbkdf2Sync(password, this.salt, 1000, 64, 'sha512').toString('hex');
+  return this.hash === hash;
+};
+usersSchema.methods.generateJwt = function() {
+  var expiry = new Date();
+  expiry.setDate(expiry.getDate() + 7);
+
+  return jwt.sign({
+    _id: this._id,
+    username: this.username,
+    exp: parseInt(expiry.getTime() / 1000),
+  }, process.env.MOVEDB_AUTH_SECRET);
+};
 
 const movies = module.exports = mongoose.model('movies', moviesSchema );
 const persons = module.exports = mongoose.model('persons', personsSchema );
+const users = module.exports = mongoose.model('users', usersSchema );
 const global_search = module.exports = mongoose.model('global_search', searchSchema, 'global_search' );
 
 function findAtId(id,arr){
@@ -285,3 +320,53 @@ module.exports.search = async (info,callback) => {
     callback(false,finalresults);
   }).catch((err)=>{callback(err,null);});
 }
+
+
+
+
+// ----------
+// users methods
+
+module.exports.getUserById = (info,callback) => {
+  users.findOne({id: info.query.id}, callback);
+}
+
+module.exports.registerUser = (info, res) => {
+  var newUser = new users({id: Math.floor(Math.random() * 10000), username: info.body.username, hash: null, salt: null});
+  newUser.setPassword(info.body.password);
+  newUser.save(function (err) {
+    if (err) {
+      res.status(401);
+      res.json({"err":err});
+      res.end();
+    }
+    else {
+      var jwtoken = newUser.generateJwt();
+      res.status(200);
+      res.json({"token":jwtoken});
+      res.end();
+    }
+  });
+}
+
+module.exports.deleteUser = (info,callback) => {
+  users.deleteOne({id: info.query.id}, callback);
+}
+
+module.exports.authenticateUser = (req, res) => {
+  passport.authenticate('local', function(err, user, info) {
+    if (err) {
+      res.json(err);
+      return;
+    }
+    if (user) {
+      var token = user.generateJwt();
+      res.status(200).json({"token": token});
+      res.end();
+    }
+    else {
+      res.status(401).json(info);
+    }
+  })(req, res);
+}
+
