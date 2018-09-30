@@ -75,7 +75,7 @@ router.get('/search',(req,res) => {
       res.end();
     }
   })
-})
+});
 
 
 router.get('/users',(req,res) => {
@@ -88,17 +88,17 @@ router.get('/users',(req,res) => {
       res.end();
     }
   })
-})
+});
 
 
 
 router.post('/users/register',(req,res) => {
   db.registerUser(req, res);
-})
+});
 
 router.post('/users/authenticate', (req,res) => {
   db.authenticateUser(req, res);
-})
+});
 
 
 router.delete('/users', auth, (req,res) => {
@@ -111,7 +111,7 @@ router.delete('/users', auth, (req,res) => {
       res.end();
     }
   })
-})
+});
 
 
 

@@ -194,13 +194,12 @@ module.exports.deleteUser = (info,callback) => {
 module.exports.authenticateUser = (req, res) => {
   passport.authenticate('local', function(err, user, info) {
     if (err) {
-      res.status(404).json(err);
+      res.json(err);
       return;
     }
     if (user) {
       var token = user.generateJwt();
-      res.status(200);
-      res.json({"token": token});
+      res.status(200).json({"token": token});
       res.end();
     }
     else {

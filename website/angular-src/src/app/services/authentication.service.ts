@@ -16,7 +16,7 @@ export class AuthenticationService {
           localStorage.setItem('currentUser', JSON.stringify(user));
         }
         else {
-          // login not successful
+          // login not valid
         }
         return user;
       }));
