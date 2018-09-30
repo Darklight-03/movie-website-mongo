@@ -161,7 +161,7 @@ module.exports.autocomplete = (info,callback)=>{
 module.exports.search = (info,callback) => {
   // get args
   var query = info.query.fullq || `(^| )(${info.query.q})( |$)`;
-  var sortfield = info.query.sortfield || 'popularity';
+  var sortfield = info.query.sort || 'popularity';
   var limit = parseInt(info.query.num) || 100;
   var start_from = parseInt(info.query.start) || 0;
   // run find operations for titles or names containing the query
