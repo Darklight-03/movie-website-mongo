@@ -73,4 +73,9 @@ export class NetworkService {
   delete(id: number) {
     return this.http.delete(`${this.apiUrl}/users/` + id);
   }
+
+  public autoComplete(q: string) {
+    const URL = `${this.apiUrl}/autocomplete?q=${q}`;
+    return this.http.get(URL);
+  }
 }
