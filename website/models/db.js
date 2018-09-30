@@ -171,8 +171,18 @@ function removeAt(str, pos){
   return str.substring(0,pos) + str.substring(pos+1);
 }
 async function isResult(str){
-  var result = await global_search.countDocuments({name: {$regex: stdregex(str), $options: 'i'}}).limit(1);
-  if(result === 1){
+  var result = await global_search.findOne({
+    $and:
+      [
+        {$text:
+          {$search: str}},
+        {name:
+          {$regex: stdregex(str), $options: 'i'}
+        }
+      ]
+  });
+  console.log(result);
+  if(result != undefined){
     return true;
   }
   else return false;
@@ -183,11 +193,13 @@ function stdregex(str){
 
 async function correction(querynr){
   // if gets results, return them.
-  if(await isResult(querynr)){
+  if(await global_search.findOne({name: {$regex: stdregex(querynr), $options: 'i'}}) != undefined){
     return querynr;
   }
   // else find lots of possible corrections until one does return results
   else{
+    //var all = await global_search.find({},"name");
+    //console.log(all);
     var newq = querynr;
     var letter = "";
     var count = 0;
