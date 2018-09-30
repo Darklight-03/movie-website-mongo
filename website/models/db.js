@@ -157,16 +157,98 @@ module.exports.autocomplete = (info,callback)=>{
   return module.exports.search(info,callback);
 }
 
+// replace letter at position with letter
+function replaceAt(str, pos, letter){
+  return str.substring(0,pos) + letter + str.substring(pos+1);
+}
+function reverseAt(str, pos){
+  return str.substring(0,pos) + str.charAt(pos+1) + str.charAt(pos) + str.substring(pos+2);
+}
+function insertAt(str, pos, letter){
+  return str.substring(0,pos) + letter + str.substring(pos);
+}
+function removeAt(str, pos){
+  return str.substring(0,pos) + str.substring(pos+1);
+}
+async function isResult(str){
+  var result = await global_search.countDocuments({name: {$regex: stdregex(str), $options: 'i'}}).limit(1);
+  if(result === 1){
+    return true;
+  }
+  else return false;
+}
+function stdregex(str){
+  return `(^| )(${str})( |$)`;
+}
+
+async function correction(querynr){
+  // if gets results, return them.
+  if(await isResult(querynr)){
+    return querynr;
+  }
+  // else find lots of possible corrections until one does return results
+  else{
+    var newq = querynr;
+    var letter = "";
+    var count = 0;
+    console.log("TET");
+    startTime = new Date();
+    // swap each adjacent letter-set
+    for ( var i = 0; i < querynr.length-1; i++){
+      newq = reverseAt(querynr,i);
+      console.log(newq);
+      count++;
+      if(await isResult(newq)){
+        return newq;
+      }
+    }
+    // remove each letter
+    for ( var i = 0; i < querynr.length; i++){
+      newq = removeAt(querynr,i);
+      console.log(newq);
+      count++;
+      if(await isResult(newq)){
+        return newq;
+      }
+    }
+    // add each letter between each 2 letters
+    for ( var l = 0; l < 26; l++ ){
+      letter = String.fromCharCode(97+l);
+      for (var i = 0; i < querynr.length; i++){
+        console.log(insertAt(querynr,i,letter));
+        count++;
+        if(await isResult(newq)){
+          return newq;
+        }
+      }
+    }
+    // replace each letter with each possible letter
+    for ( var l = 0; l < 26; l++ ){
+      letter = String.fromCharCode(97+l);
+      for (var i = 0; i < querynr.length; i++) {
+        console.log(replaceAt(querynr,i,letter));
+        count++;
+        if(await isResult(newq)){
+          return newq;
+        }
+      }
+    }
+    endTime = new Date();
+    var timeDiff = endTime - startTime; 
+    console.log(timeDiff + " ms");
+    console.log(count + " options");
+  }
+}
+
 // returns {movies: arr, people: arr}
-module.exports.search = (info,callback) => {
+module.exports.search = async (info,callback) => {
   // get args
-  var query = info.query.fullq || `(^| )(${info.query.q})( |$)`;
+  var query = info.query.fullq || stdregex(await correction(info.query.q));
   var sortfield = info.query.sort || 'popularity';
   var limit = parseInt(info.query.num) || 100;
   var start_from = parseInt(info.query.start) || 0;
   // run find operations for titles or names containing the query
-  console.log(limit);
-
+  console.log(query);
   // sort reverse if popularity is the sort field
   var dir = 1;
   if(sortfield == "popularity"){
