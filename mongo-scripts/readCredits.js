@@ -15,7 +15,7 @@ print("Inserting credits into movie documents...");
 db.credits_ids.insertMany(db.credits.distinct( "_id" ));
 
 db.credits.createIndex( { "id": 1 } );
-db.movies.createIndex( { "id": 1 } );
+db.movies.createIndexex( { "id": 1 }, {"name": 1}, {"name": "text"});
 
 // much slower method that works
 var moviesCursor = db.movies.find( { "hasCredits" : 1 } );
