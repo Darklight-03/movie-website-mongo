@@ -8,7 +8,9 @@ const moviesSchema = new Schema({
   id: Number,
   poster_path: String,
   revenue: Number,
-  popularity: Number
+  popularity: Number,
+  year: Number,
+  credits: {cast: [{name: String, character: String}], crew: [{name: String, department: String}]}
 });
 const personsSchema = new Schema({
   name: String,
@@ -39,18 +41,59 @@ function findAtId(id,arr){
   return x;
 }
 
+function sortfunc(field, order=1){
+  return ((a,b)=>{
+    var orderr = order;
+    var r = 0;
+    if(typeof(a["_id"]) != "undefined" && typeof(a["_id"]["_id"]) != "undefined"){
+      if(a["_id"][field] < b["_id"][field]){
+        r = -1;
+      }
+      if(a["_id"][field] > b["_id"][field]){
+        r = 1
+      }
+    }else{
+      if(a[field] < b[field]){
+        r = -1;
+      }
+      if(a[field] > b[field]){
+        r = 1
+      }
+    }
+    return r*orderr;
+  });
+}
+
 // returns the entire movie object from database
 module.exports.getMovie = (info,callback) => {
+  var sortfield = info.query.sort || "name";
   // info.query gets the object containing arguments passed from request.
-  movies.findOne({id: info.query.id}, callback);
+  movies.findOne({id: info.query.id}).then((movie)=>{
+    direction = 1;
+    if(sortfield = "popularity"){
+      direction = -1;
+    }
+    movie.credits.cast.sort(sortfunc(sortfield, direction)) 
+    callback(null,movie);
+  }).catch((err)=>{callback(err,null);});
 }
 
 // returns the entire person object from database
 module.exports.getPerson = (info,callback) => {
-  persons.findOne({id: info.query.id}).populate('cast_movies._id','title poster_path id').populate('crew_movies._id','title poster_path id').then((p)=>{
+  var sortField = info.query.sort || "popularity"
+  persons.findOne({id: info.query.id}).populate('cast_movies._id','title poster_path id popularity year').populate('crew_movies._id','title poster_path id popularity year').then((p)=>{
     var arr = [];
     var arr1 = [];
     var arr2 = [];
+    
+    var direction = 1;
+    if(sortField == "popularity" || sortField == "year"){
+      direction = -1;
+    }
+
+    p.cast_movies = p.cast_movies.sort(sortfunc(sortField,direction));
+    p.crew_movies = p.crew_movies.sort(sortfunc(sortField,direction));
+    
     p.cast_movies.slice(0).forEach((movie,i)=>{
       if(!arr.includes(movie._id.id)){
         arr.push(movie._id.id);

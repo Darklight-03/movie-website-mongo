@@ -9,14 +9,26 @@ var personsIterated = 0;
 
 personsCursor.forEach( function (currPerson) {
 	var totalPopularity = 0;
+  var indvPop = 0;
 	var numMovies = 0;
 
 	for (i = 0; i < currPerson.cast_movies.length; i++) {
-		totalPopularity += db.movies.findOne( { "_id": currPerson.cast_movies[i]._id }, { "popularity":1 } ).popularity;
-		numMovies++;
+    numMovies++;
+		indvPop = db.movies.findOne( { "_id": currPerson.cast_movies[i]._id }, { "popularity":1 } ).popularity;
+    if (indvPop < (0.5 * (totalPopularity / numMovies))) {
+      numMovies--;
+      indvPop = 0;
+    }
+    totalPopularity += indvPop;
 	}
 	
-	totalPopularity = (0.3 * (totalPopularity / numMovies)) + (0.7 * numMovies);
+  if (numMovies >= 15) {
+    totalPopularity = totalPopularity / numMovies;
+  }
+  else {
+    totalPopularity = (numMovies / 15) * (totalPopularity / numMovies);
+  }
+  totalPopularity *= 12;
 	
 	db.persons.updateOne( { "_id": currPerson._id }, { $set: { "popularity": totalPopularity } } );
 
