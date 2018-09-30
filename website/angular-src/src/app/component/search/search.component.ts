@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 
 import { SearchItem } from '../../model/search-item.model';
 import { SearchResult } from '../../model/search-result.model';
-import {SearchService} from '../../services/search.service';
+import {NetworkService} from '../../services/network.service';
 
 @Component({
   selector: 'app-search',
@@ -20,7 +20,7 @@ export class SearchComponent implements OnInit {
   people:boolean;
   oftype:string;
 
-  constructor(private route: ActivatedRoute, private service: SearchService) {
+  constructor(private route: ActivatedRoute, private service: NetworkService) {
     // this runs every time the url parameters change
     route.params.subscribe(val => {  
       // clear all previous results

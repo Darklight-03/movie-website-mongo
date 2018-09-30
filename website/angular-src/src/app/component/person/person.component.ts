@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {Person} from '../../model/person.model';
 import {ActivatedRoute} from '@angular/router';
-import {PersonService} from '../../services/person.service';
+import {NetworkService} from '../../services/network.service';
 
 @Component({
   selector: 'app-person',
@@ -9,8 +9,8 @@ import {PersonService} from '../../services/person.service';
   styleUrls: ['./person.component.css']
 })
 export class PersonComponent implements OnInit {
-   person: Person = new Person(0, '', 0, '', null, null, '');
-  constructor(private service: PersonService, private route: ActivatedRoute) {}
+  person: Person = new Person(0, '', 0, '', null, null, '');
+  constructor(private service: NetworkService, private route: ActivatedRoute) {}
 
   ngOnInit() {
     this.service.getPerson(this.route.snapshot.params['id']).subscribe((data: Object) => {

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {Movie} from '../../model/movie.model';
 import {ActivatedRoute} from '@angular/router';
-import {MovieService} from '../../services/movie.service';
+import {NetworkService} from '../../services/network.service';
 
 @Component({
   selector: 'app-movie',
@@ -11,7 +11,7 @@ import {MovieService} from '../../services/movie.service';
 export class MovieComponent implements OnInit {
   movie: Movie = new Movie(0, '', '', '', '', 0, '', null, null, '');
 
-  constructor(private  service: MovieService, private route: ActivatedRoute) {}
+  constructor(private  service: NetworkService, private route: ActivatedRoute) {}
 
   ngOnInit() {
     this.service.getMovie(this.route.snapshot.params['id']).subscribe((data: Object) => {

@@ -43,7 +43,6 @@ export class SignUpComponent implements OnInit {
 
   public socialSignIn(socialPlatform: string) {
     let socialPlatformProvider;
-    console.log(socialPlatform);
     if (socialPlatform === 'facebook') {
       socialPlatformProvider = FacebookLoginProvider.PROVIDER_ID;
     } else if (socialPlatform === 'google') {
@@ -76,6 +75,7 @@ export class SignUpComponent implements OnInit {
       .subscribe(
         data => {
           console.log("registerUser SUCCESS");
+          console.log(data);
           this.alertService.success('Registration successful', true);
           this.router.navigate(['/login']);
         },

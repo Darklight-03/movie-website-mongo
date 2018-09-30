@@ -2,7 +2,7 @@
 
 print("Creating persons collection...");
 
-// much slower method that works
+// very slow method
 var moviesCursor = db.movies.find( { "credits": { $ne: null } } ).noCursorTimeout();
 var numMovies = db.movies.count();
 var moviesIterated = 0;
@@ -65,5 +65,8 @@ db.persons.updateMany(
 	{ "is_crew": { $exists: 0 } },
 	{ $set: { "is_crew": 0 } }
 );
+
+db.persons.createIndexes([{'id': 1},{'name': 1},{'name': 'text'}]);
+db.persons.reIndex();
 
 print("Done creating persons collection.");

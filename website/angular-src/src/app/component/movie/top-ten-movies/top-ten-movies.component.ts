@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {MoviePoster} from '../../../model/moviePoster.model';
-import {MovieService} from '../../../services/movie.service';
+import {NetworkService} from '../../../services/network.service';
 
 @Component({
   selector: 'app-top-ten-movies',
@@ -11,7 +11,7 @@ export class TopTenMoviesComponent implements OnInit {
 
   topMovies: MoviePoster[] = [];
 
-    constructor(private  service: MovieService) {}
+  constructor(private  service: NetworkService) {}
 
   ngOnInit() {
 
