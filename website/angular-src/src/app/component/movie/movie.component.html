@@ -14,7 +14,7 @@
 
     <div class="col-sm-9">
       <div class="well">
-        <div class="thumbnail">
+        <div class="thumbnail" style="background: none;">
           <img src=  "http://image.tmdb.org/t/p/original{{movie.posterPath}}"
                alt="Image Not Available :("
                class="img-responsive"
@@ -33,7 +33,7 @@
               <img
               src="http://image.tmdb.org/t/p/original{{cast['profile_path']}}" alt="No image available" style="width: 180px; height: 270px">
               <div class="caption" style="font-weight: bold; text-align: center;">
-                "{{cast.name}}"
+                {{cast.name}}
               </div>
             </a>
           </div>
@@ -41,14 +41,14 @@
       </div>
 
         <div class="row">
-          <h2>Crew</h2>
+          <h2 style="font-weight: bold;">Crew</h2>
           <div class="col-sm-4" *ngFor="let crew of movie.crewList" >
             <div class="thumbnail">
               <a [routerLink]="['/person', crew.id]">
                 <img
                 src="http://image.tmdb.org/t/p/w600_and_h900_bestv2{{crew['profile_path']}}" alt="No image available" style="width: 180px; height: 270px">
-                <div class="caption">
-                  "{{crew.name}}"
+                <div class="caption" style="font-weight: bold; text-align: center;">
+                  {{crew.name}}
                 </div>
               </a>
           </div>
