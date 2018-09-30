@@ -34,10 +34,7 @@ export class LoginComponent implements OnInit {
       password: ['', [Validators.required, Validators.minLength(6)]]
     });
 
-    // reset login status
-    this.networkService.logout();
     this.returnUrl = '/u/' + this.loginForm.controls.username.value;
-
   }
 
   get f() { return this.loginForm.controls; }
