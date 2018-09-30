@@ -34,4 +34,9 @@ export class MovieService {
     const URL = `${this.apiUrl}/popularpeople`;
     return this.http.get(URL);
   }
+
+  public getPopularMovies() {
+    const URL = `${this.apiUrl}/popularmovies`;
+    return this.http.get(URL);
+  }
 }
