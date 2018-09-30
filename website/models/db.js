@@ -7,12 +7,14 @@ const moviesSchema = new Schema({
   title: String,
   id: Number,
   poster_path: String,
-  revenue: Number
+  revenue: Number,
+  popularity: Number
 });
 const personsSchema = new Schema({
   name: String,
   id: Number,
   profile_path: String,
+  popularity: Number,
   cast_movies: [{_id: {type: Schema.Types.ObjectId, ref: 'movies'}, character: String}],
   crew_movies: [{_id: {type: Schema.Types.ObjectId, ref: 'movies'}, department: String}]
 });
@@ -25,7 +27,7 @@ const searchSchema = new Schema({
 
 const movies = module.exports = mongoose.model('movies', moviesSchema );
 const persons = module.exports = mongoose.model('persons', personsSchema );
-const globalsearch = module.exports = mongoose.model('global_search', searchSchema );
+const global_search = module.exports = mongoose.model('global_search', searchSchema, 'global_search' );
 
 function findAtId(id,arr){
   var x = -1;
@@ -114,21 +116,28 @@ module.exports.autocomplete = (info,callback)=>{
 
 // returns {movies: arr, people: arr}
 module.exports.search = (info,callback) => {
-  var query = info.query.fullq || `(^| )(${info.query.q}( |$)`;
+  // get args
+  var query = info.query.fullq || `(^| )(${info.query.q})( |$)`;
   var sortfield = info.query.sortfield || 'popularity';
   var limit = parseInt(info.query.num) || 100;
   var start_from = parseInt(info.query.start) || 0;
   // run find operations for titles or names containing the query
-  
-  console.log(`query: ${query}, sortfield: ${sortfield}, limit: ${limit}, start_from ${start_from}`);
-  globalsearch.find({name: {$regex: query, $options: 'i'}}).populate('item', 'id title name poster_path profile_path cast_movies crew_movies').sort({sortfield: -1}).limit(limit).skip(start_from).then((results)=>{
-    console.log(JSON.stringify(results));
+  console.log(limit);
+
+  // sort reverse if popularity is the sort field
+  var dir = 1;
+  if(sortfield == "popularity"){
+    dir *= -1;
+  }
+
+  global_search.find({name: {$regex: query, $options: 'i'}}).populate('item', 'id title name poster_path profile_path cast_movies crew_movies popularity').sort({[sortfield]: dir}).limit(limit).skip(start_from).then((results)=>{
+    // after gettings results normalize movie and people fields.
     var finalresults = results.map((result) => {
-      if(result.type == movie){
-        var ret = {id: result.item.id, name: result.item.title, image: result.item.poster_path};
+      if(result.type == "movies"){
+        var ret = {id: result.item.id, name: result.item.title, image: result.item.poster_path, popularity: result.popularity};
         return ret;
       }else{
-        var ret = {id: result.item.id, name: result.item.name, image: result.item.profile_path, roles: {characters: result.item.cast_movies, departments: result.item.crew_movies}};
+        var ret = {id: result.item.id, name: result.item.name, image: result.item.profile_path, popularity: result.popularity, roles: {characters: result.item.cast_movies, departments: result.item.crew_movies}};
         return ret;
       }
     });
