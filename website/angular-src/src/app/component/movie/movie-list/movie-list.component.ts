@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {Movie} from '../../../model/movie.model';
-import {MovieService} from '../../services/movie.service';
+import {NetworkService} from '../../../services/network.service';
 
 @Component({
   selector: 'app-movie-list',
@@ -10,7 +10,7 @@ import {MovieService} from '../../services/movie.service';
 export class MovieListComponent implements OnInit {
   movies: Movie[] = [];  
 
-  constructor(private listServ: MovieService) { }
+  constructor(private listServ: NetworkService) { }
 
   ngOnInit() {
     this.listServ.getPopularMovies().subscribe((data: Object) => {

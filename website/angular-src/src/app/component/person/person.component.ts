@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {Person} from '../../model/person.model';
-import {MovieService} from '../services/movie.service';
 import {ActivatedRoute} from '@angular/router';
+import {NetworkService} from '../../services/network.service';
 
 @Component({
   selector: 'app-person',
@@ -10,10 +10,10 @@ import {ActivatedRoute} from '@angular/router';
 })
 export class PersonComponent implements OnInit {
    person: Person = new Person(0, '', 0, '', null, null, '');
-  constructor(private dbService: MovieService, private route: ActivatedRoute) {}
+  constructor(private service: NetworkService, private route: ActivatedRoute) {}
 
   ngOnInit() {
-    this.dbService.getPerson(this.route.snapshot.params['id']).subscribe((data: Object) => {
+    this.service.getPerson(this.route.snapshot.params['id']).subscribe((data: Object) => {
       console.log(data);
 
       this.person.id = data['id'];
