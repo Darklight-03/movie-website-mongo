@@ -19,6 +19,8 @@ export class SearchComponent implements OnInit {
   notsearching:boolean;
   loadingmore:boolean;
   oftype:string;
+  corrected:boolean;
+  correction:string;
 
   constructor(private route: ActivatedRoute, private service: NetworkService) {
     // this runs every time the url parameters change
@@ -26,12 +28,17 @@ export class SearchComponent implements OnInit {
       // clear all previous results
       this.searching = true;
       this.notsearching = false;
+      this.corrected = false;
       this.display = [];
       this.q = this.route.snapshot.params['q'];
       // search database for new parameters
       this.service.getSearchResults(this.q, undefined, 20, 0).subscribe((data: SearchItem) => {
         console.log(data);
         data.forEach((dataelem) => {
+          if(dataelem.q != dataelem.originalq){
+            this.correction = dataelem.q;
+            this.corrected = true;
+          }
           this.display.push(dataelem);
         });
         this.searching = false;
