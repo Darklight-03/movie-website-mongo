@@ -21,7 +21,7 @@ import {AlertComponent} from './_directives/alert.component';
 import {AlertService} from './services/alert.service';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { LoginComponent } from './component/login/login.component';
-+import {NetworkService} from './services/network.service';
+import {NetworkService} from './services/network.service';
 
 const appRoutes: Routes = [
   {path: '', component: TopTenMoviesComponent},
@@ -81,7 +81,7 @@ export function getAuthServiceConfigs() {
   ],
   providers: [
     NetworkService,
-    
+
     {
       provide: AuthServiceConfig,
       useFactory: getAuthServiceConfigs

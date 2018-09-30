@@ -4,7 +4,7 @@ import {AuthService, FacebookLoginProvider, GoogleLoginProvider} from 'angular-6
 import {ActivatedRoute, Router} from '@angular/router';
 import {AlertService} from '../../services/alert.service';
 import {first} from 'rxjs/operators';
-+import {NetworkService} from '../../services/network.service';
+import {NetworkService} from '../../services/network.service';
 
 @Component({
   selector: 'app-login',

@@ -4,7 +4,7 @@ import { map } from 'rxjs/operators';
 import {User} from '../model/user.model';
 
 @Injectable()
-export class AuthenticationService {
+export class NetworkService {
   constructor(private http: HttpClient) { }
 
   private apiUrl = '/dbservice';
