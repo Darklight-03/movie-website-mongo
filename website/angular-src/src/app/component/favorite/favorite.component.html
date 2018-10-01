@@ -8,9 +8,11 @@
              alt="{{movie.title}}" style="width: 75%;">
         <div class="caption" style="font-weight:bold; outline-color: none; text-align: center;">
           {{movie.title}}
+
         </div>
       </a>
+      <button (click)="onRemove(movie.id)" class="btn btn-danger center-block">Remove</button>
+
     </div>
-    <button class="btn btn-dangern" (click)="onRemove" )>Remove</button>
   </div>
 </div>
