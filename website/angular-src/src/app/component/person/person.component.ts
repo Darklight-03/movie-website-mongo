@@ -11,9 +11,11 @@ import {NetworkService} from '../../services/network.service';
 export class PersonComponent implements OnInit {
   person: Person = new Person(0, '', 0, '', null, null, '');
   sort: string = 'popularity';
+
   constructor(private service: NetworkService, private route: ActivatedRoute) {}
 
   ngOnInit() {
+    this.sort = 'popularity';
     this.service.getPerson(this.route.snapshot.params['id'], this.sort).subscribe((data: Object) => {
       console.log(data);
 

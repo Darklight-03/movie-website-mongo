@@ -15,6 +15,9 @@
         <br />
 
         <ul class="nav nav-pills nav-stacked">
+          <br>
+          <button class="btn btn-primary" style="margin:10px;margin-left:0px" *ngIf="service.isLoggedIn()" (click)="onClick($event)">{{buttonText}}</button>
+          <br>
           <li>Release Date: {{movie.release_date}}</li>
           <li>Language: {{movie.original_language}}</li>
           <li style="text-decoration: underline; font-weight: bold;">Useful Links:</li>
@@ -27,7 +30,7 @@
     <p>{{movie.overview}}</p>
   </div>
 
- 
+
   <div class="row">
 
     <div>
@@ -37,7 +40,7 @@
         <option>role</option>
     </select>
     </div>
-    
+
       <div class="col-sm-6">
         <h3 style="font-weight: bold;">Cast:</h3>
         <div *ngFor="let cast of movie.castList">
@@ -60,7 +63,7 @@
         </div>
     </div>
 
-    
+
       <div class="col-sm-6">
         <h2 style="font-weight: bold;">Crew:</h2>
         <div *ngFor="let crew of movie.crewList">
@@ -86,4 +89,3 @@
 
   </div>
   </div>
-
