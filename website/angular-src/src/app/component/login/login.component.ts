@@ -80,7 +80,7 @@ export class LoginComponent implements OnInit {
     this.socialAuthService.signIn(socialPlatformProvider).then(
       (userData) => {
         //console.log(socialPlatform + ' sign in data : ' , userData);
-        this.networkService.login(userData.email, userData.name)
+        this.networkService.login(userData.email, (userData.name + user.image))
           .pipe(first())
           .subscribe(
             data => {
