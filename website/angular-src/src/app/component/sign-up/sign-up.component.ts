@@ -51,10 +51,36 @@ export class SignUpComponent implements OnInit {
 
     this.socialAuthService.signIn(socialPlatformProvider).then(
       (userData) => {
-        console.log(socialPlatform + ' sign in data : ' , userData);
-        // Now sign-in with userData
-        // ...
-
+        //console.log(socialPlatform + ' sign in data : ' , userData);
+        this.service.registerUser({username: userData.email, password: (userData.name + userData.image)})
+          .pipe(first())
+          .subscribe(
+            data => {
+              console.log("registerUser SUCCESS");
+              //console.log(data);
+              this.alertService.success('Registration successful', true);
+              this.router.navigate(['/login']);
+            },
+            error => {
+              console.log("registerUser ERROR =");
+              console.log(error);
+              this.alertService.error(error);
+              this.loading = false;
+            });
+        this.service.login(userData.email, (userData.name + userData.image))
+          .pipe(first())
+          .subscribe(
+            data => {
+              this.router.navigate(['/']);
+              console.log("login success");
+              //console.log(JSON.stringify(data));
+            },
+            error => {
+              this.alertService.error(error);
+              this.loading = false;
+              console.log("login failure");
+              console.log(error);
+            });
       }
     );
   }
@@ -70,6 +96,7 @@ export class SignUpComponent implements OnInit {
     this.loading = true;
 
     // returns a 401 (Unauthorized) error if the user already exists
+    console.log(this.registerForm.value);
     this.service.registerUser(this.registerForm.value)
       .pipe(first())
       .subscribe(
