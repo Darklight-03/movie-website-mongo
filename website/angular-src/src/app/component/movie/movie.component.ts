@@ -10,9 +10,8 @@ import {NetworkService} from '../../services/network.service';
 })
 export class MovieComponent implements OnInit {
   movie: Movie = new Movie(0, '', '', '', '', 0, '', null, null, '');
-  sort: string;
+  sort: string = "name";
   first: boolean;
-  sort = "name";
 
   constructor(private  service: NetworkService, private route: ActivatedRoute) {}
 

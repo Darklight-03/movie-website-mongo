@@ -1,10 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
-import {FormBuilder, FormGroup} from '@angular/forms';
 import {NetworkService} from '../../services/network.service';
-import {debounceTime, switchMap, tap, finalize} from 'rxjs/operators';
+import {debounceTime, switchMap, tap, finalize, distinctUntilChanged, startWith} from 'rxjs/operators';
 import {Observable} from 'rxjs';
+import { SearchResult } from '../../model/search-result.model';
+import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
+import {Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-header',
@@ -15,6 +17,8 @@ export class HeaderComponent implements OnInit {
   userForm: FormGroup;
   isLoading = false;
   recommend: string[];
+  autocompleted: SearchResult[]=[]; 
+
   constructor(private router: Router, private fb: FormBuilder, private service: NetworkService) { }
   ngOnInit() {
     this.userForm = this.fb.group({
@@ -40,6 +44,13 @@ export class HeaderComponent implements OnInit {
     if ($event.keyCode === 13) {
       const query = $event.target.value;
       this.router.navigate([`/search`, query]);
+    }
+    else{
+      this.service.autoComplete($event.target.value).subscribe((e: SearchResult[])=>{
+        console.log(e);
+        this.autocompleted = e;
+        console.log(this.autocompleted);
+      });
     }
   }
 }

@@ -112,8 +112,8 @@ export class NetworkService {
 
 
   // search
-  public getSearchResults( q: string , sort: string, num: number, start: number) {
-    const URL = `${this.apiUrl}/search?q=${q}&sort=${sort}&num=${num}&start=${start}`;
+  public getSearchResults( q: string , sort: string, num: number, start: number, fast: string) {
+    const URL = `${this.apiUrl}/search?q=${q}&sort=${sort}&num=${num}&start=${start}&fast=${fast}`;
     return this.http.get(URL);
   }
 
