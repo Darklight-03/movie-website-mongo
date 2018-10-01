@@ -32,7 +32,7 @@ export class SearchComponent implements OnInit {
       this.display = [];
       this.q = this.route.snapshot.params['q'];
       // search database for new parameters
-      this.service.getSearchResults(this.q, undefined, 20, 0).subscribe((data: SearchItem) => {
+      this.service.getSearchResults(this.q, undefined, 20, 0).subscribe((data: SearchResult[]) => {
         console.log(data);
         data.forEach((dataelem) => {
           if(dataelem.q != dataelem.originalq){
@@ -50,7 +50,7 @@ export class SearchComponent implements OnInit {
   onClick($event){
     this.loadingmore = true;
 
-    this.service.getSearchResults(this.q, undefined, 20, this.display.length).subscribe((data: SearchItem) => {
+    this.service.getSearchResults(this.q, undefined, 20, this.display.length).subscribe((data: SearchResult[]) => {
       console.log(data);
       data.forEach((dataelem) => {
         this.display.push(dataelem);

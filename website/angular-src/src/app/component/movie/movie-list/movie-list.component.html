@@ -1,13 +1,13 @@
 <h3 style="font-weight: bold;">Popular Movies </h3>
 
 <div class="row">
-  <div class="col-md-4" *ngFor="let movie of movies">
-    <div class="thumbnail">
+  <div class="col-md-4" *ngFor="let movie of movies" style="border: none;">
+    <div class="thumbnail" style="padding: 0px 0px 0px 0px">
       <a [routerLink]="['/movie', movie.id]">
         <img src="http://image.tmdb.org/t/p/original{{movie.posterPath}}"
-        alt="{{movie.title}}" style="width: 400px;height: 550px">
-        <div class="caption">
-          "{{movie.title}}"
+        alt="{{movie.title}}" style="width: 75%;">
+        <div class="caption" style="font-weight:bold; outline-color: none; text-align: center;">
+          {{movie.title}}
         </div>
       </a>
     </div>

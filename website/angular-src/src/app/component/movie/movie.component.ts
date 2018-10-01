@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import {Movie} from '../../model/movie.model';
 import {ActivatedRoute} from '@angular/router';
 import {NetworkService} from '../../services/network.service';
@@ -10,11 +10,19 @@ import {NetworkService} from '../../services/network.service';
 })
 export class MovieComponent implements OnInit {
   movie: Movie = new Movie(0, '', '', '', '', 0, '', null, null, '');
+  sort: string;
+  first: boolean;
+  sort = "name";
 
   constructor(private  service: NetworkService, private route: ActivatedRoute) {}
 
   ngOnInit() {
-    this.service.getMovie(this.route.snapshot.params['id']).subscribe((data: Object) => {
+    this.initi();
+  }
+
+  initi(){
+
+    this.service.getMovie(this.route.snapshot.params['id'],this.sort).subscribe((data: Object) => {
       this.movie.id = data['id'];
       this.movie.title = data['title'];
       this.movie.original_language = data['original_language'];
@@ -30,6 +38,15 @@ export class MovieComponent implements OnInit {
 
 
     });
+ 
+
+  }
+
+  changeSort(sort: any){
+    this.sort=sort;
+    this.movie.crewList = null;
+    this.movie.castList = null;
+    this.initi();
   }
 
 }
