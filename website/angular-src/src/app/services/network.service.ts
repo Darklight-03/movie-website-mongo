@@ -6,7 +6,7 @@ import { map } from 'rxjs/operators';
 import { User } from '../model/user.model';
 
 export interface UserDetails {
-  _id: string;
+  id: string;
   username: string;
   exp: number;
   iat: number;
@@ -131,20 +131,28 @@ export class NetworkService {
   }
 
    // user
-  public getUserById(id: number) {
-    return this.http.get(`${this.apiUrl}/users?id=${id}`);
+  public getUser(id: string) {
+    return this.http.get(`${this.apiUrl}/user`, { headers: { callid: id } });
   }
 
   public registerUser(user: User) {
     return this.http.post(`${this.apiUrl}/users/register`, user);
   }
 
-  public deleteUser(id: number) {
-    return this.http.delete(`${this.apiUrl}/users?id=${id}`);
+  public deleteUser(id: string) {
+    return this.http.delete(`${this.apiUrl}/user`, { headers: { callid: id } });
   }
 
   public autoComplete(q: string) {
     const URL = `${this.apiUrl}/autocomplete?q=${q}`;
     return this.http.get(URL);
+  }
+
+  public addFavorite(uid: string, mid: number) {
+    return this.http.post(`${this.apiUrl}/user/addFavorite`, {uid:uid, mid:mid});
+  }
+
+  public removeFavorite(uid: string, mid: number) {
+    return this.http.post(`${this.apiUrl}/user/removeFavorite`, {uid:uid, mid:mid});
   }
 }

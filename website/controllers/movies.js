@@ -103,16 +103,17 @@ router.get('/search',(req,res) => {
 });
 
 
-router.get('/users',(req,res) => {
-  db.getUserById(req,(err,lists)=>{
-    if(err){
-      res.json({success:false, message: `database error: ${err}`});
-    }
-    else{
-      res.write(JSON.stringify(lists,null,2));
-      res.end();
-    }
-  })
+router.get('/user', (req,res) => {
+  if (!req.headers.callid) {
+    res.status(401).json({
+      "message" : "UnauthorizedError: private profile"
+    });
+  } else {
+    // Otherwise continue
+    db.getUserProfile(req.headers.callid, function(err, user) {
+        res.status(200).json(user);
+      });
+  }
 });
 
 
@@ -125,18 +126,40 @@ router.post('/users/authenticate', (req,res) => {
   db.authenticateUser(req, res);
 });
 
-
-router.delete('/users', auth, (req,res) => {
-  db.deleteUser(req,(err,lists)=>{
-    if(err){
+router.post('/user/addFavorite', (req,res) => {
+  db.addFavorite(req,(err,lists)=> {
+    if(err) {
       res.json({success:false, message: `database error: ${err}`});
     }
     else{
       res.write(JSON.stringify(lists,null,2));
       res.end();
     }
-  })
-});
+  });
+})
+
+router.post('/user/removeFavorite', (req,res) => {
+  db.removeFavorite(req,(err,lists)=> {
+    if(err) {
+      res.json({success:false, message: `database error: ${err}`});
+    }
+    else{
+      res.write(JSON.stringify(lists,null,2));
+      res.end();
+    }
+  });
+})
+// router.delete('/user', auth, (req,res) => {
+//   db.deleteUser(req,(err,lists)=>{
+//     if(err){
+//       res.json({success:false, message: `database error: ${err}`});
+//     }
+//     else{
+//       res.write(JSON.stringify(lists,null,2));
+//       res.end();
+//     }
+//   })
+// });
 
 
 
