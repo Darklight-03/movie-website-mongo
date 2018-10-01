@@ -13,7 +13,7 @@ const moviesSchema = new Schema({
   poster_path: String,
   revenue: Number,
   popularity: Number,
-  year: Number,
+  release_date: String,
   credits: {cast: [{name: String, character: String}], crew: [{name: String, department: String}]}
 });
 const personsSchema = new Schema({
@@ -128,13 +128,13 @@ module.exports.getMovie = (info,callback) => {
 // returns the entire person object from database
 module.exports.getPerson = (info,callback) => {
   var sortField = info.query.sort || "popularity"
-  persons.findOne({id: info.query.id}).populate('cast_movies._id','title poster_path id popularity year').populate('crew_movies._id','title poster_path id popularity year').then((p)=>{
+  persons.findOne({id: info.query.id}).populate('cast_movies._id','title poster_path id popularity release_date').populate('crew_movies._id','title poster_path id popularity release_date').then((p)=>{
     var arr = [];
     var arr1 = [];
     var arr2 = [];
 
     var direction = 1;
-    if(sortField == "popularity" || sortField == "year"){
+    if(sortField == "popularity" || sortField == "release_date"){
       direction = -1;
     }
 
