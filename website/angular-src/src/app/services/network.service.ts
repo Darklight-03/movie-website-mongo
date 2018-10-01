@@ -149,7 +149,7 @@ export class NetworkService {
   }
 
   public getFavorite(uid: string) {
-    const URL = `${this.apiUrl}/user/favorite?uid=${uid}`;
+    const URL = `${this.apiUrl}/getfavorites?id=${uid}`;
     return this.http.get(URL);
   }
 

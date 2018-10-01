@@ -13,14 +13,13 @@ export class FavoriteComponent implements OnInit {
   constructor(private service: NetworkService) { }
 
   ngOnInit() {
-    this.service.getFavorite(this.service.getUserDetails().id).subscribe((movies: Object) => {
+    this.service.getFavorite(this.service.getUserDetails()['_id']).subscribe((movies: Object) => {
       let i = 0;
       while (movies[i]) {
         this.movies.push(new Movie(movies[i]['id'], movies[i]['title'], null, null, null, 0, movies[i]['poster_path'], null, null, null ));
         i++;
       }
     });
-
   }
 
 }
