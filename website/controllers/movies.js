@@ -10,6 +10,17 @@ var auth = jwt({
 
 //GET HTTP methods
 
+router.get('/getfavorites',(req,res) => {
+  db.getFavorites(req, (err, lists) => {
+    if(err) {
+      res.json({success:false, message: `database error: ${err}`});
+    }
+    else{
+      res.write(JSON.stringify(lists,null,2));
+      res.end();
+    }
+  });
+});
 
 // calls getMovie from db.js and returns it
 router.get('/movie',(req,res) => {
