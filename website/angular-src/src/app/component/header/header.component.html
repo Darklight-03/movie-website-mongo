@@ -12,9 +12,10 @@
       </ul>
 
       <ul class="nav navbar-nav navbar-right">
-        <li style="float: right;"><a routerLink="/login" style="color: white">LOGIN</a></li>
-        <li style="float: right;"><a routerLink="/signup" style="color: white">SIGN UP</a></li>
-
+        <li *ngIf="!service.isLoggedIn()" style="float: right;"><a routerLink="/login" style="color: white">LOGIN</a></li>
+        <li *ngIf="!service.isLoggedIn()" style="float: right;"><a routerLink="/signup" style="color: white">SIGN UP</a></li>
+        <li *ngIf="service.isLoggedIn()" style="float: right;"><a (click)="service.logout()" style="color: white">LOGOUT</a></li>
+        <li *ngIf="service.isLoggedIn()" style="float: right;"><a routerLink="/profile" style="color: white">{{ service.getUserDetails()?.username }}</a></li>
       </ul>
     </div>
   </div>

@@ -46,5 +46,7 @@ db.persons.updateMany(
 	{ $set: { "popularity": 0 } }
 );
 
+db.persons.createIndex({'popularity': 1});
+
 
 print("Done calculating popularity.");

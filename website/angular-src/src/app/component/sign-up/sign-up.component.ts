@@ -23,7 +23,6 @@ export class SignUpComponent implements OnInit {
   submitted = false;
 
 
-
   constructor(
     private socialAuthService: AuthService,
     private formBuilder: FormBuilder,
@@ -69,14 +68,20 @@ export class SignUpComponent implements OnInit {
     }
 
     this.loading = true;
-    this.service.register(this.registerForm.value)
+
+    // returns a 401 (Unauthorized) error if the user already exists
+    this.service.registerUser(this.registerForm.value)
       .pipe(first())
       .subscribe(
         data => {
+          console.log("registerUser SUCCESS");
+          console.log(data);
           this.alertService.success('Registration successful', true);
           this.router.navigate(['/login']);
         },
         error => {
+          console.log("registerUser ERROR =");
+          console.log(error);
           this.alertService.error(error);
           this.loading = false;
         });
