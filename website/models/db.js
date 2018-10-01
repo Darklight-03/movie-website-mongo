@@ -226,7 +226,7 @@ async function isResult(str){
   else return false;
 }
 function stdregex(str){
-  return `(^| )(${str})( |$)`;
+  return `(^| )(${str})((?!a-zA-Z\d))`;
 }
 
 async function correction(querynr){
@@ -264,8 +264,9 @@ async function correction(querynr){
     // add each letter between each 2 letters
     for ( var l = 0; l < 26; l++ ){
       letter = String.fromCharCode(97+l);
-      for (var i = 0; i < querynr.length; i++){
-        console.log(insertAt(querynr,i,letter));
+      for (var i = 0; i < querynr.length+1; i++){
+        newq = insertAt(querynr,i,letter);
+        console.log(newq);
         count++;
         if(await isResult(newq)){
           return newq;
@@ -276,7 +277,8 @@ async function correction(querynr){
     for ( var l = 0; l < 26; l++ ){
       letter = String.fromCharCode(97+l);
       for (var i = 0; i < querynr.length; i++) {
-        console.log(replaceAt(querynr,i,letter));
+        newq = replaceAt(querynr,i,letter);
+        console.log(newq);
         count++;
         if(await isResult(newq)){
           return newq;
@@ -310,10 +312,10 @@ module.exports.search = async (info,callback) => {
     // after gettings results normalize movie and people fields.
     var finalresults = results.map((result) => {
       if(result.type == "movies"){
-        var ret = {id: result.item.id, name: result.item.title, image: result.item.poster_path, popularity: result.popularity, originalq: info.query.q, q: q};
+        var ret = {id: result.item.id, name: result.item.title, image: result.item.poster_path, popularity: result.popularity, originalq: info.query.q, q: q, type: removeAt(result.type, result.type.length-1)};
         return ret;
       }else{
-        var ret = {id: result.item.id, name: result.item.name, image: result.item.profile_path, popularity: result.popularity, roles: {characters: result.item.cast_movies, departments: result.item.crew_movies}, originalq: info.query.q, q: q};
+        var ret = {id: result.item.id, name: result.item.name, image: result.item.profile_path, popularity: result.popularity, roles: {characters: result.item.cast_movies, departments: result.item.crew_movies}, originalq: info.query.q, q: q, type: removeAt(result.type, result.type.length-1)};
         return ret;
       }
     });
