@@ -398,7 +398,7 @@ module.exports.removeFavorite = (info, callback) => {
 
 module.exports.getFavorites = (info, callback) => {
   console.log("ttt");
-  users.findOne({id: info.query.id}, "favorites").then((e)=>{
+  users.findOne({_id: info.query.id}, "favorites").then((e)=>{
     console.log(e);
     callback(false,e.favorites);
   }).catch((err)=>{callback(err,null);});
