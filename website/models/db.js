@@ -331,7 +331,7 @@ module.exports.search = async (info,callback) => {
   console.log(q + " q " + query + " query");
 
   if(autocomplete == "true"){
-  global_search.find({$and: [{$text: {$search: q}}, {name: {$regex: query, $options: 'i'}}]}).populate('item', 'id title name poster_path profile_path cast_movies crew_movies popularity').sort({[sortfield]: dir}).limit(limit).skip(start_from).then((results)=>{
+  global_search.find({$and: [{name: {$regex: query, $options: 'i'}}]}).populate('item', 'id title name poster_path profile_path cast_movies crew_movies popularity').sort({[sortfield]: dir}).limit(limit).skip(start_from).then((results)=>{
     // after gettings results normalize movie and people fields.
     var finalresults = results.map((result) => {
       if(result.type == "movies"){
