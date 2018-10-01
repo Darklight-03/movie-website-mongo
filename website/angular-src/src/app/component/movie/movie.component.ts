@@ -14,7 +14,6 @@ export class MovieComponent implements OnInit {
   sort: string = 'name';
   buttonText: string;
 
-
   constructor(private  service: NetworkService, private route: ActivatedRoute) {}
 
   ngOnInit() {

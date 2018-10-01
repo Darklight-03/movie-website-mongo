@@ -205,6 +205,8 @@ module.exports.autocomplete = (info,callback)=>{
   var updatedinfo = info;
   info.query.num = 5;
   info.query.fullq = `(^| )${info.query.q}.*`;
+  info.query.fast = "true";
+  info.query.auto = "true";
   return module.exports.search(info,callback);
 }
 
@@ -307,11 +309,17 @@ async function correction(querynr){
 // returns {movies: arr, people: arr}
 module.exports.search = async (info,callback) => {
   // get args
-  var q = await correction(info.query.q);
+  var fast = info.query.fast || "false";
+  if(fast === "true"){
+    var q = info.query.q;
+  }else{
+    var q = await correction(info.query.q);
+  }
   var query = info.query.fullq || stdregex(q);
   var sortfield = info.query.sort || 'popularity';
   var limit = parseInt(info.query.num) || 100;
   var start_from = parseInt(info.query.start) || 0;
+  var autocomplete = info.query.auto || "false";
   // run find operations for titles or names containing the query
   console.log(query);
   // sort reverse if popularity is the sort field
@@ -319,6 +327,25 @@ module.exports.search = async (info,callback) => {
   if(sortfield == "popularity"){
     dir *= -1;
   }
+
+  console.log(q + " q " + query + " query");
+
+  if(autocomplete == "true"){
+  global_search.find({$and: [{$text: {$search: q}}, {name: {$regex: query, $options: 'i'}}]}).populate('item', 'id title name poster_path profile_path cast_movies crew_movies popularity').sort({[sortfield]: dir}).limit(limit).skip(start_from).then((results)=>{
+    // after gettings results normalize movie and people fields.
+    var finalresults = results.map((result) => {
+      if(result.type == "movies"){
+        var ret = {id: result.item.id, name: result.item.title, image: result.item.poster_path, popularity: result.popularity, originalq: info.query.q, q: q, type: removeAt(result.type, result.type.length-1)};
+        return ret;
+      }else{
+        var ret = {id: result.item.id, name: result.item.name, image: result.item.profile_path, popularity: result.popularity, roles: {characters: result.item.cast_movies, departments: result.item.crew_movies}, originalq: info.query.q, q: q, type: removeAt(result.type, result.type.length-1)};
+        return ret;
+      }
+    });
+    callback(false,finalresults);
+  }).catch((err)=>{callback(err,null);});
+  }
+  else{
 
   global_search.find({$and: [{$text: {$search: q}}, {name: {$regex: query, $options: 'i'}}]}).populate('item', 'id title name poster_path profile_path cast_movies crew_movies popularity').sort({[sortfield]: dir}).limit(limit).skip(start_from).then((results)=>{
     // after gettings results normalize movie and people fields.
@@ -333,6 +360,7 @@ module.exports.search = async (info,callback) => {
     });
     callback(false,finalresults);
   }).catch((err)=>{callback(err,null);});
+  }
 }
 
 
