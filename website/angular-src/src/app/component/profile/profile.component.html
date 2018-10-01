@@ -1,0 +1,19 @@
+<div class="container-fluid">
+    <div class="col-sm-3 sidenav">
+      <h1 style="font-weight: bold;">{{user.username}}</h1>
+    </div>
+
+  <div class="col-sm-4">
+    <h3>Favorites</h3>
+    <div *ngFor="let movie of user.favorites" >
+      <div>
+        <a [routerLink]="['/movie', movie['id']]">
+          <div>
+            "{{movie['title']}}"
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+
+</div>

@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { NetworkService } from '../services/network.service';
 
 @Component({
   selector: 'app-root',
@@ -7,4 +8,5 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'angular-src';
+  constructor(public auth: NetworkService) {}
 }

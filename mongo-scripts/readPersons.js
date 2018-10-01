@@ -66,4 +66,7 @@ db.persons.updateMany(
 	{ $set: { "is_crew": 0 } }
 );
 
+db.persons.createIndexes([{'id': 1},{'name': 1},{'name': 'text'}]);
+db.persons.reIndex();
+
 print("Done creating persons collection.");

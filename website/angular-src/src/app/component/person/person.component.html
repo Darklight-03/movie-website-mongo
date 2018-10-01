@@ -18,6 +18,16 @@
       </div>
     </div>
 
+     <div>
+       <label>Sort: </label>
+       <select (change)="changeSort($event.target.value)">
+           <option value="popularity">popularity</option>
+           <option value="release_date">year</option>
+           <option>title</option>
+       </select>
+       </div>
+
+
   <div class="col-sm-5">
     <h4 style="text-decoration: underline">Actor:</h4>
     <div *ngFor="let cast of person.castList">

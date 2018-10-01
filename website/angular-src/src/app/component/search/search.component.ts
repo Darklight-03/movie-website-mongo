@@ -17,8 +17,10 @@ export class SearchComponent implements OnInit {
   resultsMovies:SearchResult[]=[];
   searching:boolean;
   notsearching:boolean;
-  people:boolean;
+  loadingmore:boolean;
   oftype:string;
+  corrected:boolean;
+  correction:string;
 
   constructor(private route: ActivatedRoute, private service: NetworkService) {
     // this runs every time the url parameters change
@@ -26,39 +28,39 @@ export class SearchComponent implements OnInit {
       // clear all previous results
       this.searching = true;
       this.notsearching = false;
-      this.resultsPeople = [];
-      this.resultsMovies = [];
+      this.corrected = false;
       this.display = [];
       this.q = this.route.snapshot.params['q'];
       // search database for new parameters
-      this.service.getSearchResults(this.q).subscribe((data: SearchItem) => {
-        data.people.forEach((dataelem) => {
-          this.resultsPeople.push(dataelem);
-        });
-        data.movies.forEach((dataelem) => {
-          this.resultsMovies.push(dataelem);
+      this.service.getSearchResults(this.q, undefined, 20, 0).subscribe((data: SearchResult[]) => {
+        console.log(data);
+        data.forEach((dataelem) => {
+          if(dataelem.q != dataelem.originalq){
+            this.correction = dataelem.q;
+            this.corrected = true;
+          }
+          this.display.push(dataelem);
         });
         this.searching = false;
         this.notsearching = true;
       })
-      this.display = this.resultsMovies;
-      this.people = false;
-      this.oftype = "movie";
     });
   }
 
   onClick($event){
-    if($event.target.innerText.includes("People")){
-      // show only people
-      this.display = this.resultsPeople;
-      this.people = true;
-      this.oftype = "person";
-    }else{
-      //// show only movies
-      this.display = this.resultsMovies;
-      this.people = false;
-      this.oftype = "movie";
-    }
+    this.loadingmore = true;
+
+    this.service.getSearchResults(this.q, undefined, 20, this.display.length).subscribe((data: SearchResult[]) => {
+      console.log(data);
+      data.forEach((dataelem) => {
+        this.display.push(dataelem);
+      });
+      this.searching = false;
+      this.notsearching = true;
+      this.loadingmore = false;
+    })
+
+
   }
   ngOnInit() {
   }

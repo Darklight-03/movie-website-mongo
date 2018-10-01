@@ -9,11 +9,13 @@ import {NetworkService} from '../../services/network.service';
   styleUrls: ['./person.component.css']
 })
 export class PersonComponent implements OnInit {
-   person: Person = new Person(0, '', 0, '', null, null, '');
+  person: Person = new Person(0, '', 0, '', null, null, '');
+  sort: string;
+  sort = "popularity";
   constructor(private service: NetworkService, private route: ActivatedRoute) {}
 
   ngOnInit() {
-    this.service.getPerson(this.route.snapshot.params['id']).subscribe((data: Object) => {
+    this.service.getPerson(this.route.snapshot.params['id'], this.sort).subscribe((data: Object) => {
       console.log(data);
 
       this.person.id = data['id'];
@@ -30,6 +32,16 @@ export class PersonComponent implements OnInit {
       return 'Male';
     } else {
       return 'Female';
+    }
+  }
+
+  changeSort(sort: any){
+    this.sort = sort;
+    this.castList = null;
+    this.crewList = null;
+    this.service.getPerson(this.route.snapshot.params['id'], this.sort).subscribe((data: Object) => {
+      this.person.castList = data['cast_movies'];
+      this.person.crewList = data['crew_movies'];
     }
   }
 

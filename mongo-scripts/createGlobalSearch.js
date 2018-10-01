@@ -29,6 +29,6 @@ personsCursor.forEach( function (currentPerson) {
 	}
 });
 
-db.global_search.createIndexes([ { 'name': 1 }, { 'popularity': 1}, { 'item': 1 } ]);
+db.global_search.createIndexes([ { 'name': 1 }, {'name': 'text'}, { 'popularity': 1}, { 'item': 1 } ]);
 
 print('Done creating global_search collection...');

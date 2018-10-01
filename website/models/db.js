@@ -1,5 +1,9 @@
 //Require mongoose package
 const mongoose = require('mongoose');
+var crypto = require('crypto');
+var jwt = require('jsonwebtoken');
+var passport = require('passport');
+mongoose.set('useCreateIndex', true);
 var Schema = mongoose.Schema;
 
 //Define Schemsas
@@ -9,19 +13,58 @@ const moviesSchema = new Schema({
   poster_path: String,
   revenue: Number,
   popularity: Number,
-  year: Number,
+  release_date: String,
   credits: {cast: [{name: String, character: String}], crew: [{name: String, department: String}]}
 });
 const personsSchema = new Schema({
   name: String,
   id: Number,
   profile_path: String,
+  popularity: Number,
   cast_movies: [{_id: {type: Schema.Types.ObjectId, ref: 'movies'}, character: String}],
   crew_movies: [{_id: {type: Schema.Types.ObjectId, ref: 'movies'}, department: String}]
 });
+const searchSchema = new Schema({
+  name: String,
+  type: String,
+  popularity: Number,
+  item: {type: Schema.Types.ObjectId, refPath: 'type'}
+});
+const usersSchema = new Schema({
+  id: { type: Number,
+        index: { unique: true }
+      },
+  username: {
+        type: String,
+        index: { unique: true }
+      },
+  hash: String,
+  salt: String,
+  favorites: []
+});
+usersSchema.methods.setPassword = function(password) {
+  this.salt = crypto.randomBytes(16).toString('hex');
+  this.hash = crypto.pbkdf2Sync(password, this.salt, 1000, 64, 'sha512').toString('hex');
+};
+usersSchema.methods.validPassword = function(password) {
+  var hash = crypto.pbkdf2Sync(password, this.salt, 1000, 64, 'sha512').toString('hex');
+  return this.hash === hash;
+};
+usersSchema.methods.generateJwt = function() {
+  var expiry = new Date();
+  expiry.setDate(expiry.getDate() + 7);
+
+  return jwt.sign({
+    _id: this._id,
+    username: this.username,
+    exp: parseInt(expiry.getTime() / 1000),
+  }, process.env.MOVEDB_AUTH_SECRET);
+};
 
 const movies = module.exports = mongoose.model('movies', moviesSchema );
 const persons = module.exports = mongoose.model('persons', personsSchema );
+const users = module.exports = mongoose.model('users', usersSchema );
+const global_search = module.exports = mongoose.model('global_search', searchSchema, 'global_search' );
 
 function findAtId(id,arr){
   var x = -1;
@@ -59,13 +102,25 @@ function sortfunc(field, order=1){
 // returns the entire movie object from database
 module.exports.getMovie = (info,callback) => {
   var sortfield = info.query.sort || "name";
+  var sortfield2 = sortfield;
   // info.query gets the object containing arguments passed from request.
   movies.findOne({id: info.query.id}).then((movie)=>{
     direction = 1;
-    if(sortfield = "popularity"){
+    if(sortfield == "popularity"){
       direction = -1;
     }
-    movie.credits.cast.sort(sortfunc(sortfield, direction)) 
+    if(sortfield == "character"){
+      sortfield = "department";
+    }
+    if(sortfield == "department"){
+      sortfield2 = "character";
+    }
+    if(sortfield == "role"){
+      sortfield = "department";
+      sortfield2 = "character";
+    }
+    movie.credits.crew = movie.credits.crew.sort(sortfunc(sortfield, direction));
+    movie.credits.cast = movie.credits.cast.sort(sortfunc(sortfield2, direction));
     callback(null,movie);
   }).catch((err)=>{callback(err,null);});
 }
@@ -73,19 +128,19 @@ module.exports.getMovie = (info,callback) => {
 // returns the entire person object from database
 module.exports.getPerson = (info,callback) => {
   var sortField = info.query.sort || "popularity"
-  persons.findOne({id: info.query.id}).populate('cast_movies._id','title poster_path id popularity year').populate('crew_movies._id','title poster_path id popularity year').then((p)=>{
+  persons.findOne({id: info.query.id}).populate('cast_movies._id','title poster_path id popularity release_date').populate('crew_movies._id','title poster_path id popularity release_date').then((p)=>{
     var arr = [];
     var arr1 = [];
     var arr2 = [];
-    
+
     var direction = 1;
-    if(sortField == "popularity" || sortField == "year"){
+    if(sortField == "popularity" || sortField == "release_date"){
       direction = -1;
     }
 
     p.cast_movies = p.cast_movies.sort(sortfunc(sortField,direction));
     p.crew_movies = p.crew_movies.sort(sortfunc(sortField,direction));
-    
+
     p.cast_movies.slice(0).forEach((movie,i)=>{
       if(!arr.includes(movie._id.id)){
         arr.push(movie._id.id);
@@ -128,8 +183,8 @@ module.exports.getPerson = (info,callback) => {
       var department = arr2[i];
       p.crew_movies[findAtId(id,p.crew_movies)].department += ", "+department;
     });
-    
-    
+
+
     callback(false,p);
   });
 }
@@ -148,36 +203,195 @@ module.exports.getPopularMovies = (info,callback)=>{
 
 module.exports.autocomplete = (info,callback)=>{
   var updatedinfo = info;
-  info.query.limit = 5;
+  info.query.num = 5;
   info.query.fullq = `(^| )${info.query.q}.*`;
   return module.exports.search(info,callback);
 }
 
-// returns {movies: arr, people: arr}
-module.exports.search = (info,callback) => {
-  var query = info.query.fullq || `.*${info.query.q}.*`;
-  var sortfield = info.query.sortfield || 'popularity';
-  var limit = parseInt(info.query.limit) || 100;
-  // run find operations for titles or names containing the query
-  movies.find({title: {$regex: query, $options: 'i'}}, 'id title poster_path').sort({sortfield: -1}).limit(limit).then((movievalue)=>{
-    persons.find({name: {$regex: query, $options: 'i'}}, 'id name profile_path cast_movies crew_movies').sort({sortfield: -1}).limit(limit).then((lists) => {
-
-      // re-make the movies object to have same fields as person object.
-      retmovies = movievalue.map((movie)=>{
-        var mov = {id: movie.id, name: movie.title, image: movie.poster_path};
-        return mov;
-      });
-        
-        // same thing for the people object.
-        retpeople = lists.map((person)=>{
-          var persn = {id: person.id, name: person.name, image: person.profile_path, roles: {characters: person.cast_movies, departments: person.crew_movies}}
-          return persn;
-        });
-
-        // return both object arrays in the object returned.
-        callback(false,{movies: retmovies, people: retpeople})
-    }).catch((err)=>{callback(err,null);});
-  }).catch((err)=>{
-    callback(err,null);
+// replace letter at position with letter
+function replaceAt(str, pos, letter){
+  return str.substring(0,pos) + letter + str.substring(pos+1);
+}
+function reverseAt(str, pos){
+  return str.substring(0,pos) + str.charAt(pos+1) + str.charAt(pos) + str.substring(pos+2);
+}
+function insertAt(str, pos, letter){
+  return str.substring(0,pos) + letter + str.substring(pos);
+}
+function removeAt(str, pos){
+  return str.substring(0,pos) + str.substring(pos+1);
+}
+async function isResult(str){
+  var result = await global_search.findOne({
+    $and:
+      [
+        {$text:
+          {$search: str}},
+        {name:
+          {$regex: stdregex(str), $options: 'i'}
+        }
+      ]
   });
+  if(result != undefined){
+    return true;
+  }
+  else return false;
+}
+function stdregex(str){
+  return `(^| )(${str})((?!a-zA-Z\d))`;
+}
+
+async function correction(querynr){
+  // if gets results, return them.
+  if(await global_search.findOne({name: {$regex: stdregex(querynr), $options: 'i'}}) != undefined){
+    return querynr;
+  }
+  // else find lots of possible corrections until one does return results
+  else{
+    //var all = await global_search.find({},"name");
+    //console.log(all);
+    var newq = querynr;
+    var letter = "";
+    var count = 0;
+    console.log("TET");
+    startTime = new Date();
+    // swap each adjacent letter-set
+    for ( var i = 0; i < querynr.length-1; i++){
+      newq = reverseAt(querynr,i);
+      console.log(newq);
+      count++;
+      if(await isResult(newq)){
+        return newq;
+      }
+    }
+    // remove each letter
+    for ( var i = 0; i < querynr.length; i++){
+      newq = removeAt(querynr,i);
+      console.log(newq);
+      count++;
+      if(await isResult(newq)){
+        return newq;
+      }
+    }
+    // add each letter between each 2 letters
+    for ( var l = 0; l < 26; l++ ){
+      letter = String.fromCharCode(97+l);
+      for (var i = 0; i < querynr.length+1; i++){
+        newq = insertAt(querynr,i,letter);
+        console.log(newq);
+        count++;
+        if(await isResult(newq)){
+          return newq;
+        }
+      }
+    }
+    // replace each letter with each possible letter
+    for ( var l = 0; l < 26; l++ ){
+      letter = String.fromCharCode(97+l);
+      for (var i = 0; i < querynr.length; i++) {
+        newq = replaceAt(querynr,i,letter);
+        console.log(newq);
+        count++;
+        if(await isResult(newq)){
+          return newq;
+        }
+      }
+    }
+    endTime = new Date();
+    var timeDiff = endTime - startTime;
+    console.log(timeDiff + " ms");
+    console.log(count + " queries");
+  }
+}
+
+// returns {movies: arr, people: arr}
+module.exports.search = async (info,callback) => {
+  // get args
+  var q = await correction(info.query.q);
+  var query = info.query.fullq || stdregex(q);
+  var sortfield = info.query.sort || 'popularity';
+  var limit = parseInt(info.query.num) || 100;
+  var start_from = parseInt(info.query.start) || 0;
+  // run find operations for titles or names containing the query
+  console.log(query);
+  // sort reverse if popularity is the sort field
+  var dir = 1;
+  if(sortfield == "popularity"){
+    dir *= -1;
+  }
+
+  global_search.find({$and: [{$text: {$search: q}}, {name: {$regex: query, $options: 'i'}}]}).populate('item', 'id title name poster_path profile_path cast_movies crew_movies popularity').sort({[sortfield]: dir}).limit(limit).skip(start_from).then((results)=>{
+    // after gettings results normalize movie and people fields.
+    var finalresults = results.map((result) => {
+      if(result.type == "movies"){
+        var ret = {id: result.item.id, name: result.item.title, image: result.item.poster_path, popularity: result.popularity, originalq: info.query.q, q: q, type: removeAt(result.type, result.type.length-1)};
+        return ret;
+      }else{
+        var ret = {id: result.item.id, name: result.item.name, image: result.item.profile_path, popularity: result.popularity, roles: {characters: result.item.cast_movies, departments: result.item.crew_movies}, originalq: info.query.q, q: q, type: removeAt(result.type, result.type.length-1)};
+        return ret;
+      }
+    });
+    callback(false,finalresults);
+  }).catch((err)=>{callback(err,null);});
+}
+
+
+// ----------
+// users methods
+
+module.exports.getUserProfile = (info,callback) => {
+  users.findOne({_id: mongoose.Types.ObjectId(info)}, callback);
+}
+
+module.exports.registerUser = (info, res) => {
+  var newUser = new users({id: Math.floor(Math.random() * 10000), username: info.body.username, hash: null, salt: null});
+  newUser.setPassword(info.body.password);
+  newUser.save(function (err) {
+    if (err) {
+      res.status(401);
+      res.json({"err":err});
+      res.end();
+    }
+    else {
+      var jwtoken = newUser.generateJwt();
+      res.status(200);
+      res.json({"token":jwtoken});
+      res.end();
+    }
+  });
+}
+
+module.exports.deleteUser = (info,callback) => {
+  users.deleteOne({id: info.query.id}, callback);
+}
+
+module.exports.authenticateUser = (req, res) => {
+  passport.authenticate('local', function(err, user, info) {
+    if (err) {
+      res.json(err);
+      return;
+    }
+    if (user) {
+      var token = user.generateJwt();
+      res.status(200).json({"token": token});
+      res.end();
+    }
+    else {
+      res.status(401).json(info);
+    }
+  })(req, res);
+}
+
+module.exports.addFavorite = (info, callback) => {
+  var query = movies.findOne({"id": info.body.mid });
+  query.select('title id imdb_id popularity poster_path').exec(function (err, movie) {
+    users.findByIdAndUpdate(info.body.uid, { $addToSet: { "favorites": movie } }, callback);
+  })
+}
+
+module.exports.removeFavorite = (info, callback) => {
+  var query = movies.findOne({"id": info.body.mid });
+  query.select('title id imdb_id popularity poster_path').exec(function (err, movie) {
+    users.findByIdAndUpdate(info.body.uid, { $pull: { "favorites": movie } }, callback);
+  })
 }
