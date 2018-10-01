@@ -52,7 +52,7 @@ export class SignUpComponent implements OnInit {
     this.socialAuthService.signIn(socialPlatformProvider).then(
       (userData) => {
         //console.log(socialPlatform + ' sign in data : ' , userData);
-        this.service.registerUser({username: userData.email, password: (userData.name + user.image)})
+        this.service.registerUser({username: userData.email, password: (userData.name + userData.image)})
           .pipe(first())
           .subscribe(
             data => {
