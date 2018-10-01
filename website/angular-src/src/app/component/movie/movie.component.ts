@@ -10,8 +10,8 @@ import {NetworkService} from '../../services/network.service';
 })
 export class MovieComponent implements OnInit {
   movie: Movie = new Movie(0, '', '', '', '', 0, '', null, null, '');
-  sort: string;
   first: boolean;
+  sort: string = 'name';
   buttonText: string;
 
 
@@ -19,18 +19,18 @@ export class MovieComponent implements OnInit {
 
   ngOnInit() {
     this.initi();
-    this.sort = "name";
+    this.sort = 'name';
     var userDet = this.service.getUserDetails();
     this.service.getUser(userDet['_id']).subscribe((data: Object) => {
       var found = false;
       for (var i = 0; (i < data['favorites'].length) && !found; i++) {
-        found = data['favorites'][i]['id'] == this.movie.id;
+        found = data['favorites'][i]['id'] === this.movie.id;
       }
       if (found) {
-        this.buttonText = "Remove favorite";
+        this.buttonText = 'Remove favorite';
       }
       else {
-        this.buttonText = "Add as favorite";
+        this.buttonText = 'Add as favorite';
       }
     });
 
@@ -38,7 +38,7 @@ export class MovieComponent implements OnInit {
 
   initi(){
 
-    this.service.getMovie(this.route.snapshot.params['id'],this.sort).subscribe((data: Object) => {
+    this.service.getMovie(this.route.snapshot.params['id'], this.sort).subscribe((data: Object) => {
       this.movie.id = data['id'];
       this.movie.title = data['title'];
       this.movie.original_language = data['original_language'];
@@ -85,7 +85,7 @@ export class MovieComponent implements OnInit {
   }
 
   changeSort(sort: any){
-    this.sort=sort;
+    this.sort = sort;
     this.movie.crewList = null;
     this.movie.castList = null;
     this.initi();

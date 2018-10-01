@@ -148,6 +148,11 @@ export class NetworkService {
     return this.http.get(URL);
   }
 
+  public getFavorite(uid: string) {
+    const URL = `${this.apiUrl}/getfavorites?id=${uid}`;
+    return this.http.get(URL);
+  }
+
   public addFavorite(uid: string, mid: number) {
     return this.http.post(`${this.apiUrl}/user/addFavorite`, {uid:uid, mid:mid});
   }
