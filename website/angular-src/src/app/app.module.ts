@@ -1,9 +1,9 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import {RouterModule, Routes} from '@angular/router';
-import {HttpClientModule} from '@angular/common/http';
+import { RouterModule, Routes } from '@angular/router';
+import { HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
-import {SocialLoginModule, AuthServiceConfig, GoogleLoginProvider, FacebookLoginProvider, AuthService} from 'angular-6-social-login';
+import { SocialLoginModule, AuthServiceConfig, GoogleLoginProvider, FacebookLoginProvider, AuthService } from 'angular-6-social-login';
 
 
 import { AppComponent } from './component/app.component';
@@ -16,12 +16,14 @@ import { AboutComponent } from './component/about/about.component';
 import { HeaderComponent } from './component/header/header.component';
 import { SearchComponent } from './component/search/search.component';
 import { SignUpComponent } from './component/sign-up/sign-up.component';
-import {AlertComponent} from './_directives/alert.component';
+import { ProfileComponent } from './component/profile/profile.component';
+import { AlertComponent } from './_directives/alert.component';
 
-import {AlertService} from './services/alert.service';
-import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import { AlertService } from './services/alert.service';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { LoginComponent } from './component/login/login.component';
-import {NetworkService} from './services/network.service';
+import { NetworkService } from './services/network.service';
+import { AuthGuardService } from './services/auth-guard.service';
 
 
 const appRoutes: Routes = [
@@ -34,6 +36,7 @@ const appRoutes: Routes = [
   {path: 'about', component: AboutComponent},
   {path: 'signup', component: SignUpComponent},
   {path: 'login', component: LoginComponent},
+  {path: 'profile', component: ProfileComponent, canActivate: [AuthGuardService]},
   {path: '**', component: TopTenMoviesComponent}
 
 ];
@@ -68,6 +71,7 @@ export function getAuthServiceConfigs() {
     SignUpComponent,
     AlertComponent,
     LoginComponent,
+    ProfileComponent,
   ],
   imports: [
     BrowserModule,
@@ -82,7 +86,7 @@ export function getAuthServiceConfigs() {
   ],
   providers: [
     NetworkService,
-
+    AuthGuardService,
     {
       provide: AuthServiceConfig,
       useFactory: getAuthServiceConfigs

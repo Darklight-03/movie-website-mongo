@@ -40,7 +40,7 @@ const usersSchema = new Schema({
       },
   hash: String,
   salt: String,
-  favorites: [ {_id: {type: Schema.Types.ObjectId, ref: 'movies'}}]
+  favorites: []
 });
 usersSchema.methods.setPassword = function(password) {
   this.salt = crypto.randomBytes(16).toString('hex');
@@ -108,7 +108,7 @@ module.exports.getMovie = (info,callback) => {
     if(sortfield = "popularity"){
       direction = -1;
     }
-    movie.credits.cast.sort(sortfunc(sortfield, direction)) 
+    movie.credits.cast.sort(sortfunc(sortfield, direction))
     callback(null,movie);
   }).catch((err)=>{callback(err,null);});
 }
@@ -120,7 +120,7 @@ module.exports.getPerson = (info,callback) => {
     var arr = [];
     var arr1 = [];
     var arr2 = [];
-    
+
     var direction = 1;
     if(sortField == "popularity" || sortField == "year"){
       direction = -1;
@@ -128,7 +128,7 @@ module.exports.getPerson = (info,callback) => {
 
     p.cast_movies = p.cast_movies.sort(sortfunc(sortField,direction));
     p.crew_movies = p.crew_movies.sort(sortfunc(sortField,direction));
-    
+
     p.cast_movies.slice(0).forEach((movie,i)=>{
       if(!arr.includes(movie._id.id)){
         arr.push(movie._id.id);
@@ -171,8 +171,8 @@ module.exports.getPerson = (info,callback) => {
       var department = arr2[i];
       p.crew_movies[findAtId(id,p.crew_movies)].department += ", "+department;
     });
-    
-    
+
+
     callback(false,p);
   });
 }
@@ -286,7 +286,7 @@ async function correction(querynr){
       }
     }
     endTime = new Date();
-    var timeDiff = endTime - startTime; 
+    var timeDiff = endTime - startTime;
     console.log(timeDiff + " ms");
     console.log(count + " queries");
   }
@@ -324,13 +324,11 @@ module.exports.search = async (info,callback) => {
 }
 
 
-
-
 // ----------
 // users methods
 
-module.exports.getUserById = (info,callback) => {
-  users.findOne({id: info.query.id}, callback);
+module.exports.getUserProfile = (info,callback) => {
+  users.findOne({_id: mongoose.Types.ObjectId(info)}, callback);
 }
 
 module.exports.registerUser = (info, res) => {
@@ -372,3 +370,16 @@ module.exports.authenticateUser = (req, res) => {
   })(req, res);
 }
 
+module.exports.addFavorite = (info, callback) => {
+  var query = movies.findOne({"id": info.body.mid });
+  query.select('title id imdb_id popularity poster_path').exec(function (err, movie) {
+    users.findByIdAndUpdate(info.body.uid, { $addToSet: { "favorites": movie } }, callback);
+  })
+}
+
+module.exports.removeFavorite = (info, callback) => {
+  var query = movies.findOne({"id": info.body.mid });
+  query.select('title id imdb_id popularity poster_path').exec(function (err, movie) {
+    users.findByIdAndUpdate(info.body.uid, { $pull: { "favorites": movie } }, callback);
+  })
+}
