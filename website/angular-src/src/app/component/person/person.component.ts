@@ -10,8 +10,7 @@ import {NetworkService} from '../../services/network.service';
 })
 export class PersonComponent implements OnInit {
   person: Person = new Person(0, '', 0, '', null, null, '');
-  sort: string;
-  sort = "popularity";
+  sort: string = 'popularity';
   constructor(private service: NetworkService, private route: ActivatedRoute) {}
 
   ngOnInit() {
@@ -37,12 +36,12 @@ export class PersonComponent implements OnInit {
 
   changeSort(sort: any){
     this.sort = sort;
-    this.castList = null;
-    this.crewList = null;
+    this.person.castList = null;
+    this.person.crewList = null;
     this.service.getPerson(this.route.snapshot.params['id'], this.sort).subscribe((data: Object) => {
       this.person.castList = data['cast_movies'];
       this.person.crewList = data['crew_movies'];
-    }
+    });
   }
 
 }
