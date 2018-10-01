@@ -59,7 +59,7 @@ export class LoginComponent implements OnInit {
         data => {
           this.router.navigate([this.returnUrl]);
           console.log("login success");
-          console.log(JSON.stringify(data));
+          //console.log(JSON.stringify(data));
         },
         error => {
           this.alertService.error(error);
@@ -79,9 +79,21 @@ export class LoginComponent implements OnInit {
 
     this.socialAuthService.signIn(socialPlatformProvider).then(
       (userData) => {
-        console.log(socialPlatform + ' sign in data : ' , userData);
-        // Now sign-in with userData
-        // ...
+        //console.log(socialPlatform + ' sign in data : ' , userData);
+        this.networkService.login(userData.email, userData.name)
+          .pipe(first())
+          .subscribe(
+            data => {
+              this.router.navigate([this.returnUrl]);
+              console.log("login success");
+              //console.log(JSON.stringify(data));
+            },
+            error => {
+              this.alertService.error(error);
+              this.loading = false;
+              console.log("login failure");
+              console.log(error);
+            });
 
       }
     );

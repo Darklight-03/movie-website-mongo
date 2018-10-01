@@ -135,7 +135,7 @@ export class NetworkService {
     return this.http.get(`${this.apiUrl}/user`, { headers: { callid: id } });
   }
 
-  public registerUser(user: User) {
+  public registerUser(user: Object) {
     return this.http.post(`${this.apiUrl}/users/register`, user);
   }
 
