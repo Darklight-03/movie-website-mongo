@@ -32,7 +32,7 @@ export class SearchComponent implements OnInit {
       this.display = [];
       this.q = this.route.snapshot.params['q'];
       // search database for new parameters
-      this.service.getSearchResults(this.q, undefined, 20, 0, "false").subscribe((data: SearchResult[]) => {
+      this.service.getSearchResults(this.q, "popularity", 20, 0, "false").subscribe((data: SearchResult[]) => {
         console.log(data);
         data.forEach((dataelem) => {
           if(dataelem.q != dataelem.originalq){
