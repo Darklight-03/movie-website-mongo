@@ -20,4 +20,14 @@
 
 
 
+.is-loading ::ng-deep .mat-option-text {
+  display: flex;
+  justify-content: center;
+}
+
+.container {
+  width: 300px;
+  font: 17px Calibri;
+}
+
 

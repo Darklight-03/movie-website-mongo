@@ -1,7 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { map } from 'rxjs/operators';
+import {debounceTime, map} from 'rxjs/operators';
 import {User} from '../model/user.model';
+import {Observable} from 'rxjs';
+import {tap} from 'rxjs/operators';
+import {IMovieResponse, Movie} from '../model/movie.model';
 
 @Injectable()
 export class NetworkService {
@@ -79,8 +82,44 @@ export class NetworkService {
     return this.http.delete(`${this.apiUrl}/users/` + id);
   }
 
+  /*
   public autoComplete(q: string) {
     const URL = `${this.apiUrl}/autocomplete?q=${q}`;
     return this.http.get(URL);
   }
+  */
+/*
+  autoComplete(query: string): Observable<IMovieResponse> {
+    const url = `${this.apiUrl}/autocomplete`;
+    return this.http
+      .get<IMovieResponse>(url, {
+        observe: 'response',
+        params: {
+          q: query
+        }
+      })
+      .pipe(
+        map(res => {
+          return res.body;
+        })
+      );
+  }
+*/
+
+search(q: string) {
+  const URL = `${this.apiUrl}/autocomplete?q=${q}`;
+  const options = this.http.get(URL)
+    .pipe(
+      debounceTime(400),
+      map(
+        (data: any) => {
+          return (
+            data.length !== 0 ? data as any[] : [{'result': 'no matching result'}  as any]
+          );
+        }
+      )
+    )
+  return options;
+}
+
 }

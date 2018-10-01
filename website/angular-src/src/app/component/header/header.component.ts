@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import {MatAutocompleteModule} from '@angular/material/autocomplete';
-import {FormBuilder, FormGroup} from '@angular/forms';
 import {NetworkService} from '../../services/network.service';
-import {debounceTime, switchMap, tap, finalize} from 'rxjs/operators';
-import {Observable} from 'rxjs';
+import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
+import {Subscription} from 'rxjs';
+import {debounceTime, distinctUntilChanged, startWith, switchMap} from 'rxjs/operators';
+
+
 
 @Component({
   selector: 'app-header',
@@ -12,34 +13,48 @@ import {Observable} from 'rxjs';
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent implements OnInit {
-  userForm: FormGroup;
-  isLoading = false;
-  recommend: string[];
-  constructor(private router: Router, private fb: FormBuilder, private service: NetworkService) { }
-  ngOnInit() {
-    this.userForm = this.fb.group({
-      userInput: null
-    });
+  searchTerm: FormControl = new FormControl();
+  result = <any>[];
 
-    this.userForm
-      .get('userInput')
-      .valueChanges
-      .pipe(
-        debounceTime(200),
-        tap(() => this.isLoading = true),
-        switchMap(value => this.service.autoComplete(this.userForm.controls.userInput.value)
-          .pipe(
-            finalize(() => this.isLoading = false),
-          )
-        )
-      )
-      .subscribe()
+
+
+
+
+
+  constructor(private router: Router, private service: NetworkService, private fb: FormBuilder) {}
+
+
+
+
+  ngOnInit() {
+    this.searchTerm.valueChanges.subscribe(
+      term => {
+        if (term !== '') {
+          this.service.search(term).subscribe(
+            data => {
+              this.result = data as any[];
+            });
+        }
+      });
+
 
   }
+
+
+
+
+
+
   onKey($event) {
     if ($event.keyCode === 13) {
       const query = $event.target.value;
       this.router.navigate([`/search`, query]);
     }
+
   }
-}
+
+
+
+  }
+
+

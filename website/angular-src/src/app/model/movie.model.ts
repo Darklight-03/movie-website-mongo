@@ -27,3 +27,18 @@ export class Movie {
     this.imdbLink = imdbLink;
   }
 }
+
+export interface IMovieResponse {
+
+  total: number;
+  results: IMovie[];
+
+}
+
+export interface IMovie {
+  id: number;
+  name: string;
+  image: string;
+
+}
+

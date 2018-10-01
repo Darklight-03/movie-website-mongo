@@ -1,3 +1,27 @@
+<form>
+  <mat-form-field class="container">
+
+    <!-- ADD AN INPUT BOX OF TYPE TEXT AND LINK IT TO THE AUTO COMPLETE PANEL. -->
+    <input type="search" placeholder="Search books ..."
+           matInput
+           [formControl]="searchTerm"
+           [matAutocomplete]="auto"
+            class ="form-control"
+    >
+
+    <!-- CREATE AUTO COMPLETE PANEL WITH OPTIONS. -->
+    <mat-autocomplete #auto="matAutocomplete">
+      <mat-option *ngFor="let movie of result['movie']" [value]="movie.name">
+        {{ movie.name }}
+      </mat-option>
+      <mat-option *ngFor="let person of result['people']" [value]="person.name">
+        {{ person.name }}
+      </mat-option>
+    </mat-autocomplete>
+
+  </mat-form-field>
+</form>
+
 <nav class="navbar navbar-default">
   <div class="container-fluid">
     <div class="navbar-header">
@@ -18,7 +42,12 @@
       </ul>
     </div>
   </div>
-  <input class="form-control border-secondary py-2" id="name" type="search"
-         placeholder="Search for a Movie/Person" formAction="/search"
-         (keyup)="onKey($event)">
+
+
+
+
+
+
+
+
 </nav>

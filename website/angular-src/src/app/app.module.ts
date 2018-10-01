@@ -24,6 +24,11 @@ import { LoginComponent } from './component/login/login.component';
 import {NetworkService} from './services/network.service';
 
 
+import { MatAutocompleteModule, MatInputModule } from '@angular/material';
+
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+
+
 const appRoutes: Routes = [
   {path: '', component: TopTenMoviesComponent},
   {path: 'people', component: PeopleListComponent},
@@ -76,8 +81,10 @@ export function getAuthServiceConfigs() {
     CommonModule,
     SocialLoginModule,
     FormsModule,
-    ReactiveFormsModule
-
+    ReactiveFormsModule,
+    MatInputModule,
+    MatAutocompleteModule,
+    BrowserAnimationsModule
 
   ],
   providers: [
