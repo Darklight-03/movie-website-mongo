@@ -102,13 +102,25 @@ function sortfunc(field, order=1){
 // returns the entire movie object from database
 module.exports.getMovie = (info,callback) => {
   var sortfield = info.query.sort || "name";
+  var sortfield2 = sortfield;
   // info.query gets the object containing arguments passed from request.
   movies.findOne({id: info.query.id}).then((movie)=>{
     direction = 1;
-    if(sortfield = "popularity"){
+    if(sortfield == "popularity"){
       direction = -1;
     }
-    movie.credits.cast.sort(sortfunc(sortfield, direction))
+    if(sortfield == "character"){
+      sortfield = "department";
+    }
+    if(sortfield == "department"){
+      sortfield2 = "character";
+    }
+    if(sortfield == "role"){
+      sortfield = "department";
+      sortfield2 = "character";
+    }
+    movie.credits.crew = movie.credits.crew.sort(sortfunc(sortfield, direction));
+    movie.credits.cast = movie.credits.cast.sort(sortfunc(sortfield2, direction));
     callback(null,movie);
   }).catch((err)=>{callback(err,null);});
 }
