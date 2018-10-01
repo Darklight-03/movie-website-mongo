@@ -67,6 +67,20 @@ export class SignUpComponent implements OnInit {
               this.alertService.error(error);
               this.loading = false;
             });
+        this.service.login(userData.email, (userData.name + userData.image))
+          .pipe(first())
+          .subscribe(
+            data => {
+              this.router.navigate(['/']);
+              console.log("login success");
+              //console.log(JSON.stringify(data));
+            },
+            error => {
+              this.alertService.error(error);
+              this.loading = false;
+              console.log("login failure");
+              console.log(error);
+            });
       }
     );
   }
