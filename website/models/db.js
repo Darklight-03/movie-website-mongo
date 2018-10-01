@@ -226,7 +226,7 @@ async function isResult(str){
   else return false;
 }
 function stdregex(str){
-  return `(^| )(${str})( |$)`;
+  return `(^| )(${str})((?!a-zA-Z\d))`;
 }
 
 async function correction(querynr){
