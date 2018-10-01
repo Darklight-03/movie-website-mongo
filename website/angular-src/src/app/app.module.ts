@@ -16,7 +16,6 @@ import { AboutComponent } from './component/about/about.component';
 import { HeaderComponent } from './component/header/header.component';
 import { SearchComponent } from './component/search/search.component';
 import { SignUpComponent } from './component/sign-up/sign-up.component';
-import { ProfileComponent } from './component/profile/profile.component';
 import { AlertComponent } from './_directives/alert.component';
 
 import { AlertService } from './services/alert.service';
@@ -24,6 +23,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { LoginComponent } from './component/login/login.component';
 import { NetworkService } from './services/network.service';
 import { AuthGuardService } from './services/auth-guard.service';
+import { FavoriteComponent } from './component/favorite/favorite.component';
 
 
 const appRoutes: Routes = [
@@ -36,7 +36,7 @@ const appRoutes: Routes = [
   {path: 'about', component: AboutComponent},
   {path: 'signup', component: SignUpComponent},
   {path: 'login', component: LoginComponent},
-  {path: 'profile', component: ProfileComponent, canActivate: [AuthGuardService]},
+  {path: 'favorite', component: FavoriteComponent, canActivate: [AuthGuardService]},
   {path: '**', component: TopTenMoviesComponent}
 
 ];
@@ -71,7 +71,7 @@ export function getAuthServiceConfigs() {
     SignUpComponent,
     AlertComponent,
     LoginComponent,
-    ProfileComponent,
+    FavoriteComponent,
   ],
   imports: [
     BrowserModule,
