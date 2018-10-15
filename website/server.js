@@ -2,7 +2,9 @@ const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
+const passport = require('passport');
 const movies = require('./controllers/movies');
+const pass = require('./config/passport');
 
 const app = express();
 
@@ -23,9 +25,19 @@ app.get('/', (req,res) => {
 const config = require('./config/database');
 mongoose.connect(config.database, {useNewUrlParser: true});
 
+// error handler
+app.use(function (err, req, res, next) {
+  if (err.name === 'UnauthorizedError') {
+    res.status(401);
+    res.json({"message" : err.name + ": " + err.message});
+  }
+});
+
 // send all requests that start with /dbservice to the movies controller
 // (should probably be renamed to something more fitting like dbservice.
+app.use(passport.initialize());
 app.use('/dbservice', movies);
+
 
 // this one use statment stolen from https://stackoverflow.com/questions/30546524/making-angular-routes-work-with-express-routes
 app.use("*",function(req,res){

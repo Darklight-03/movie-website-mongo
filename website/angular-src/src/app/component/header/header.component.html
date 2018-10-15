@@ -1,3 +1,6 @@
+
+
+
 <nav class="navbar navbar-default">
   <div class="container-fluid">
     <div class="navbar-header">
@@ -7,14 +10,24 @@
       <ul class="nav navbar-nav">
         <li><a routerLink="movies" style="color: white">MOVIES</a></li>
         <li><a routerLink="/people" style="color: white">PEOPLE</a></li>
+        <li style="float: right;"><a routerLink="/about" style="color: white">About</a></li>
+
       </ul>
 
       <ul class="nav navbar-nav navbar-right">
-        <li style="float: right;"><a routerLink="/about" style="color: white">About</a></li>
+        <li *ngIf="!service.isLoggedIn()" style="float: right;"><a routerLink="/login" style="color: white">LOGIN</a></li>
+        <li *ngIf="!service.isLoggedIn()" style="float: right;"><a routerLink="/signup" style="color: white">SIGN UP</a></li>
+        <li *ngIf="service.isLoggedIn()" style="float: right;"><a (click)="service.logout()" style="color: white">LOGOUT</a></li>
+        <li *ngIf="service.isLoggedIn()" style="float: right;"><a routerLink="/favorite"style="color: white">Favorite</a></li>
       </ul>
     </div>
   </div>
-  <input class="form-control border-secondary py-2" id="name" type="search"
+  <input class="form-control border-secondary py-2" list="browsers" id="name" type="search"
          placeholder="Search for a Movie/Person" formAction="/search"
          (keyup)="onKey($event)">
+  <datalist id="browsers">
+    <div *ngFor="let item of autocompleted">
+      <option value="{{item.name}}">
+    </div>
+  </datalist>
 </nav>

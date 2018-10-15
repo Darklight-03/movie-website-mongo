@@ -1,10 +1,10 @@
 <div class="container-fluid">
-    <div class="col-sm-3 sidenav">
-      <h1 style="font-weight: bold;">{{person.name}}</h1>
+    <div class="col-sm-2 sidenav">
+      <h3 style="font-weight: bold; text-align: left;">{{person.name}}</h3>
       <div class="row">
         <div class="col-md-15">
           <div class="thumbnail">
-            <div class="pull-left">
+            <div class="pull-left" >
               <img src="http://image.tmdb.org/t/p/original{{person.imagePath}}"
                    alt="{{ person.name }}"
                    class="img-responsive"
@@ -18,34 +18,84 @@
       </div>
     </div>
 
-  <div class="col-sm-4">
-    <h3>Actor</h3>
-    <div *ngFor="let cast of person.castList" >
-      <div class="thumbnail">
-        <a [routerLink]="['/movie', cast['_id'].id]">
-          <img
-          src="https://image.tmdb.org/t/p/original{{cast['_id']['poster_path']}}"
-          alt="{{cast['_id'].title}}" style="width: 180px; height: 270px;">
-          <div class="caption">
-            As {{cast.character}}
+     <div>
+       <label>Sort: </label>
+       <select (change)="changeSort($event.target.value)">
+           <option value="popularity">popularity</option>
+           <option value="release_date">year</option>
+           <option>title</option>
+       </select>
+       </div>
+
+
+  <div class="col-sm-5">
+    <h4 style="text-decoration: underline">Actor:</h4>
+    <div *ngFor="let cast of person.castList">
+      <div class="row">
+
+        <div class="col-sm-3">
+          <div class="thumbnail">
+            <a [routerLink]="['/movie', cast['_id'].id]">
+              <img src="https://image.tmdb.org/t/p/original{{cast['_id']['poster_path']}}"
+                   alt="{{cast['_id'].title}}" style="width: 50%; height: 50%;">
+            </a>
           </div>
-        </a>
+        </div>
+       
+        <div class="col-sm-4" style="outline-color: none;">
+
+          <br />
+            <a [routerLink]="['/movie', cast['_id'].id]">
+              {{cast['_id'].title}}
+            </a>
+            <br />
+        </div>
+
+        <div class="col-md-5">
+          <div style="outline-color: none;">
+
+            <br />
+            As {{cast.character}}
+            <br />
+          </div>
+        </div>
+
       </div>
-    </div>
+     </div>
   </div>
 
-  <div class="col-sm-4">
-    <h3>Crew</h3>
+  <div class="col-sm-5">
+    <h4 style="text-decoration: underline">Crew:</h4>
     <div *ngFor="let crew of person.crewList">
-      <div class="thumbnail">
-        <a [routerLink]="['/movie', crew['_id'].id]">
-          <img
-          src="http://image.tmdb.org/t/p/original{{crew['_id']['poster_path']}}"
-          alt="{{crew['_id'].title}}" style="width: 180px; height: 270px;">
-          <div class="caption">
-            {{crew.department}}
+      <div class="row">
+        <div class="col-sm-3">
+
+          <div class="thumbnail">
+            <a [routerLink]="['/movie', crew['_id'].id]">
+              <img src="http://image.tmdb.org/t/p/original{{crew['_id']['poster_path']}}"
+                   alt="{{crew['_id'].title}}" style="width: 50%; height: 50%;">
+            </a>
           </div>
-        </a>
+        </div>
+
+        <div class="col-sm-4">
+          <a [routerLink]="['/movie', crew['_id'].id]">
+            <br />
+            {{crew['_id'].title}}
+            <br />
+          </a>
+        </div>
+
+
+
+
+        <div class="col-sm-5" style="outline-color: none;">
+          <br />
+          {{crew.department}}
+          <br />
+        </div>
+
+
       </div>
     </div>
   </div>

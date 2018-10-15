@@ -1,14 +1,15 @@
 <h3 style="font-weight: bold;">Top 10 Grossing Films</h3>
 
 <div class="row">
-  <div class="col-md-4" *ngFor="let movie of topMovies">
-    <div class="thumbnail">
+  <div class="col-md-3" *ngFor="let movie of topMovies" style="border: none;">
+    <div class="thumbnail" style="padding: 0px 0px 0px 0px">
       <a [routerLink]="['/movie', movie.id]">
         <img src="http://image.tmdb.org/t/p/original{{movie.posterPath}}" alt="No Image Available :(" style="width: 75%;">
         <div class="caption" style="font-weight:bold; outline-color: none; text-align: center;">
-        "{{movie.title}}"
+        {{movie.title}}
         </div>
       </a>
     </div>
   </div>
+  
 </div>

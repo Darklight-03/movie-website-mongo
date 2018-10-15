@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { MovieService } from '../services/movie.service';
-import { Movie } from '../../model/movie.model';
-import { Person } from '../../model/person.model';
+
 import { SearchItem } from '../../model/search-item.model';
 import { SearchResult } from '../../model/search-result.model';
+import {NetworkService} from '../../services/network.service';
 
 @Component({
   selector: 'app-search',
@@ -18,48 +17,50 @@ export class SearchComponent implements OnInit {
   resultsMovies:SearchResult[]=[];
   searching:boolean;
   notsearching:boolean;
-  people:boolean;
+  loadingmore:boolean;
   oftype:string;
+  corrected:boolean;
+  correction:string;
 
-  constructor(private route: ActivatedRoute, private dbService: MovieService) {
+  constructor(private route: ActivatedRoute, private service: NetworkService) {
     // this runs every time the url parameters change
     route.params.subscribe(val => {  
       // clear all previous results
       this.searching = true;
       this.notsearching = false;
-      this.resultsPeople = [];
-      this.resultsMovies = [];
+      this.corrected = false;
       this.display = [];
       this.q = this.route.snapshot.params['q'];
       // search database for new parameters
-      this.dbService.getSearchResults(this.q).subscribe((data: SearchItem) => {
-        data.people.forEach((dataelem) => {
-          this.resultsPeople.push(dataelem);
-        });
-        data.movies.forEach((dataelem) => {
-          this.resultsMovies.push(dataelem);
+      this.service.getSearchResults(this.q, "popularity", 20, 0, "false").subscribe((data: SearchResult[]) => {
+        console.log(data);
+        data.forEach((dataelem) => {
+          if(dataelem.q != dataelem.originalq){
+            this.correction = dataelem.q;
+            this.corrected = true;
+          }
+          this.display.push(dataelem);
         });
         this.searching = false;
         this.notsearching = true;
       })
-      this.display = this.resultsMovies;
-      this.people = false;
-      this.oftype = "movie";
     });
   }
 
   onClick($event){
-    if($event.target.innerText.includes("People")){
-      // show only people
-      this.display = this.resultsPeople;
-      this.people = true;
-      this.oftype = "person";
-    }else{
-      //// show only movies
-      this.display = this.resultsMovies;
-      this.people = false;
-      this.oftype = "movie";
-    }
+    this.loadingmore = true;
+
+    this.service.getSearchResults(this.q, undefined, 20, this.display.length, "false").subscribe((data: SearchResult[]) => {
+      console.log(data);
+      data.forEach((dataelem) => {
+        this.display.push(dataelem);
+      });
+      this.searching = false;
+      this.notsearching = true;
+      this.loadingmore = false;
+    })
+
+
   }
   ngOnInit() {
   }

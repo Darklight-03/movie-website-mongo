@@ -4,4 +4,27 @@
 /* Set gray background color and 100% height */
 .sidenav {
   height: 100%;
+  background: none;
+}
+
+.thumbnail {
+  background: none;
+}
+
+* {
+  border: none;
+  border-top: none;
+  border-right: none;
+  border-left: none;
+  border-bottom: none;
+}
+
+
+
+.containter-fluid  {
+  background: none;
+}
+
+.col-sm-9 {
+  display: inline-block;
 }

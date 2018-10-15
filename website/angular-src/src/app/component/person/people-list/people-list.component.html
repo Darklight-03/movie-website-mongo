@@ -1,16 +1,15 @@
 <h3 style="font-weight: bold;">Popular People </h3>
 
-<div class="row">
-  <div class="col-md-4" *ngFor="let person of people">
-    <div class="thumbnail">
-      <a [routerLink]="['/person', person.id]">
-        <img src="http://image.tmdb.org/t/p/original{{person.imagePath}}"
-        alt="{{person.name}}" style="width: 400px;height: 550px">
-        <div class="caption">
-          "{{person.name}}"
-        </div>
-      </a>
+  <div class="row">
+    <div class="col-md-4" *ngFor="let person of people" style="border: none;">
+      <div class="thumbnail" style="padding: 0px 0px 0px 0px;">
+        <a [routerLink]="['/person', person.id]">
+          <img src="http://image.tmdb.org/t/p/original{{person.imagePath}}"
+               alt="{{person.name}}" style="width: 60%;">
+          <div class="caption" style="font-weight:bold; outline-color: none; text-align: center;">
+            {{person.name}}
+          </div>
+        </a>
+      </div>
     </div>
   </div>
-</div>
-

@@ -1,23 +1,11 @@
 <h3 *ngIf="searching">Searching...</h3>
-<div *ngIf="notsearching">
-  <button (click)="onClick($event)" [ngClass]="{'fill-data-btn':
-  people == true }">People
-    <div class="mat-button-ripple mat-ripple" matripple=""></div>
-    <div class="mat-button-focus-overlay"></div>
-  </button>
-  <button (click)="onClick($event)" [ngClass]="{'fill-data-btn': people ==
-  false }">Movies
-    <div class="mat-button-ripple mat-ripple" matripple=""></div>
-    <div class="mat-button-focus-overlay"></div>
-  </button>
-</div>
+<h3 *ngIf="corrected">No results found, showing results for {{correction}}</h3>
+
 <div class="row">
-    
-  </div>
 
 <div class="col-md-3" *ngFor="let item of display">
   <div class="thumbnail">
-    <a [routerLink]="['/', oftype, item.id]">
+    <a [routerLink]="['/', item.type, item.id]">
       <img src='http://image.tmdb.org/t/p/w600_and_h900_bestv2{{item.image}}'
       alt="{{item.name}}" style="width:200px;height:300px;">
       <div class="caption" style="font-weight: bold; text-align: center">
@@ -26,3 +14,12 @@
     </a>
   </div>
 </div>
+
+</div>
+<footer class="container-fluid text-center">
+  <div *ngIf="notsearching">
+    <button id="bbbbb" (click)="onClick($event)" [ngClass]="{'fill-data-btn':
+    loadingmore == true }">Load More
+    </button>
+  </div>
+</footer>
