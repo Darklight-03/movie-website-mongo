@@ -1,7 +1,5 @@
 # movie-mongo
 
-web address: `teamproject1.ddns.net:3000`
-
 ### build
 
 to build website:
